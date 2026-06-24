@@ -1,188 +1,294 @@
-/* Custom Styles & CSS Variables for Student Portal */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@theme {
+  --color-slate-850: #1e293b;
+  --color-slate-955: #0f1729;
+  --color-slate-555: #64748b;
+  --color-slate-350: #b9c4d4;
+  --color-indigo-55: #eef2ff;
+  --color-indigo-650: #4f46e5;
+  --text-4\.5xl: 2.5rem;
+}
 
-:root {
-  --font-family: 'Outfit', sans-serif;
-  --transition-speed: 0.3s;
+/* Base Styles */
+* {
+  box-sizing: border-box;
 }
 
 body {
-  font-family: var(--font-family);
-  transition: background-color var(--transition-speed), color var(--transition-speed);
+  font-family: 'Outfit', sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+  scroll-behavior: smooth;
+}
+
+/* Selection */
+::selection {
+  background-color: #4f46e5;
+  color: #ffffff;
+}
+
+.dark ::selection {
+  background-color: #3730a3;
+  color: #ffffff;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
-  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.dark ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.5);
-}
-
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: #475569;
+  background: rgba(79, 70, 229, 0.3);
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: rgba(79, 70, 229, 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(79, 70, 229, 0.2);
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
+  background: rgba(79, 70, 229, 0.4);
 }
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideInRight {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes pulseBorder {
-  0%, 100% { border-color: rgba(99, 102, 241, 0.2); }
-  50% { border-color: rgba(99, 102, 241, 0.6); }
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes slideInRight {
+  0% { opacity: 0; transform: translateX(20px); }
+  100% { opacity: 1; transform: translateX(0); }
 }
 
 .animate-slide-in-right {
-  animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes pulseBorder {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: rgba(79, 70, 229, 0.5); }
 }
 
 .animate-pulse-border {
-  animation: pulseBorder 2s infinite ease-in-out;
+  animation: pulseBorder 2s ease-in-out infinite;
 }
 
-/* Glassmorphism Styles */
+@keyframes toastIn {
+  0% { opacity: 0; transform: translateX(100%); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+.animate-toast-in {
+  animation: toastIn 0.3s ease-out;
+}
+
+@keyframes toastOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+
+.animate-toast-out {
+  animation: toastOut 0.3s ease-in forwards;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Glassmorphism */
 .glass-panel {
   background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.6);
 }
 
 .dark .glass-panel {
-  background: rgba(30, 41, 59, 0.6);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(51, 65, 85, 0.6);
 }
 
 .glass-card-hover {
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s, transform 0.2s;
 }
 
 .glass-card-hover:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 24px -10px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.dark .glass-card-hover:hover {
-  box-shadow: 0 16px 28px -10px rgba(0, 0, 0, 0.4);
-  border-color: rgba(99, 102, 241, 0.35);
-}
-
-/* Circular Progress Rings for Attendance */
-.progress-ring__circle {
-  transition: stroke-dashoffset 0.35s;
-  transform: rotate(-90deg);
-  transform-origin: 50% 50%;
-}
-
-/* ID Card Printing Styles */
+/* ID Card 3D Flip */
 .id-card-view {
   perspective: 1000px;
+  width: 20rem;
+  height: 13rem;
+  cursor: pointer;
 }
 
 .id-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
   transition: transform 0.6s;
   transform-style: preserve-3d;
 }
 
-.id-card-view:hover .id-card-inner {
+.id-card-inner.flipped {
   transform: rotateY(180deg);
 }
 
 .id-card-front, .id-card-back {
+  position: absolute;
+  inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  border-radius: inherit;
 }
 
 .id-card-back {
   transform: rotateY(180deg);
 }
 
-/* Print Styling */
+/* Drawer Transition */
+.drawer-closed {
+  transform: translateX(100%);
+}
+
+/* Base class for drawer to handle transition and open state */
+.drawer-content {
+  transform: translateX(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Loading Spinner */
+.spinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid #e2e8f0;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.spinner-lg {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Circular Progress Ring */
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-circle-bg {
+  fill: none;
+  stroke: currentColor;
+}
+
+.progress-ring-circle {
+  fill: none;
+  stroke: #4f46e5;
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s;
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-radius: 1rem;
+  padding: 1rem;
+  min-width: 18rem;
+  max-width: 24rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dark .toast {
+  background: #0f172a;
+  border-color: #1e293b;
+}
+
+.toast-success { border-left: 4px solid #10b981; }
+.toast-error { border-left: 4px solid #f43f5e; }
+.toast-info { border-left: 4px solid #4f46e5; }
+
+/* Print Styles */
 @media print {
-  body {
-    background: white !important;
-    color: black !important;
-  }
-  
-  #sidebar, 
-  #topbar, 
-  .no-print, 
-  button, 
-  nav,
-  select,
-  textarea,
-  input,
-  .theme-toggle-btn {
+  .no-print {
     display: none !important;
   }
-
-  #main-content {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    background: white !important;
-    box-shadow: none !important;
+  
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 10pt;
   }
-
+  
   .printable-document {
-    display: block !important;
+    box-shadow: none !important;
     border: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
     padding: 0 !important;
     margin: 0 !important;
-    box-shadow: none !important;
-    background: white !important;
-    width: 100% !important;
   }
+  
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+  
+  /* Specific formatting for documents */
+  .registration-slip, .transcript, .id-card-print {
+    width: 100%;
+    page-break-inside: avoid;
+  }
+}
 
-  /* Printable ID Card page layout overrides */
-  .printable-id-card-container {
-    display: block !important;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1.2);
-    width: 3.375in !important;
-    height: 2.125in !important;
-    background: white !important;
-    box-shadow: none !important;
-    border: 1px solid #000 !important;
-  }
+/* Dark Mode Refinements & Misc */
+.dark hr {
+  border-color: #334155;
+}
 
-  .page-break {
-    page-break-before: always;
-  }
+.dark input::placeholder {
+  color: #64748b;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
 }

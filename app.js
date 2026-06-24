@@ -1,2026 +1,1233 @@
-// Academic Student Portal App - Core Javascript
+/* ============================================================
+   REDEEMER'S UNIVERSITY STUDENT PORTAL — app.js
+   Single-file vanilla JS SPA
+   ============================================================ */
 
-// LocalStorage Persistence Configuration
-const STORAGE_KEY = "RUN_PORTAL_STATE_V4.1";
+// ─── STATE MANAGEMENT ─────────────────────────────────────────
+const STORAGE_KEY = 'RUN_PORTAL_STATE_V4.1';
 
-// Default Database State (used as fallback)
 const DEFAULT_STATE = {
-  student: {
-    name: "Ama O. Emmanuel",
-    matricNo: "RUN/CMP/22/1042",
-    email: "emmanuel.ama@run.edu.ng",
-    phone: "+234 812 345 6789",
-    address: "Redemption City, Mowe, Ogun State, Nigeria",
-    department: "Computer Science & Engineering",
-    programme: "B.Sc. Computer Science",
-    level: "400 Level",
-    advisor: "Dr. A. B. Adekunle",
-    photo: "student_profile.jpg",
-    standing: "Excellent",
-    cgpa: 3.82,
-    outstandingBalance: 1400.00,
-    paidBalance: 0.00,
-    registrationSubmitted: false,
-    registrationDate: null,
-    hostelStatus: "Allocated & Settled",
-    prefHostel: "Redemption Hall",
-    hostelRoom: "Block B, Room 104 (Bedspace 3)",
-    isDark: false,
-    loggedIn: false
-  },
-
-  notifications: [
-    { id: 1, title: "Course Registration Deadline", message: "Registration for the 2025/2026 Harmattan Semester closes in 3 days. Settle all tuition before submitting.", time: "2 hrs ago", read: false },
-    { id: 2, title: "SIWES Defense Schedule", message: "400 Level Industrial Training defenses commence next week Monday at 09:00 AM.", time: "1 day ago", read: false },
-    { id: 3, title: "Senate Results Approval", message: "Rain Semester 2024/2025 official transcript grade indices have been approved by the Senate.", time: "4 days ago", read: true }
-  ],
-
-  pastResults: {
-    "Y1S1": {
-      name: "Year 1 - Semester 1 (Harmattan 2022/2023)",
-      gpa: 3.75,
-      courses: [
-        { code: "MTH101", title: "General Mathematics I", units: 3, grade: "A", points: 5 },
-        { code: "PHY101", title: "General Physics I", units: 3, grade: "B", points: 4 },
-        { code: "CHM101", title: "General Chemistry I", units: 3, grade: "B", points: 4 },
-        { code: "CSC101", title: "Introduction to Computer Science", units: 3, grade: "A", points: 5 },
-        { code: "GST101", title: "Communication in English", units: 2, grade: "C", points: 3 }
-      ]
-    },
-    "Y1S2": {
-      name: "Year 1 - Semester 2 (Rain 2022/2023)",
-      gpa: 3.68,
-      courses: [
-        { code: "MTH102", title: "General Mathematics II", units: 3, grade: "B", points: 4 },
-        { code: "PHY102", title: "General Physics II", units: 3, grade: "A", points: 5 },
-        { code: "CSC102", title: "Structured Programming", units: 3, grade: "B", points: 4 },
-        { code: "GST102", title: "Philosophy and Logic", units: 2, grade: "A", points: 5 },
-        { code: "CHM102", title: "General Chemistry II", units: 3, grade: "C", points: 3 }
-      ]
-    },
-    "Y2S1": {
-      name: "Year 2 - Semester 1 (Harmattan 2023/2024)",
-      gpa: 3.80,
-      courses: [
-        { code: "MTH201", title: "Linear Algebra", units: 3, grade: "A", points: 5 },
-        { code: "CSC201", title: "Computer Programming I", units: 3, grade: "A", points: 5 },
-        { code: "CSC205", title: "Operating Systems I", units: 3, grade: "B", points: 4 },
-        { code: "EEE201", title: "Applied Electricity I", units: 3, grade: "B", points: 4 },
-        { code: "STA201", title: "Statistics for Physical Sciences", units: 3, grade: "A", points: 5 }
-      ]
-    },
-    "Y2S2": {
-      name: "Year 2 - Semester 2 (Rain 2023/2024)",
-      gpa: 3.90,
-      courses: [
-        { code: "CSC202", title: "Computer Programming II", units: 3, grade: "A", points: 5 },
-        { code: "CSC204", title: "Data Structures & Algorithms", units: 3, grade: "A", points: 5 },
-        { code: "CSC206", title: "Database Systems I", units: 3, grade: "A", points: 5 },
-        { code: "MTH202", title: "Mathematical Methods", units: 3, grade: "B", points: 4 },
-        { code: "GST222", title: "Peace and Conflict Resolution", units: 2, grade: "B", points: 4 }
-      ]
-    },
-    "Y3S1": {
-      name: "Year 3 - Semester 1 (Harmattan 2024/2025)",
-      gpa: 3.80,
-      courses: [
-        { code: "CSC301", title: "Object-Oriented Programming", units: 3, grade: "A", points: 5 },
-        { code: "CSC305", title: "Software Engineering I", units: 3, grade: "B", points: 4 },
-        { code: "CSC311", title: "Web Technologies", units: 3, grade: "A", points: 5 },
-        { code: "CSC315", title: "Computer Architecture", units: 3, grade: "B", points: 4 },
-        { code: "EEE303", title: "Electronics II", units: 3, grade: "B", points: 4 }
-      ]
-    },
-    "Y3S2": {
-      name: "Year 3 - Semester 2 (Rain 2024/2025)",
-      gpa: 4.00,
-      courses: [
-        { code: "CSC302", title: "Software Engineering II", units: 3, grade: "A", points: 5 },
-        { code: "CSC304", title: "Algorithms & Complexity", units: 3, grade: "A", points: 5 },
-        { code: "CSC306", title: "Database Systems II", units: 3, grade: "A", points: 5 },
-        { code: "CSC310", title: "Computer Networks", units: 3, grade: "A", points: 5 },
-        { code: "CSC399", title: "Industrial Training (SIWES)", units: 6, grade: "A", points: 5 }
-      ]
-    }
-  },
-
-  availableCourses: [
-    { code: "CSC401", title: "Research Project", units: 6, type: "Core", selected: true, disabled: true, lecturer: "Prof. O. A. Adebayo", desc: "Independent research project under faculty supervision. Demands structured compilation, system design, coding implementation, literature reviews, and an oral presentation slide deck defense." },
-    { code: "CSC403", title: "Compiler Construction", units: 3, type: "Core", selected: true, disabled: true, lecturer: "Dr. J. O. Ogundele", desc: "Study of parsing methodologies, lexical analyses, abstract syntax trees, semantic checkers, intermediate representations, code optimizations, and target instruction set generation." },
-    { code: "CSC405", title: "Artificial Intelligence", units: 3, type: "Core", selected: true, disabled: true, lecturer: "Dr. Mrs. A. A. Alao", desc: "Introduction to logical agents, search heuristics, machine learning neural models, natural language processing concepts, genetic algorithms, and utility decision logic matrices." },
-    { code: "CSC407", title: "Computer Graphics & Visualization", units: 3, type: "Core", selected: true, disabled: true, lecturer: "Dr. G. B. Onyeka", desc: "Mathematics of 2D/3D transformations, illumination shaders, rendering pipelines, ray tracing models, rasterization algorithms, and WebGL implementations." },
-    { code: "CSC411", title: "Distributed Systems", units: 3, type: "Elective", selected: false, disabled: false, lecturer: "Mr. T. O. Johnson", desc: "Design details of microservices, RPCs, replication consensus algorithms (Paxos/Raft), consistency indices, clock synchs, and cloud scalability architectures." },
-    { code: "CSC413", title: "Cybersecurity Fundamentals", units: 3, type: "Elective", selected: false, disabled: false, lecturer: "Dr. K. C. Nwachukwu", desc: "Principles of symmetric/asymmetric cryptography, network firewalls, penetration testing vectors, secure coding practices, and digital forensic models." },
-    { code: "CSC415", title: "Mobile Application Development", units: 3, type: "Elective", selected: false, disabled: false, lecturer: "Mr. F. A. Adekeye", desc: "Native and cross-platform mobile development using Flutter/Swift. Covers state management models, storage caches, background services, and offline sync strategies." },
-    { code: "CSC417", title: "Human-Computer Interaction", units: 2, type: "Elective", selected: false, disabled: false, lecturer: "Mrs. O. E. Ebube", desc: "User-centric design theories, rapid wireframing, cognitive walkthrough heuristics, A/B testing validations, accessibility compliances, and empirical feedback analysis." }
-  ],
-
-  weeklySchedule: [
-    { day: "Monday", slots: [{ time: "09:00 - 11:00", course: "CSC403", title: "Compiler Construction", venue: "LH-A2", color: "indigo" }, { time: "14:00 - 16:00", course: "CSC405", title: "Artificial Intelligence", venue: "Lab 3", color: "emerald" }] },
-    { day: "Tuesday", slots: [{ time: "11:00 - 13:00", course: "CSC407", title: "Computer Graphics", venue: "LH-A1", color: "amber" }] },
-    { day: "Wednesday", slots: [{ time: "09:00 - 11:00", course: "CSC403", title: "Compiler Construction", venue: "LH-A2", color: "indigo" }, { time: "14:00 - 17:00", course: "CSC401", title: "Project Seminar", venue: "Auditorium", color: "purple" }] },
-    { day: "Thursday", slots: [{ time: "11:00 - 13:00", course: "CSC407", title: "Computer Graphics", venue: "Lab 3", color: "amber" }, { time: "14:00 - 16:00", course: "CSC405", title: "Artificial Intelligence", venue: "LH-A1", color: "emerald" }] },
-    { day: "Friday", slots: [{ time: "09:00 - 11:00", course: "CSC411", title: "Distributed Systems", venue: "LH-B3", color: "sky" }] }
-  ],
-
-  paymentInvoices: [
-    { id: "INV-2025-001", title: "400 Level Tuition Fee (First Semester)", amount: 1250.00, date: "2025-10-15", status: "Unpaid" },
-    { id: "INV-2025-002", title: "Library & IT Resources Levy", amount: 150.00, date: "2025-10-15", status: "Unpaid" },
-    { id: "INV-2024-002", title: "300 Level Tuition Fee (Second Semester)", amount: 1250.00, date: "2025-04-10", status: "Paid" },
-    { id: "INV-2024-001", title: "300 Level Tuition Fee (First Semester)", amount: 1250.00, date: "2024-10-22", status: "Paid" }
-  ],
-
-  attendance: {
-    "CSC401": { code: "CSC401", title: "Research Project", attended: 19, total: 20 },
-    "CSC403": { code: "CSC403", title: "Compiler Construction", attended: 22, total: 25 },
-    "CSC405": { code: "CSC405", title: "Artificial Intelligence", attended: 18, total: 24 },
-    "CSC407": { code: "CSC407", title: "Computer Graphics", attended: 13, total: 22 }, 
-    "CSC411": { code: "CSC411", title: "Distributed Systems", attended: 8, total: 10 }
-  },
-
-  libraryFiles: [
-    { id: 1, type: "Book", code: "CSC403", name: "Compilers: Principles, Techniques, and Tools", author: "Aho & Ullman", size: "14.2 MB", preview: "COMPILER PRINCIPLES\n\nChapter 1: Introduction to Compiling\nCompilers are software programs that translate source code written in a high-level language into machine code or assembly.\n\nKey compiler phases:\n1. Lexical Analysis (Scanner)\n2. Syntax Analysis (Parser)\n3. Semantic Analysis\n4. Intermediate Code Generation\n5. Code Optimization\n6. Target Code Generation" },
-    { id: 2, type: "Notes", code: "CSC405", name: "Lecture Slide-Deck: Neural Architectures", author: "Dr. Mrs. Alao", size: "3.8 MB", preview: "ARTIFICIAL INTELLIGENCE LECTURE\n\nDeep Neural Networks:\nNetworks consisting of an input layer, multiple hidden layers, and an output layer. Units are neurons with activation functions like ReLU or Sigmoid.\n\nLearning Rules:\nGradient Descent computes gradients of a loss function relative to network weights, updating them iteratively using backpropagation errors." },
-    { id: 3, type: "Exam", code: "CSC407", name: "Past Paper Question Pack (2023 - 2025)", author: "Department Board", size: "1.2 MB", preview: "CSC407 EXAM QUESTIONS 2024\n\nSection A:\n1. Explain the 3D viewing pipeline from object coordinates to screen coordinates.\n2. Formulate the matrix transformation required to perform a 3D rotation of theta degrees about an arbitrary axis.\n3. Discuss the differences between Phong and Gouraud shading models." },
-    { id: 4, type: "Book", code: "CSC411", name: "Distributed Systems: Principles and Paradigms", author: "Andrew S. Tanenbaum", size: "18.5 MB", preview: "DISTRIBUTED SYSTEMS\n\nChapter 1: Characterization\nA distributed system is a collection of independent computers that appears to its users as a single coherent system.\n\nKey properties:\n- Heterogeneity\n- Openness\n- Security\n- Scalability\n- Failure handling concurrency transparency" },
-    { id: 5, type: "Notes", code: "CSC401", name: "Senior Seminar Formatting Guidelines", author: "Dean Office", size: "0.9 MB", preview: "SENIOR SEMINAR GUIDELINES\n\nAll final projects must be styled according to the IEEE template. Margins must be exactly 1 inch on all sides. Font sizes must correspond to:\n- Paper Title: 24pt Bold\n- Header 1: 10pt Small Caps\n- Text: 10pt Regular" },
-    { id: 6, type: "Exam", code: "CSC403", name: "Mock Test Practice Questions", author: "Dr. Ogundele", size: "1.5 MB", preview: "COMPILER MOCK EXAM\n\n1. Formulate a Context-Free Grammar (CFG) for parsing nested arithmetic expressions supporting addition and multiplication.\n2. Design an LL(1) parsing table for your grammar, showing first and follow sets.\n3. Convert the regular expression (a|b)*abb into an equivalent NFA." }
-  ],
-
-  supportTickets: [
-    { id: "TKT-3920", category: "ICT / Portal Issues", subject: "Harmattan course outline error", status: "Resolved", date: "2026-06-20", messages: [
-      { sender: "student", message: "Hello, I cannot see the outline details for CSC411 Distributed Systems in my timetable. Please assist.", time: "10:30 AM" },
-      { sender: "admin", message: "Hi Ama, the database index has been updated. Kindly check again and confirm.", time: "02:15 PM" },
-      { sender: "student", message: "Thank you, it's visible now!", time: "03:00 PM" }
-    ]},
-    { id: "TKT-4829", category: "Finance & Payments", subject: "IT Resources Invoice Double Billing", status: "Resolved", date: "2026-06-22", messages: [
-      { sender: "student", message: "Hi, I was billed twice for the Library and IT Levy. One invoice is INV-2025-002, and there was a double invoice INV-2025-003. Kindly cancel the double charge.", time: "08:15 AM" },
-      { sender: "admin", message: "Hello Ama, we have verified this system anomaly and removed the duplicate invoice. Only INV-2025-002 is outstanding now.", time: "11:45 AM" }
-    ]}
-  ],
-
-  hostelRoommates: [
-    { name: "David Alao", matric: "RUN/CMP/22/1004", level: "400 Level", phone: "+234 815 123 4567", avatar: "DA" },
-    { name: "Samuel Peters", matric: "RUN/CMP/22/1015", level: "400 Level", phone: "+234 803 765 4321", avatar: "SP" },
-    { name: "Daniel Ibe", matric: "RUN/CMP/22/1033", level: "400 Level", phone: "+234 809 999 8888", avatar: "DI" }
-  ],
-
-  examsSchedule: [
-    { code: "CSC403", title: "Compiler Construction", date: "Dec 8, 2026", time: "09:00 AM", venue: "Convocation Hall", seat: "Row C, Seat 42" },
-    { code: "CSC405", title: "Artificial Intelligence", date: "Dec 10, 2026", time: "01:00 PM", venue: "Lecture Hall A", seat: "Row F, Seat 18" },
-    { code: "CSC407", title: "Computer Graphics", date: "Dec 12, 2026", time: "09:00 AM", venue: "Convocation Hall", seat: "Row A, Seat 104" },
-    { code: "CSC411", title: "Distributed Systems", date: "Dec 15, 2026", time: "01:00 PM", venue: "Computer Lab 3", seat: "Row D, Seat 07" }
-  ],
-
-  campusLandmarks: [
-    { name: "Science Lecture Theatre (SLT)", category: "Lecture Halls", hours: "08:00 AM - 06:00 PM", location: "Block C, Science Complex", desc: "Main auditorium hosting large science and engineering lectures. Equipped with projection and audio systems.", icon: "🏛️" },
-    { name: "University Library", category: "Study Areas", hours: "08:00 AM - 10:00 PM", location: "Central Campus Road", desc: "Multi-level library with access to printed textbooks, quiet zones, digital research computers, and e-learning resources.", icon: "📖" },
-    { name: "ICT Development Centre", category: "Technology", hours: "09:00 AM - 05:00 PM", location: "Adjacent to Senate Building", desc: "Handles portal accounts, student email setups, ID card generation, and campus Wi-Fi access configurations.", icon: "💻" },
-    { name: "Sports Complex & Arena", category: "Recreation", hours: "06:00 AM - 08:00 PM", location: "East Wing Campus", desc: "Hosts football fields, basketball courts, running tracks, and indoor gymnasiums for sports activities.", icon: "⚽" },
-    { name: "University Dining Hall", category: "Cafeteria", hours: "07:00 AM - 09:00 PM", location: "Student Union Block", desc: "Campus dining services offering standard local and continental dishes, snacks, and student groceries.", icon: "🍴" },
-    { name: "Redemption Hall", category: "Hostels", hours: "24/7 Access", location: "North Residential Sector", desc: "Male students' hall of residence offering clean rooms, common study zones, and recreational lounges.", icon: "🏢" }
-  ],
-
-  evaluations: {}
+  loggedIn: false,
+  theme: 'light',
+  currentTab: 'dashboard',
+  user: null,
+  selectedCourses: [],
+  notifications: [],
+  readNotifications: []
 };
 
-// Global Application State Variables
-let STATE = {};
-let selectedTab = "dashboard";
-let activeTicketId = null;
+window.STATE = null;
 
-// Persistence
 function loadState() {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored) {
-    try {
-      STATE = JSON.parse(stored);
-      // Ensure new database arrays are correctly merged
-      if (!STATE.hostelRoommates) STATE.hostelRoommates = DEFAULT_STATE.hostelRoommates;
-      if (!STATE.examsSchedule) STATE.examsSchedule = DEFAULT_STATE.examsSchedule;
-      if (!STATE.campusLandmarks) STATE.campusLandmarks = DEFAULT_STATE.campusLandmarks;
-      if (!STATE.evaluations) STATE.evaluations = DEFAULT_STATE.evaluations;
-      if (STATE.student) {
-        if (STATE.student.loggedIn === undefined) STATE.student.loggedIn = false;
-      }
-    } catch (e) {
-      STATE = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      window.STATE = { ...DEFAULT_STATE, ...parsed };
+    } else {
+      window.STATE = { ...DEFAULT_STATE };
     }
-  } else {
-    STATE = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  } catch (e) {
+    window.STATE = { ...DEFAULT_STATE };
   }
 }
 
 function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(window.STATE));
+  } catch (e) { /* quota exceeded, ignore */ }
 }
 
-// App Initialization
-document.addEventListener("DOMContentLoaded", () => {
-  loadState();
-  initTheme();
-  setupSidebarNavigation();
-  setupMobileDrawerHandlers();
-  initLoginGate();
-  initDashboard();
-  initNotificationPanel();
-  initCourseRegistration();
-  initResultChecker();
-  initTimetableAttendance();
-  initHostelModule();
-  initLibraryModule();
-  initPaymentPanel();
-  initEvaluationModule();
-  initCampusDirectory();
-  initHelpdeskModule();
-  initSettings();
-  drawCGPAChart();
-  
-  // View home
-  switchTab("dashboard");
-});
-
-// Secure Portal Session Login Gate
-function initLoginGate() {
-  const loginPage = document.getElementById("login-page");
-  const portalContainer = document.getElementById("portal-container");
-  const loginForm = document.getElementById("login-form");
-  const matricInput = document.getElementById("login-matric");
-  const passwordInput = document.getElementById("login-password");
-  const logoutBtn = document.getElementById("logout-btn");
-
-  if (!loginPage || !portalContainer || !loginForm) return;
-
-  // Initialize session state on page load
-  if (STATE.student && STATE.student.loggedIn) {
-    loginPage.classList.add("hidden");
-    portalContainer.classList.remove("hidden");
-  } else {
-    loginPage.classList.remove("hidden");
-    portalContainer.classList.add("hidden");
+// ─── DATA ─────────────────────────────────────────────────────
+const STUDENT_DATA = {
+  name: 'Ama O. Emmanuel',
+  matric: 'RUN/CMP/22/1042',
+  dept: 'Computer Science',
+  faculty: 'College of Natural Sciences',
+  level: '400 Level',
+  cgpa: 3.82,
+  gpaHistory: [
+    { semester: '100L-1', gpa: 3.20 },
+    { semester: '100L-2', gpa: 3.45 },
+    { semester: '200L-1', gpa: 3.60 },
+    { semester: '200L-2', gpa: 3.75 },
+    { semester: '300L-1', gpa: 3.80 },
+    { semester: '300L-2', gpa: 3.82 }
+  ],
+  tuitionBalance: 1400.00,
+  email: 'emmanuel.ama@run.edu.ng',
+  phone: '+234 803 456 7890',
+  address: '12, Peace Estate, Ede, Osun State',
+  advisor: {
+    name: 'Prof. K. O. Adeyemi',
+    email: 'adeyemiko@run.edu.ng'
   }
+};
 
-  // Handle Login submission
-  loginForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const matric = matricInput.value.trim().toUpperCase();
-    const pass = passwordInput.value;
+const COURSES_DATA = [
+  { code: 'CSC401', title: 'Software Engineering', units: 3, type: 'Core', lecturer: 'Dr. T. O. Banjo', description: 'Principles and methodologies of software development lifecycle, requirements engineering, design patterns, testing, and project management.' },
+  { code: 'CSC403', title: 'Compiler Construction', units: 3, type: 'Core', lecturer: 'Dr. J. O. Ogundele', description: 'Study of parsing methodologies, lexical analysis, syntax-directed translation, code generation and optimization techniques.' },
+  { code: 'CSC405', title: 'Artificial Intelligence', units: 3, type: 'Core', lecturer: 'Prof. M. A. Olanrewaju', description: 'Foundations of AI including search algorithms, knowledge representation, machine learning, and neural networks.' },
+  { code: 'CSC407', title: 'Computer Networks', units: 3, type: 'Core', lecturer: 'Dr. B. S. Ogunleye', description: 'Network architectures, protocols, OSI and TCP/IP models, routing, network security and management.' },
+  { code: 'CSC409', title: 'Operating Systems II', units: 3, type: 'Core', lecturer: 'Dr. F. A. Odetola', description: 'Advanced OS concepts: memory management, virtual memory, file systems, distributed systems and security.' },
+  { code: 'CSC411', title: 'Database Systems', units: 3, type: 'Core', lecturer: 'Prof. O. O. Ogunlade', description: 'Relational database design, SQL, normalization, transaction processing, and distributed databases.' },
+  { code: 'CSC413', title: 'Numerical Methods', units: 3, type: 'Core', lecturer: 'Dr. A. O. Fasanya', description: 'Numerical analysis, error analysis, interpolation, numerical integration and differential equations.' },
+  { code: 'CSC415', title: 'Research Methods', units: 2, type: 'Core', lecturer: 'Prof. K. O. Adeyemi', description: 'Scientific research methodology, literature review, data collection, analysis techniques and academic writing.' },
+  { code: 'GNS401', title: 'Entrepreneurship Studies', units: 2, type: 'Elective', lecturer: 'Dr. O. O. Ogunyemi', description: 'Business planning, opportunity identification, venture creation, and small business management.' },
+  { code: 'ENT401', title: 'Innovation Management', units: 2, type: 'Elective', lecturer: 'Dr. O. A. Ogunlade', description: 'Managing innovation processes, technology transfer, intellectual property, and commercialization.' },
+  { code: 'CSC417', title: 'Human Computer Interaction', units: 2, type: 'Elective', lecturer: 'Dr. T. O. Ogunseye', description: 'Usability engineering, user-centered design, interface evaluation methods and accessibility.' }
+];
 
-    if (matric === "RUN/CMP/22/1042" && pass === "password") {
-      STATE.student.loggedIn = true;
-      saveState();
-      
-      // Transition display
-      loginPage.classList.add("hidden");
-      portalContainer.classList.remove("hidden");
-      
-      showToast("Authentication successful. Session established.");
-      
-      // Re-initialize state and redraw charts to ensure layout fits correctly
-      initDashboard();
-      drawCGPAChart();
-    } else {
-      showToast("Invalid credentials. Please use the demo login values.", "error");
-    }
-  });
+const SEMESTER_DATA = [
+  {
+    id: '100L-1',
+    label: '100 Level — First Semester',
+    courses: [
+      { code: 'CSC101', title: 'Introduction to Computing', units: 3, grade: 'A', gradePoint: 5 },
+      { code: 'CSC103', title: 'Introductory Mathematics I', units: 3, grade: 'A', gradePoint: 5 },
+      { code: 'CSC105', title: 'Logic & Linear Algebra', units: 3, grade: 'B', gradePoint: 4 },
+      { code: 'GNS101', title: 'Use of English I', units: 2, grade: 'A', gradePoint: 5 },
+      { code: 'GNS103', title: 'Nigerian Peoples & Culture', units: 2, grade: 'A', gradePoint: 5 },
+      { code: 'PHY101', title: 'General Physics I', units: 3, grade: 'B', gradePoint: 4 }
+    ]
+  },
+  {
+    id: '100L-2',
+    label: '100 Level — Second Semester',
+    courses: [
+      { code: 'CSC102', title: 'Computer Programming I', units: 3, grade: 'A', gradePoint: 5 },
+      { code: 'CSC104', title: 'Introductory Mathematics II', units: 3, grade: 'A', gradePoint: 5 },
+      { code: 'CSC106', title: 'Discrete Structures', units: 3, grade: 'B', gradePoint: 4 },
+      { code: 'GNS102', title: 'Use of English II', units: 2, grade: 'A', gradePoint: 5 },
+      { code: 'PHY102', title: 'General Physics II', units: 3, grade: 'B', gradePoint: 4 },
+      { code: 'CHM101', title: 'General Chemistry', units: 3, grade: 'C', gradePoint: 3 }
+    ]
+  },
+  {
+    id: '200L-1',
+    label: '200 Level — First Semester',
+    courses: [
+      { code: 'CSC201', title: 'Object Oriented Programming', units: 3, grade: 'A', gradePoint: 5 },
+      { code: 'CSC203', title: 'Data Structures & Algorithms', units: 3, grade: 'A', gradePoint: 5 },
+      { code: 'CSC205', title: 'Digital Logic Design', units: 3, grade: 'B', gradePoint: 4 },
+      { code: 'CSC207', title: 'Web Technologies', units: 2, grade: 'A', gradePoint: 5 },
+      { code: 'GNS201', title: 'Philosophy & Logic', units: 2, grade: 'B', gradePoint: 4 },
+      { code: 'MTS201', title: 'Probability & Statistics', units: 3, grade: 'B', gradePoint: 4 }
+    ]
+  },
+  {
+    id: '200L-2',
+    label: '200 Level — Second Semester',
+    courses: [
+      { code: 'CSC202', title: 'Computer Programming II', units: 3, grade: 'A', gradePoint: 5 },
+      { code: 'CSC204', title: 'Computer Architecture', units: 3, grade: 'A', gradePoint: 5 },
+      { code: 'CSC206', title: 'Software Engineering I', units: 3, grade: 'B', gradePoint: 4 },
+      { code: 'CSC208', title: 'Database Management Sys.', units: 3, grade: 'A', gradePoint: 5 },
+      { code: 'GNS202', title: 'Peace & Conflict Studies', units: 2, grade: 'A', gradePoint: 5 }
+    ]
+  },
+  {
+    id: '300L-1',
+    label: '300 Level — First Semester',
+    courses: [
+      { code: 'CSC301', title: 'Operating Systems I', units: 3, grade: 'A', gradePoint: 5 },
+      { code: 'CSC303', title: 'Computer Networks I', units: 3, grade: 'B', gradePoint: 4 },
+      { code: 'CSC305', title: 'Theory of Computation', units: 3, grade: 'A', gradePoint: 5 },
+      { code: 'CSC307', title: 'Numerical Analysis', units: 3, grade: 'B', gradePoint: 4 },
+      { code: 'CSC309', title: 'System Analysis & Design', units: 3, grade: 'B', gradePoint: 4 },
+      { code: 'GNS301', title: 'Entrepreneurship I', units: 2, grade: 'A', gradePoint: 5 }
+    ]
+  },
+  {
+    id: '300L-2',
+    label: '300 Level — Second Semester',
+    courses: [
+      { code: 'CSC302', title: 'Operating Systems II', units: 3, grade: 'A', gradePoint: 5 },
+      { code: 'CSC304', title: 'Computer Networks II', units: 3, grade: 'A', gradePoint: 5 },
+      { code: 'CSC306', title: 'Artificial Intelligence', units: 3, grade: 'B', gradePoint: 4 },
+      { code: 'CSC308', title: 'Research Methodology', units: 2, grade: 'A', gradePoint: 5 },
+      { code: 'CSC310', title: 'Compiler Construction', units: 3, grade: 'B', gradePoint: 4 }
+    ]
+  }
+];
 
-  // Handle Logout button
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      STATE.student.loggedIn = false;
-      saveState();
-      
-      // Transition display back
-      loginPage.classList.remove("hidden");
-      portalContainer.classList.add("hidden");
-      
-      // Reset inputs
-      matricInput.value = "";
-      passwordInput.value = "";
-      
-      showToast("Session terminated successfully.");
-      
-      // Switch tab back to dashboard so that next login is on dashboard
-      switchTab("dashboard");
-    });
+const SCHEDULE_DATA = [
+  { day: 'Monday', time: '08:00 — 10:00', course: 'Software Engineering', code: 'CSC401', venue: 'NLecture Hall A', lecturer: 'Dr. T. O. Banjo' },
+  { day: 'Monday', time: '12:00 — 14:00', course: 'Compiler Construction', code: 'CSC403', venue: 'CS Lab 2', lecturer: 'Dr. J. O. Ogundele' },
+  { day: 'Tuesday', time: '09:00 — 11:00', course: 'Artificial Intelligence', code: 'CSC405', venue: 'NLecture Hall B', lecturer: 'Prof. M. A. Olanrewaju' },
+  { day: 'Tuesday', time: '14:00 — 16:00', course: 'Computer Networks', code: 'CSC407', venue: 'CS Lab 1', lecturer: 'Dr. B. S. Ogunleye' },
+  { day: 'Wednesday', time: '08:00 — 10:00', course: 'Operating Systems II', code: 'CSC409', venue: 'NLecture Hall A', lecturer: 'Dr. F. A. Odetola' },
+  { day: 'Wednesday', time: '11:00 — 13:00', course: 'Database Systems', code: 'CSC411', venue: 'CS Lab 1', lecturer: 'Prof. O. O. Ogunlade' },
+  { day: 'Thursday', time: '09:00 — 11:00', course: 'Numerical Methods', code: 'CSC413', venue: 'NLecture Hall B', lecturer: 'Dr. A. O. Fasanya' },
+  { day: 'Thursday', time: '13:00 — 15:00', course: 'Research Methods', code: 'CSC415', venue: 'Seminar Room 3', lecturer: 'Prof. K. O. Adeyemi' },
+  { day: 'Friday', time: '10:00 — 12:00', course: 'Entrepreneurship Studies', code: 'GNS401', venue: 'Business School Hall', lecturer: 'Dr. O. O. Ogunyemi' }
+];
+
+const EXAMS_DATA = [
+  { code: 'CSC401', title: 'Software Engineering', dateTime: '2026-03-10 09:00 — 12:00', venue: 'Main Hall A', seat: 'A-042' },
+  { code: 'CSC403', title: 'Compiler Construction', dateTime: '2026-03-13 09:00 — 12:00', venue: 'Main Hall B', seat: 'B-107' },
+  { code: 'CSC405', title: 'Artificial Intelligence', dateTime: '2026-03-17 14:00 — 17:00', venue: 'Main Hall A', seat: 'A-056' },
+  { code: 'CSC407', title: 'Computer Networks', dateTime: '2026-03-20 09:00 — 12:00', venue: 'CS Lab Complex', seat: 'LB-12' },
+  { code: 'CSC409', title: 'Operating Systems II', dateTime: '2026-03-24 14:00 — 17:00', venue: 'NLecture Hall', seat: 'N-023' },
+  { code: 'CSC411', title: 'Database Systems', dateTime: '2026-03-27 09:00 — 12:00', venue: 'Main Hall B', seat: 'B-088' },
+  { code: 'CSC413', title: 'Numerical Methods', dateTime: '2026-04-01 14:00 — 17:00', venue: 'NLecture Hall', seat: 'N-045' },
+  { code: 'CSC415', title: 'Research Methods', dateTime: '2026-04-03 09:00 — 11:00', venue: 'Seminar Room', seat: 'SR-08' },
+  { code: 'GNS401', title: 'Entrepreneurship Studies', dateTime: '2026-04-07 09:00 — 12:00', venue: 'Business School Hall', seat: 'BZ-12' }
+];
+
+const HOSTEL_DATA = {
+  hall: 'Redemption Hall',
+  block: 'Block B',
+  room: 'Room 104',
+  bedspace: 'Bedspace 3',
+  status: 'Allocated & Settled',
+  warden: 'Mr. A. C. Obi',
+  category: '4-Bedspace Standard',
+  roommates: [
+    { name: 'Okonkwo C. Chinedu', matric: 'RUN/CMP/22/1038', phone: '+234 803 123 4567', email: 'okonkwoc@run.edu.ng' },
+    { name: 'Okafor M. Nnamdi', matric: 'RUN/CMP/22/1051', phone: '+234 806 234 5678', email: 'okaform@run.edu.ng' },
+    { name: 'Adebayo K. Oluwaseun', matric: 'RUN/CMP/22/1067', phone: '+234 802 345 6789', email: 'adebayok@run.edu.ng' }
+  ]
+};
+
+const INVOICES_DATA = [
+  { id: 'INV-2026-001', description: 'Tuition Fee — Harmattan Semester', date: '2026-01-15', amount: 850.00, status: 'unpaid' },
+  { id: 'INV-2026-002', description: 'Accommodation Fee', date: '2026-01-15', amount: 350.00, status: 'unpaid' },
+  { id: 'INV-2026-003', description: 'Computer Science Lab Fee', date: '2026-01-15', amount: 120.00, status: 'unpaid' },
+  { id: 'INV-2025-089', description: 'Library Development Levy', date: '2025-09-10', amount: 50.00, status: 'paid' },
+  { id: 'INV-2025-090', description: 'Sports & Recreation Fee', date: '2025-09-10', amount: 30.00, status: 'paid' },
+  { id: 'INV-2025-088', description: 'ICT Infrastructure Levy', date: '2025-09-10', amount: 80.00, status: 'paid' },
+  { id: 'INV-2025-076', description: 'Tuition Fee — Rain Semester', date: '2025-08-20', amount: 800.00, status: 'paid' }
+];
+
+const NOTIFICATIONS_DATA = [
+  { id: 1, title: 'Registration Deadline', message: 'Course registration for Harmattan semester closes on March 15th. Please complete your selection.', time: '2 hours ago', read: false },
+  { id: 2, title: 'Tuition Payment Reminder', message: 'Your tuition balance of $1,400.00 is outstanding. Late payment attracts a penalty fee.', time: '1 day ago', read: false },
+  { id: 3, title: 'Results Published', message: '300 Level Second Semester results are now available on the portal.', time: '3 days ago', read: false },
+  { id: 4, title: 'Timetable Updated', message: 'Your lecture timetable has been updated for the Harmattan semester. Check the Portal Timetable section.', time: '1 week ago', read: false },
+  { id: 5, title: 'Exam Schedule', message: 'Harmattan semester exams begin March 10, 2026. Download your exam slip.', time: '2 weeks ago', read: true }
+];
+
+// ─── TOAST SYSTEM ────────────────────────────────────────────
+function showToast(message, type) {
+  type = type || 'info';
+  const container = document.getElementById('toast-container');
+  if (!container) {
+    const div = document.createElement('div');
+    div.id = 'toast-container';
+    div.className = 'toast-container';
+    document.body.appendChild(div);
+  }
+  const c = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = 'toast toast-' + type + ' animate-toast-in';
+  const icons = { success: '✓', error: '✕', info: 'ℹ' };
+  toast.innerHTML = '<span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black ' +
+    (type === 'success' ? 'bg-emerald-100 text-emerald-700' : type === 'error' ? 'bg-rose-100 text-rose-700' : 'bg-indigo-100 text-indigo-700') +
+    '">' + (icons[type] || 'ℹ') + '</span>' +
+    '<span class="text-xs font-semibold text-slate-700 dark:text-slate-300 flex-1">' + message + '</span>';
+  c.appendChild(toast);
+  setTimeout(function() {
+    toast.classList.remove('animate-toast-in');
+    toast.classList.add('animate-toast-out');
+    setTimeout(function() { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 350);
+  }, 3500);
+}
+
+// ─── THEME ───────────────────────────────────────────────────
+function applyTheme(theme) {
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+  var btn = document.getElementById('theme-toggle');
+  if (btn) {
+    btn.innerHTML = theme === 'dark'
+      ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>'
+      : '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>';
   }
 }
 
-// Toast Notifications Helper
-function showToast(message, type = "success") {
-  const toast = document.createElement("div");
-  toast.className = `fixed bottom-5 right-5 flex items-center gap-3 px-5 py-4 rounded-2xl shadow-xl border animate-slide-in-right z-50 transition-all ${
-    type === "success" 
-      ? "bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800/50" 
-      : "bg-rose-50 text-rose-800 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800/50"
-  }`;
-  
-  const icon = type === "success" 
-    ? `<svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>` 
-    : `<svg class="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
-
-  toast.innerHTML = `
-    ${icon}
-    <span class="font-bold text-xs leading-normal">${message}</span>
-  `;
-  
-  document.body.appendChild(toast);
-  setTimeout(() => {
-    toast.style.opacity = "0";
-    toast.style.transform = "translateX(60px)";
-    setTimeout(() => toast.remove(), 350);
-  }, 4000);
+function toggleTheme() {
+  var newTheme = window.STATE.theme === 'dark' ? 'light' : 'dark';
+  window.STATE.theme = newTheme;
+  saveState();
+  applyTheme(newTheme);
+  drawGpaChart();
 }
 
-// Light & Dark Themes
-function initTheme() {
-  const toggleBtn = document.getElementById("theme-toggle");
-  const storedTheme = localStorage.getItem("theme");
-  
-  const applyTheme = (dark) => {
-    if (dark) {
-      document.documentElement.classList.add("dark");
-      toggleBtn.innerHTML = `<svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>`;
-    } else {
-      document.documentElement.classList.remove("dark");
-      toggleBtn.innerHTML = `<svg class="w-5 h-5 text-slate-600 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>`;
-    }
-    STATE.student.isDark = dark;
+// ─── LOGIN / LOGOUT ──────────────────────────────────────────
+function handleLogin(e) {
+  e.preventDefault();
+  var matric = document.getElementById('login-matric').value.trim();
+  var password = document.getElementById('login-password').value;
+  if (matric === 'RUN/CMP/22/1042' && password === 'password') {
+    window.STATE.loggedIn = true;
+    window.STATE.user = STUDENT_DATA;
     saveState();
-    drawCGPAChart();
-  }
-
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const isDark = storedTheme === "dark" || (!storedTheme && prefersDark);
-  applyTheme(isDark);
-
-  toggleBtn.addEventListener("click", () => {
-    const nextDark = !document.documentElement.classList.contains("dark");
-    localStorage.setItem("theme", nextDark ? "dark" : "light");
-    applyTheme(nextDark);
-  });
-}
-
-// Sidebar Navigation
-function setupSidebarNavigation() {
-  const sidebarLinks = document.querySelectorAll("#sidebar nav a");
-  
-  sidebarLinks.forEach(link => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const tabId = link.getAttribute("data-tab");
-      switchTab(tabId);
-      
-      const sidebar = document.getElementById("sidebar");
-      const backdrop = document.getElementById("sidebar-backdrop");
-      if (!sidebar.classList.contains("-translate-x-full")) {
-        sidebar.classList.add("-translate-x-full");
-        backdrop.classList.add("hidden");
-      }
-    });
-  });
-}
-
-// Mobile sidebar drawer
-function setupMobileDrawerHandlers() {
-  const burgerBtn = document.getElementById("mobile-menu-toggle");
-  const sidebar = document.getElementById("sidebar");
-  const backdrop = document.getElementById("sidebar-backdrop");
-  
-  burgerBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("-translate-x-full");
-    backdrop.classList.toggle("hidden");
-  });
-
-  backdrop.addEventListener("click", () => {
-    sidebar.classList.add("-translate-x-full");
-    backdrop.classList.add("hidden");
-  });
-}
-
-// Global Switch Tab function with sidebar sync
-function switchTab(tabId) {
-  selectedTab = tabId;
-  const sections = document.querySelectorAll(".tab-content-section");
-  sections.forEach(sec => sec.classList.add("hidden"));
-  
-  const targetSection = document.getElementById(`${tabId}-section`);
-  if (targetSection) {
-    targetSection.classList.remove("hidden");
-    targetSection.classList.add("animate-fade-in");
-  }
-
-  const sidebarLinks = document.querySelectorAll("#sidebar nav a");
-  sidebarLinks.forEach(link => {
-    const linkTab = link.getAttribute("data-tab");
-    if (linkTab === tabId) {
-      link.className = "flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors";
-    } else {
-      link.className = "flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors";
-    }
-  });
-
-  if (tabId === "dashboard") {
-    drawCGPAChart();
-    renderDashboardClasses();
-  }
-}
-
-// Course details slide-in Drawer
-const drawer = document.getElementById("course-outline-drawer");
-const drawerCloseBtn = document.getElementById("close-drawer-btn");
-
-drawerCloseBtn.addEventListener("click", () => {
-  drawer.classList.add("translate-x-full");
-});
-
-function openCourseDrawer(courseCode) {
-  const course = STATE.availableCourses.find(c => c.code === courseCode);
-  if (!course) return;
-
-  document.getElementById("drawer-course-code").textContent = course.code;
-  document.getElementById("drawer-course-title").textContent = course.title;
-  document.getElementById("drawer-course-lecturer").textContent = course.lecturer;
-  document.getElementById("drawer-course-units").textContent = `${course.units} Credits`;
-  document.getElementById("drawer-course-description").textContent = course.desc;
-
-  drawer.classList.remove("translate-x-full");
-}
-
-// Dashboard Module
-function initDashboard() {
-  updateProfileDisplays();
-  renderDashboardClasses();
-  updateOutstandingDisplays();
-  updateRegistrationStatus();
-}
-
-function updateProfileDisplays() {
-  document.querySelectorAll(".student-name").forEach(el => el.textContent = STATE.student.name);
-  document.querySelectorAll(".student-matric").forEach(el => el.textContent = STATE.student.matricNo);
-  document.querySelectorAll(".student-dept").forEach(el => el.textContent = STATE.student.department);
-  document.querySelectorAll(".student-standing").forEach(el => el.textContent = STATE.student.standing);
-  document.querySelectorAll(".student-cgpa").forEach(el => el.textContent = STATE.student.cgpa.toFixed(2));
-  document.querySelectorAll(".student-level").forEach(el => el.textContent = STATE.student.level);
-  document.querySelectorAll(".student-photo").forEach(el => el.src = STATE.student.photo);
-}
-
-function updateOutstandingDisplays() {
-  const balText = `$${STATE.student.outstandingBalance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-  document.querySelectorAll(".dashboard-outstanding-text").forEach(el => el.textContent = balText);
-  
-  const paymentsBadge = document.getElementById("payments-outstanding-dot");
-  if (STATE.student.outstandingBalance > 0) {
-    paymentsBadge.classList.remove("hidden");
+    document.getElementById('login-page').style.display = 'none';
+    document.getElementById('portal-container').style.display = 'flex';
+    initApp();
   } else {
-    paymentsBadge.classList.add("hidden");
+    showToast('Invalid matric number or password. Please try again.', 'error');
   }
 }
 
-function updateRegistrationStatus() {
-  const badgeContainers = document.querySelectorAll(".dashboard-reg-status-badge");
-  const sidebarIndicator = document.getElementById("course-reg-nav-indicator");
+function handleLogout() {
+  window.STATE.loggedIn = false;
+  window.STATE.user = null;
+  window.STATE.currentTab = 'dashboard';
+  window.STATE.selectedCourses = [];
+  saveState();
+  document.getElementById('portal-container').style.display = 'none';
+  document.getElementById('login-page').style.display = 'flex';
+  document.getElementById('login-form').reset();
+}
 
-  badgeContainers.forEach(badge => {
-    if (STATE.student.registrationSubmitted) {
-      badge.className = "dashboard-reg-status-badge px-3 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300";
-      badge.textContent = "Approved & Registered";
-      if (sidebarIndicator) {
-        sidebarIndicator.className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
+// ─── TAB ROUTING ─────────────────────────────────────────────
+function switchTab(tabName) {
+  window.STATE.currentTab = tabName;
+  saveState();
+
+  // Hide all sections
+  var sections = document.querySelectorAll('.tab-content-section');
+  for (var i = 0; i < sections.length; i++) {
+    sections[i].classList.add('hidden');
+  }
+
+  // Show target
+  var targetMap = {
+    dashboard: 'dashboard-section',
+    course_registration: 'course_registration-section',
+    result_checker: 'result_checker-section',
+    attendance_timetable: 'attendance_timetable-section',
+    hostel_allocation: 'hostel_allocation-section',
+    payments: 'payments-section',
+    settings: 'settings-section'
+  };
+  var target = document.getElementById(targetMap[tabName]);
+  if (target) target.classList.remove('hidden');
+
+  // Update sidebar active link
+  var links = document.querySelectorAll('#sidebar [data-tab]');
+  for (var j = 0; j < links.length; j++) {
+    links[j].classList.remove('bg-indigo-50', 'text-indigo-600', 'dark:bg-slate-800', 'dark:text-indigo-400');
+    links[j].classList.add('text-slate-600', 'dark:text-slate-400');
+    if (links[j].getAttribute('data-tab') === tabName) {
+      links[j].classList.remove('text-slate-600', 'dark:text-slate-400');
+      links[j].classList.add('bg-indigo-50', 'text-indigo-600', 'dark:bg-slate-800', 'dark:text-indigo-400');
+    }
+  }
+
+  // Render tab content
+  if (tabName === 'dashboard') renderDashboard();
+  else if (tabName === 'course_registration') renderCourseRegistration();
+  else if (tabName === 'result_checker') renderResultChecker();
+  else if (tabName === 'attendance_timetable') renderTimetable();
+  else if (tabName === 'hostel_allocation') renderHostel();
+  else if (tabName === 'payments') renderPayments();
+  else if (tabName === 'settings') renderSettings();
+
+  // Close mobile sidebar
+  var sidebar = document.getElementById('sidebar');
+  if (sidebar) sidebar.classList.add('-translate-x-full');
+
+  // Redraw chart if dashboard
+  if (tabName === 'dashboard') setTimeout(drawGpaChart, 100);
+}
+
+// ─── DASHBOARD ───────────────────────────────────────────────
+function renderDashboard() {
+  var s = STUDENT_DATA;
+  var els = document.querySelectorAll('.student-name');
+  for (var i = 0; i < els.length; i++) els[i].textContent = s.name;
+  var depts = document.querySelectorAll('.student-dept');
+  for (var j = 0; j < depts.length; j++) depts[j].textContent = s.dept;
+  var mats = document.querySelectorAll('.student-matric');
+  for (var k = 0; k < mats.length; k++) mats[k].textContent = s.matric;
+  var lvls = document.querySelectorAll('.student-level');
+  for (var l = 0; l < lvls.length; l++) lvls[l].textContent = s.level;
+  var cgp = document.querySelectorAll('.student-cgpa');
+  for (var m = 0; m < cgp.length; m++) cgp[m].textContent = s.cgpa.toFixed(2);
+  var bal = document.querySelectorAll('.dashboard-outstanding-text');
+  for (var n = 0; n < bal.length; n++) bal[n].textContent = '$' + s.tuitionBalance.toFixed(2);
+
+  // Metric cards
+  var metricMappings = [
+    { selector: '.metric-matric', value: s.matric },
+    { selector: '.metric-level', value: s.level },
+    { selector: '.metric-dept', value: s.dept },
+    { selector: '.metric-faculty', value: s.faculty }
+  ];
+  for (var p = 0; p < metricMappings.length; p++) {
+    var el = document.querySelector(metricMappings[p].selector);
+    if (el) el.textContent = metricMappings[p].value;
+  }
+
+  // Advisor
+  var advisorName = document.querySelector('.advisor-name');
+  var advisorEmail = document.querySelector('.advisor-email');
+  if (advisorName) advisorName.textContent = s.advisor.name;
+  if (advisorEmail) {
+    advisorEmail.textContent = s.advisor.email;
+    advisorEmail.href = 'mailto:' + s.advisor.email;
+  }
+
+  // Today's schedule
+  var todayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var todayIdx = new Date().getDay();
+  var todayName = todayNames[todayIdx];
+  var dayLabel = document.querySelector('#today-day-label');
+  if (dayLabel) dayLabel.textContent = todayName;
+
+  var todayClasses = SCHEDULE_DATA.filter(function(c) { return c.day === todayName; });
+  var scheduleContainer = document.getElementById('schedule-cards-container');
+  if (scheduleContainer) {
+    scheduleContainer.innerHTML = '';
+    var allDays = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+    for (var d = 0; d < allDays.length; d++) {
+      var dayClasses = SCHEDULE_DATA.filter(function(c) { return c.day === allDays[d]; });
+      if (dayClasses.length === 0) continue;
+      var dayCard = document.createElement('div');
+      dayCard.className = 'glass-panel p-4 rounded-2xl border border-slate-100 dark:border-slate-800/80';
+      var dayHeader = document.createElement('div');
+      dayHeader.className = 'flex items-center gap-2 mb-3 pb-2 border-b border-slate-100 dark:border-slate-800';
+      dayHeader.innerHTML = '<span class="font-extrabold text-xs text-slate-800 dark:text-slate-200 uppercase">' + allDays[d] + '</span>';
+      if (allDays[d] === todayName) {
+        dayHeader.innerHTML += '<span class="px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-[9px] font-bold">Today</span>';
       }
-    } else {
-      badge.className = "dashboard-reg-status-badge px-3 py-1 text-xs font-semibold rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300";
-      badge.textContent = "Registration In Progress";
-      if (sidebarIndicator) {
-        sidebarIndicator.className = "w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse";
+      dayCard.appendChild(dayHeader);
+      for (var c = 0; c < dayClasses.length; c++) {
+        var cl = dayClasses[c];
+        var item = document.createElement('div');
+        item.className = 'flex items-center gap-3 py-2';
+        item.innerHTML = '<div class="w-1.5 h-1.5 rounded-full bg-indigo-500 flex-shrink-0"></div>' +
+          '<div class="flex-1 min-w-0"><p class="text-xs font-bold text-slate-700 dark:text-slate-300 truncate">' + cl.course + '</p>' +
+          '<p class="text-[10px] text-slate-400">' + cl.time + ' · ' + cl.venue + '</p></div>' +
+          '<span class="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 px-2 py-0.5 rounded-md">' + cl.code + '</span>';
+        dayCard.appendChild(item);
       }
+      scheduleContainer.appendChild(dayCard);
     }
-  });
-}
-
-function renderDashboardClasses() {
-  const container = document.getElementById("today-classes-container");
-  const dayLabel = document.getElementById("today-day-label");
-  
-  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  let todayIndex = new Date().getDay();
-  if (todayIndex === 0 || todayIndex === 6) todayIndex = 1; 
-  const todayDay = dayNames[todayIndex];
-  
-  dayLabel.textContent = todayDay;
-  container.innerHTML = "";
-
-  const todaySchedule = STATE.weeklySchedule.find(s => s.day === todayDay);
-  if (!todaySchedule || todaySchedule.slots.length === 0) {
-    container.innerHTML = `<div class="text-xs text-slate-400 py-6 text-center">No scheduled lectures today.</div>`;
-    return;
-  }
-
-  todaySchedule.slots.forEach(slot => {
-    let colorClasses = "bg-indigo-50 border-indigo-150 text-indigo-805 dark:bg-indigo-950/20 dark:border-indigo-900/40 dark:text-indigo-300";
-    if (slot.color === "emerald") colorClasses = "bg-emerald-50 border-emerald-150 text-emerald-805 dark:bg-emerald-950/20 dark:border-emerald-900/40 dark:text-emerald-300";
-    if (slot.color === "amber") colorClasses = "bg-amber-50 border-amber-150 text-amber-805 dark:bg-emerald-950/20 dark:border-amber-900/40 dark:text-emerald-300";
-    if (slot.color === "purple") colorClasses = "bg-purple-50 border-purple-150 text-purple-805 dark:bg-purple-950/20 dark:border-purple-900/40 dark:text-purple-305";
-
-    const slotEl = document.createElement("div");
-    slotEl.className = `p-3 rounded-2xl border flex items-center justify-between gap-3 ${colorClasses}`;
-    slotEl.innerHTML = `
-      <div class="overflow-hidden">
-        <span onclick="openCourseDrawer('${slot.course.split('/')[0]}')" class="font-extrabold text-xs cursor-pointer hover:underline">${slot.course}</span>
-        <div class="text-[10px] opacity-80 font-medium truncate mt-0.5 max-w-40">${slot.title}</div>
-        <div class="text-[9px] opacity-75 mt-1 font-semibold flex items-center gap-1">
-          📍 ${slot.venue}
-        </div>
-      </div>
-      <div class="text-right flex flex-col items-end gap-1.5 flex-shrink-0">
-        <span class="text-[9px] font-bold px-2 py-0.5 rounded bg-white/60 dark:bg-slate-900/40">${slot.time}</span>
-        <button onclick="checkInClass('${slot.course.split('/')[0]}')" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-[8px] font-bold rounded-lg transition-colors cursor-pointer">Check-in Present</button>
-      </div>
-    `;
-    container.appendChild(slotEl);
-  });
-}
-
-function checkInClass(courseCode) {
-  const attData = STATE.attendance[courseCode];
-  if (!attData) {
-    showToast(`No attendance ledger initialized for ${courseCode}.`, "error");
-    return;
-  }
-
-  if (attData.attended < attData.total) {
-    attData.attended++;
-    saveState();
-    showToast(`Class check-in processed for ${courseCode}! Attendance registered.`);
-    initTimetableAttendance();
-    renderDashboardClasses();
-  } else {
-    showToast("Class presence already registered as full for today.", "error");
   }
 }
 
-// Announcements & Notifications
-function initNotificationPanel() {
-  const notifBtn = document.getElementById("notif-toggle-btn");
-  const notifDropdown = document.getElementById("notif-dropdown");
-  const notifList = document.getElementById("notif-list");
-  const notifBadge = document.getElementById("notif-badge");
-
-  const updateBadge = () => {
-    const unreadCount = STATE.notifications.filter(n => !n.read).length;
-    if (unreadCount > 0) {
-      notifBadge.classList.remove("hidden");
-      notifBadge.textContent = unreadCount;
-    } else {
-      notifBadge.classList.add("hidden");
-    }
-  };
-
-  const populateNotifications = () => {
-    notifList.innerHTML = "";
-    if (STATE.notifications.length === 0) {
-      notifList.innerHTML = `<div class="p-4 text-center text-xs text-slate-500 dark:text-slate-400">No new announcements.</div>`;
-      return;
-    }
-    
-    STATE.notifications.forEach(notif => {
-      const item = document.createElement("div");
-      item.className = `p-3.5 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/40 cursor-pointer transition-colors ${!notif.read ? 'bg-indigo-50/30 dark:bg-indigo-950/10' : ''}`;
-      item.innerHTML = `
-        <div class="flex justify-between items-start gap-2">
-          <h4 class="font-semibold text-xs text-slate-850 dark:text-slate-205 ${!notif.read ? 'pr-2' : ''}">${notif.title}</h4>
-          <span class="text-[9px] text-slate-400 whitespace-nowrap">${notif.time}</span>
-        </div>
-        <p class="text-xs text-slate-505 dark:text-slate-400 mt-1 leading-relaxed">${notif.message}</p>
-      `;
-      
-      item.addEventListener("click", () => {
-        notif.read = true;
-        saveState();
-        updateBadge();
-        populateNotifications();
-      });
-      notifList.appendChild(item);
-    });
-  };
-
-  notifBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    notifDropdown.classList.toggle("hidden");
-    populateNotifications();
-    updateBadge();
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!notifDropdown.contains(e.target) && !notifBtn.contains(e.target)) {
-      notifDropdown.classList.add("hidden");
-    }
-  });
-
-  updateBadge();
-}
-
-// Course Registration Module
-function initCourseRegistration() {
-  const container = document.getElementById("courses-selection-container");
-  const liveCountElements = document.querySelectorAll("#selected-courses-count");
-  const liveUnitsElements = document.querySelectorAll("#selected-units-count");
-  const submitBtn = document.getElementById("submit-registration-btn");
-  const modal = document.getElementById("registration-slip-modal");
-  const cancelBtn = document.getElementById("close-slip-modal");
-  const printBtn = document.getElementById("print-slip-btn");
-
-  const minUnits = 12;
-  const maxUnits = 24;
-
-  const renderCourses = () => {
-    container.innerHTML = "";
-    
-    STATE.availableCourses.forEach((course) => {
-      const isRegistered = STATE.student.registrationSubmitted;
-      
-      const row = document.createElement("tr");
-      row.className = "border-b border-slate-100 dark:border-slate-800/80 hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors";
-      row.innerHTML = `
-        <td class="px-6 py-4 text-center">
-          <input 
-            type="checkbox" 
-            id="chk-${course.code}" 
-            class="w-4.5 h-4.5 text-indigo-600 bg-slate-50 border-slate-300 rounded focus:ring-indigo-500 focus:ring-2 dark:bg-slate-700 dark:border-slate-600 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
-            ${course.selected ? "checked" : ""} 
-            ${course.disabled || isRegistered ? "disabled" : ""}
-          >
-        </td>
-        <td class="px-6 py-4">
-          <span onclick="openCourseDrawer('${course.code}')" class="font-extrabold text-xs text-indigo-605 hover:underline cursor-pointer">${course.code}</span>
-        </td>
-        <td class="px-6 py-4 text-xs text-slate-750 dark:text-slate-300 font-medium">${course.title}</td>
-        <td class="px-6 py-4 text-center text-xs text-slate-600 dark:text-slate-400 font-semibold">${course.units}</td>
-        <td class="px-6 py-4 text-center">
-          <span class="px-2.5 py-1 text-[10px] font-bold rounded-full ${
-            course.type === "Core" 
-              ? "bg-slate-100 text-slate-800 dark:bg-slate-850 dark:text-slate-300" 
-              : "bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300"
-          }">
-            ${course.type}
-          </span>
-        </td>
-      `;
-      
-      const checkbox = row.querySelector("input[type='checkbox']");
-      checkbox.addEventListener("change", (e) => {
-        course.selected = e.target.checked;
-        saveState();
-        recalculateUnits();
-        initEvaluationModule(); // Re-sync Lecturer evaluations
-      });
-
-      container.appendChild(row);
-    });
-
-    recalculateUnits();
-  };
-
-  const recalculateUnits = () => {
-    const selected = STATE.availableCourses.filter(c => c.selected);
-    const totalCredits = selected.reduce((sum, c) => sum + c.units, 0);
-    
-    liveCountElements.forEach(el => el.textContent = selected.length);
-    
-    liveUnitsElements.forEach(el => {
-      el.textContent = `${totalCredits} / 24`;
-      if (totalCredits >= minUnits && totalCredits <= maxUnits) {
-        el.className = "font-extrabold text-emerald-600 dark:text-emerald-400";
-        submitBtn.disabled = false;
-        submitBtn.classList.remove("opacity-50", "cursor-not-allowed");
-      } else {
-        el.className = "font-extrabold text-rose-600 dark:text-rose-450";
-        submitBtn.disabled = true;
-        submitBtn.classList.add("opacity-50", "cursor-not-allowed");
-      }
-    });
-
-    if (STATE.student.registrationSubmitted) {
-      submitBtn.textContent = "View Registration Slip";
-      submitBtn.disabled = false;
-      submitBtn.classList.remove("opacity-50", "cursor-not-allowed");
-    } else {
-      submitBtn.textContent = "Submit Registration";
-    }
-  };
-
-  submitBtn.addEventListener("click", () => {
-    if (STATE.student.registrationSubmitted) {
-      showRegistrationSlip();
-      return;
-    }
-
-    if (STATE.student.outstandingBalance > 0) {
-      showToast("Cannot submit registration: Outstanding balance requires clearance. Settle fees in Tuition & Payments tab first.", "error");
-      switchTab("payments");
-      return;
-    }
-
-    const selected = STATE.availableCourses.filter(c => c.selected);
-    const totalCredits = selected.reduce((sum, c) => sum + c.units, 0);
-    
-    if (totalCredits < minUnits || totalCredits > maxUnits) {
-      showToast(`Invalid credit units! Registered credits must range between ${minUnits} and ${maxUnits} credits.`, "error");
-      return;
-    }
-
-    STATE.student.registrationSubmitted = true;
-    STATE.student.registrationDate = new Date().toLocaleString(undefined, {
-      year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
-    });
-    
-    saveState();
-    showToast("Registration submitted and advisor-approved successfully!");
-    updateRegistrationStatus();
-    renderCourses();
-    showRegistrationSlip();
-  });
-
-  const showRegistrationSlip = () => {
-    document.getElementById("slip-student-name").textContent = STATE.student.name;
-    document.getElementById("slip-student-matric").textContent = STATE.student.matricNo;
-    document.getElementById("slip-student-dept").textContent = STATE.student.department;
-    document.getElementById("slip-student-level").textContent = STATE.student.level;
-    document.getElementById("slip-student-date").textContent = STATE.student.registrationDate || new Date().toLocaleString();
-    
-    const slipTable = document.getElementById("slip-courses-table-body");
-    slipTable.innerHTML = "";
-    
-    const selected = STATE.availableCourses.filter(c => c.selected);
-    let totalCredits = 0;
-    
-    selected.forEach((course, index) => {
-      totalCredits += course.units;
-      const row = document.createElement("tr");
-      row.className = "border-b border-slate-200 dark:border-slate-700/80 text-xs";
-      row.innerHTML = `
-        <td class="px-4 py-2.5 text-center font-medium">${index + 1}</td>
-        <td class="px-4 py-2.5 font-bold">${course.code}</td>
-        <td class="px-4 py-2.5">${course.title}</td>
-        <td class="px-4 py-2.5 text-center font-semibold">${course.units}</td>
-        <td class="px-4 py-2.5 text-center font-medium">${course.type}</td>
-      `;
-      slipTable.appendChild(row);
-    });
-
-    document.getElementById("slip-total-units").textContent = totalCredits;
-    modal.classList.remove("hidden");
-    modal.classList.add("flex");
-  };
-
-  cancelBtn.addEventListener("click", () => {
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-  });
-
-  printBtn.addEventListener("click", () => {
-    window.print();
-  });
-
-  renderCourses();
-}
-
-// Statement of Results Module
-function initResultChecker() {
-  const select = document.getElementById("semester-selector");
-  const table = document.getElementById("results-table-body");
-  const statsContainer = document.getElementById("result-stats-container");
-  const transcriptBtn = document.getElementById("view-transcript-btn");
-
-  if (!select || !table || !statsContainer || !transcriptBtn) return;
-  
-  select.innerHTML = "";
-  Object.keys(STATE.pastResults).forEach(key => {
-    const option = document.createElement("option");
-    option.value = key;
-    option.textContent = STATE.pastResults[key].name;
-    select.appendChild(option);
-  });
-  
-  const keys = Object.keys(STATE.pastResults);
-  if (keys.length > 0) {
-    select.value = keys[keys.length - 1];
-  }
-
-  const renderResults = () => {
-    const key = select.value;
-    const data = STATE.pastResults[key];
-    table.innerHTML = "";
-
-    if (!data) return;
-
-    data.courses.forEach(c => {
-      const row = document.createElement("tr");
-      row.className = "border-b border-slate-100 dark:border-slate-800/80 hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors";
-      row.innerHTML = `
-        <td class="px-6 py-4 font-bold text-xs text-slate-805 dark:text-slate-200">
-          <span onclick="openCourseDrawer('${c.code}')" class="hover:underline text-indigo-600 cursor-pointer">${c.code}</span>
-        </td>
-        <td class="px-6 py-4 text-xs text-slate-700 dark:text-slate-300 font-medium">${c.title}</td>
-        <td class="px-6 py-4 text-center text-xs text-slate-600 dark:text-slate-400 font-semibold">${c.units}</td>
-        <td class="px-6 py-4 text-center font-bold text-xs ${
-          c.grade === "A" ? "text-emerald-600 dark:text-emerald-400" :
-          c.grade === "B" ? "text-indigo-600 dark:text-indigo-400" :
-          c.grade === "C" ? "text-amber-600 dark:text-amber-400" :
-          "text-rose-605 dark:text-rose-400"
-        }">${c.grade}</td>
-        <td class="px-6 py-4 text-center text-xs text-slate-600 dark:text-slate-400 font-medium">${c.points}</td>
-        <td class="px-6 py-4 text-center text-xs text-slate-600 dark:text-slate-400 font-medium">${c.units * c.points}</td>
-      `;
-      table.appendChild(row);
-    });
-
-    const totalUnits = data.courses.reduce((sum, c) => sum + c.units, 0);
-    const weightedPoints = data.courses.reduce((sum, c) => sum + (c.units * c.points), 0);
-    const semGpa = (weightedPoints / totalUnits).toFixed(2);
-    
-    let cumulativeUnits = 0;
-    let cumulativePoints = 0;
-    
-    const semOrder = Object.keys(STATE.pastResults);
-    const currentIdx = semOrder.indexOf(key);
-    
-    for (let i = 0; i <= currentIdx; i++) {
-      const sData = STATE.pastResults[semOrder[i]];
-      sData.courses.forEach(c => {
-        cumulativeUnits += c.units;
-        cumulativePoints += (c.units * c.points);
-      });
-    }
-    const computedCgpa = (cumulativePoints / cumulativeUnits).toFixed(2);
-
-    statsContainer.innerHTML = `
-      <div class="glass-panel p-4 rounded-2xl flex flex-col items-center justify-center">
-        <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">Credits Completed</span>
-        <span class="text-xl font-bold text-slate-800 dark:text-slate-200 mt-1">${totalUnits} Units</span>
-      </div>
-      <div class="glass-panel p-4 rounded-2xl flex flex-col items-center justify-center border-l-4 border-l-indigo-600">
-        <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">Semester GPA</span>
-        <span class="text-xl font-bold text-indigo-600 dark:text-indigo-400 mt-1">${semGpa}</span>
-      </div>
-      <div class="glass-panel p-4 rounded-2xl flex flex-col items-center justify-center border-l-4 border-l-emerald-600">
-        <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">Cumulative CGPA</span>
-        <span class="text-xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">${computedCgpa}</span>
-      </div>
-    `;
-  };
-
-  select.addEventListener("change", renderResults);
-  renderResults();
-
-  transcriptBtn.addEventListener("click", () => {
-    const printWindow = window.open("", "_blank");
-    let transcriptHtml = `
-      <html>
-        <head>
-          <title>Academic Transcript - ${STATE.student.name}</title>
-          <link href="https://cdn.tailwindcss.com" rel="stylesheet">
-          <style>
-            body { font-family: 'Outfit', sans-serif; padding: 40px; }
-            table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 25px; }
-            th, td { border: 1px solid #e2e8f0; padding: 8px 12px; font-size: 12px; }
-            th { background-color: #f8fafc; text-align: left; }
-            .header-info div { margin-bottom: 6px; }
-          </style>
-        </head>
-        <body onload="window.print()">
-          <div class="text-center mb-6">
-            <h1 class="text-2xl font-bold text-slate-900">REDEEMER'S UNIVERSITY</h1>
-            <p class="text-xs text-slate-500">OFFICE OF THE REGISTRAR (ACADEMIC REGISTRY)</p>
-            <h2 class="text-md font-bold text-slate-700 mt-2 underline">OFFICIAL INTERIM GRADE TRANSCRIPT</h2>
-          </div>
-          
-          <div class="grid grid-cols-2 gap-4 text-xs mb-6 header-info">
-            <div><strong>NAME:</strong> ${STATE.student.name}</div>
-            <div><strong>MATRIC NO:</strong> ${STATE.student.matricNo}</div>
-            <div><strong>DEPARTMENT:</strong> ${STATE.student.department}</div>
-            <div><strong>PROGRAMME:</strong> ${STATE.student.programme}</div>
-            <div><strong>CURRENT LEVEL:</strong> ${STATE.student.level}</div>
-            <div><strong>CUMULATIVE CGPA:</strong> ${STATE.student.cgpa.toFixed(2)}</div>
-          </div>
-    `;
-
-    let totalCredits = 0;
-    let totalGPPoints = 0;
-
-    Object.keys(STATE.pastResults).forEach(semKey => {
-      const semester = STATE.pastResults[semKey];
-      transcriptHtml += `
-        <div class="font-bold text-xs text-indigo-700 mt-4 border-b pb-1">${semester.name}</div>
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 15%">Course Code</th>
-              <th style="width: 50%">Course Title</th>
-              <th style="width: 10%; text-align: center">Units</th>
-              <th style="width: 10%; text-align: center">Grade</th>
-              <th style="width: 15%; text-align: center">GP Score</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      let semCredits = 0;
-      let semPoints = 0;
-
-      semester.courses.forEach(c => {
-        const score = c.units * c.points;
-        semCredits += c.units;
-        semPoints += score;
-        totalCredits += c.units;
-        totalGPPoints += score;
-
-        transcriptHtml += `
-          <tr>
-            <td>${c.code}</td>
-            <td>${c.title}</td>
-            <td class="text-center">${c.units}</td>
-            <td class="text-center font-bold">${c.grade}</td>
-            <td class="text-center">${score}</td>
-          </tr>
-        `;
-      });
-
-      const semGPA = (semPoints / semCredits).toFixed(2);
-      transcriptHtml += `
-          </tbody>
-        </table>
-        <div class="flex justify-end gap-6 text-xs font-semibold mb-6">
-          <span>Semester Credits: ${semCredits}</span>
-          <span>Semester GPA: ${semGPA}</span>
-        </div>
-      `;
-    });
-
-    const finalCGPA = (totalGPPoints / totalCredits).toFixed(2);
-    transcriptHtml += `
-          <div class="border-t-2 border-slate-900 pt-4 mt-6 flex justify-between items-center text-sm font-bold">
-            <span>Cumulative Registered Credits: ${totalCredits}</span>
-            <span>Cumulative Grade Points Earned: ${totalGPPoints}</span>
-            <span class="text-lg text-emerald-700">FINAL CUMULATIVE CGPA: ${finalCGPA}</span>
-          </div>
-          <div class="text-[9px] text-slate-400 mt-12 text-center">
-            * This document is an unofficial copy of the student academic record, generated electronically from the student portal.
-          </div>
-        </body>
-      </html>
-    `;
-
-    printWindow.document.write(transcriptHtml);
-    printWindow.document.close();
-  });
-}
-
-// GPA Simulation and solver modules removed. Academic indexes are read-only official records.
-
-// Canvas CGPA curve
-function drawCGPAChart() {
-  const canvas = document.getElementById("gpaChart");
+// ─── CGPA CHART ──────────────────────────────────────────────
+function drawGpaChart() {
+  var canvas = document.getElementById('gpaChart');
   if (!canvas) return;
-
-  const ctx = canvas.getContext("2d");
-  const dpr = window.devicePixelRatio || 1;
-  const rect = canvas.getBoundingClientRect();
+  var rect = canvas.getBoundingClientRect();
+  var dpr = window.devicePixelRatio || 1;
   canvas.width = rect.width * dpr;
   canvas.height = rect.height * dpr;
+  var ctx = canvas.getContext('2d');
   ctx.scale(dpr, dpr);
+  var w = rect.width;
+  var h = rect.height;
 
-  const width = rect.width;
-  const height = rect.height;
-  
-  const isDark = document.documentElement.classList.contains("dark");
-  const textColor = isDark ? "#94a3b8" : "#475569";
-  const gridColor = isDark ? "rgba(71, 85, 105, 0.2)" : "rgba(226, 232, 240, 0.6)";
+  var isDark = document.documentElement.classList.contains('dark');
+  var textColor = isDark ? '#94a3b8' : '#64748b';
+  var gridColor = isDark ? 'rgba(51,65,85,0.4)' : 'rgba(226,232,240,0.8)';
+  var lineColor = '#4f46e5';
+  var fillGrad = ctx.createLinearGradient(0, 0, 0, h);
+  fillGrad.addColorStop(0, isDark ? 'rgba(79,70,229,0.25)' : 'rgba(79,70,229,0.15)');
+  fillGrad.addColorStop(1, isDark ? 'rgba(79,70,229,0.02)' : 'rgba(79,70,229,0.01)');
 
-  const semKeys = Object.keys(STATE.pastResults);
-  const dataGPAs = semKeys.map(k => STATE.pastResults[k].gpa);
+  var data = STUDENT_DATA.gpaHistory;
+  if (!data || data.length < 2) return;
 
-  if (semKeys.length === 0) return;
+  var pad = { top: 20, bottom: 30, left: 40, right: 20 };
+  var chartW = w - pad.left - pad.right;
+  var chartH = h - pad.top - pad.bottom;
 
-  const paddingLeft = 45;
-  const paddingRight = 20;
-  const paddingTop = 20;
-  const paddingBottom = 30;
+  ctx.clearRect(0, 0, w, h);
 
-  const graphWidth = width - paddingLeft - paddingRight;
-  const graphHeight = height - paddingTop - paddingBottom;
-
-  ctx.clearRect(0, 0, width, height);
-
-  ctx.font = "10px Outfit, sans-serif";
-  ctx.fillStyle = textColor;
+  // Grid lines
   ctx.strokeStyle = gridColor;
   ctx.lineWidth = 1;
-
-  for (let i = 0; i <= 5; i++) {
-    const yValue = i;
-    const y = paddingTop + graphHeight - (yValue / 5) * graphHeight;
-    
+  ctx.font = '9px Outfit, sans-serif';
+  ctx.fillStyle = textColor;
+  ctx.textAlign = 'right';
+  for (var g = 0; g <= 5; g++) {
+    var y = pad.top + chartH - (g / 5) * chartH;
     ctx.beginPath();
-    ctx.moveTo(paddingLeft, y);
-    ctx.lineTo(width - paddingRight, y);
+    ctx.moveTo(pad.left, y);
+    ctx.lineTo(w - pad.right, y);
     ctx.stroke();
-
-    ctx.textAlign = "right";
-    ctx.fillText(yValue.toFixed(1), paddingLeft - 10, y + 3);
+    ctx.fillText(g.toFixed(1), pad.left - 5, y + 3);
   }
 
-  const points = [];
-  const stepX = graphWidth / (semKeys.length - 1 || 1);
-
-  semKeys.forEach((key, idx) => {
-    const gpa = dataGPAs[idx];
-    const x = paddingLeft + idx * stepX;
-    const y = paddingTop + graphHeight - (gpa / 5) * graphHeight;
-    points.push({ x, y, label: key, val: gpa });
-  });
-
-  if (points.length > 1) {
-    const areaGrad = ctx.createLinearGradient(0, paddingTop, 0, paddingTop + graphHeight);
-    areaGrad.addColorStop(0, "rgba(99, 102, 241, 0.2)");
-    areaGrad.addColorStop(1, "rgba(99, 102, 241, 0.0)");
-    
-    ctx.beginPath();
-    ctx.moveTo(points[0].x, points[0].y);
-    for (let i = 1; i < points.length; i++) {
-      ctx.lineTo(points[i].x, points[i].y);
-    }
-    ctx.lineTo(points[points.length - 1].x, paddingTop + graphHeight);
-    ctx.lineTo(points[0].x, paddingTop + graphHeight);
-    ctx.closePath();
-    ctx.fillStyle = areaGrad;
-    ctx.fill();
+  // X labels
+  ctx.textAlign = 'center';
+  for (var x = 0; x < data.length; x++) {
+    var xPos = pad.left + (x / (data.length - 1)) * chartW;
+    ctx.fillText(data[x].semester, xPos, h - 5);
   }
 
+  // Line
   ctx.beginPath();
-  ctx.moveTo(points[0].x, points[0].y);
-  for (let i = 1; i < points.length; i++) {
-    ctx.lineTo(points[i].x, points[i].y);
+  ctx.strokeStyle = lineColor;
+  ctx.lineWidth = 2.5;
+  ctx.lineJoin = 'round';
+  for (var i = 0; i < data.length; i++) {
+    var px = pad.left + (i / (data.length - 1)) * chartW;
+    var py = pad.top + chartH - (data[i].gpa / 5) * chartH;
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
   }
-  ctx.strokeStyle = "#4f46e5";
-  ctx.lineWidth = 3;
   ctx.stroke();
 
-  points.forEach((pt) => {
+  // Fill
+  ctx.lineTo(pad.left + chartW, pad.top + chartH);
+  ctx.lineTo(pad.left, pad.top + chartH);
+  ctx.closePath();
+  ctx.fillStyle = fillGrad;
+  ctx.fill();
+
+  // Dots
+  for (var d = 0; d < data.length; d++) {
+    var dx = pad.left + (d / (data.length - 1)) * chartW;
+    var dy = pad.top + chartH - (data[d].gpa / 5) * chartH;
     ctx.beginPath();
-    ctx.arc(pt.x, pt.y, 5, 0, 2 * Math.PI);
-    ctx.fillStyle = "#4f46e5";
+    ctx.arc(dx, dy, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#ffffff';
     ctx.fill();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = isDark ? "#0f172a" : "#ffffff";
+    ctx.strokeStyle = lineColor;
+    ctx.lineWidth = 2.5;
     ctx.stroke();
-
-    ctx.fillStyle = isDark ? "#e2e8f0" : "#0f172a";
-    ctx.font = "bold 9px Outfit, sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText(pt.val.toFixed(2), pt.x, pt.y - 10);
-
-    ctx.fillStyle = textColor;
-    ctx.font = "9px Outfit, sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText(pt.label, pt.x, paddingTop + graphHeight + 15);
-  });
+  }
 }
 
-// Timetable, Exams & Attendance
-function initTimetableAttendance() {
-  const tableContainer = document.getElementById("schedule-cards-container");
-  const attendanceContainer = document.getElementById("attendance-progress-container");
-  const alertBanner = document.getElementById("attendance-alert-banner");
-  const examsTable = document.getElementById("exams-timetable-body");
+// ─── COURSE REGISTRATION ─────────────────────────────────────
+function renderCourseRegistration() {
+  var tbody = document.getElementById('courses-selection-container');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  var selected = window.STATE.selectedCourses || [];
+  var totalUnits = selected.reduce(function(sum, code) {
+    var c = COURSES_DATA.find(function(co) { return co.code === code; });
+    return sum + (c ? c.units : 0);
+  }, 0);
 
-  // Tab subrouting
-  const tabTimetable = document.getElementById("tab-sub-timetable");
-  const tabExams = document.getElementById("tab-sub-exams");
-  const timetableSubView = document.getElementById("sub-timetable-view");
-  const examsSubView = document.getElementById("sub-exams-view");
-
-  if (!tableContainer || !attendanceContainer || !tabTimetable || !tabExams) return;
-
-  tabTimetable.addEventListener("click", () => {
-    tabTimetable.className = "px-5 py-2.5 text-xs font-extrabold rounded-xl bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors cursor-pointer";
-    tabExams.className = "px-5 py-2.5 text-xs font-extrabold rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer";
-    timetableSubView.classList.remove("hidden");
-    examsSubView.classList.add("hidden");
-  });
-
-  tabExams.addEventListener("click", () => {
-    tabExams.className = "px-5 py-2.5 text-xs font-extrabold rounded-xl bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors cursor-pointer";
-    tabTimetable.className = "px-5 py-2.5 text-xs font-extrabold rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer";
-    examsSubView.classList.remove("hidden");
-    timetableSubView.classList.add("hidden");
-    renderExams();
-  });
-
-  tableContainer.innerHTML = "";
-  attendanceContainer.innerHTML = "";
-  
-  let showWarning = false;
-
-  Object.keys(STATE.attendance).forEach(code => {
-    const data = STATE.attendance[code];
-    const percent = (data.attended / data.total) * 100;
-    if (percent < 70) showWarning = true;
-
-    const item = document.createElement("div");
-    item.className = "flex items-center justify-between gap-4 p-3 bg-slate-50/50 dark:bg-slate-850 rounded-2xl border border-slate-100 dark:border-slate-800/80";
-    
-    const circumference = 150.8;
-    const offset = circumference - (percent / 100) * circumference;
-    const ringColor = percent >= 85 ? "stroke-emerald-500" : percent >= 70 ? "stroke-indigo-500" : "stroke-rose-500";
-
-    item.innerHTML = `
-      <div class="overflow-hidden">
-        <span onclick="openCourseDrawer('${data.code}')" class="font-bold text-xs hover:underline text-indigo-600 cursor-pointer">${data.code}</span>
-        <h4 class="text-[10px] text-slate-500 dark:text-slate-400 font-medium truncate mt-0.5 max-w-44">${data.title}</h4>
-        <span class="text-[9px] font-bold mt-1 inline-block ${percent >= 70 ? 'text-slate-400' : 'text-rose-500 animate-pulse'}">
-          Presence: ${data.attended} / ${data.total} lectures
-        </span>
-      </div>
-      <div class="relative w-16 h-16 flex items-center justify-center flex-shrink-0">
-        <svg class="w-full h-full transform -rotate-90">
-          <circle cx="32" cy="32" r="24" class="stroke-slate-200 dark:stroke-slate-800 fill-none" stroke-width="4.5"/>
-          <circle cx="32" cy="32" r="24" class="progress-ring__circle ${ringColor} fill-none" stroke-width="4.5" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}" stroke-linecap="round"/>
-        </svg>
-        <span class="absolute text-[10px] font-black">${Math.round(percent)}%</span>
-      </div>
-    `;
-    attendanceContainer.appendChild(item);
-  });
-
-  if (alertBanner) {
-    if (showWarning) alertBanner.classList.remove("hidden");
-    else alertBanner.classList.add("hidden");
+  for (var i = 0; i < COURSES_DATA.length; i++) {
+    var c = COURSES_DATA[i];
+    var isSelected = selected.indexOf(c.code) !== -1;
+    var wouldExceed = !isSelected && (totalUnits + c.units > 24);
+    var tr = document.createElement('tr');
+    tr.className = 'border-b border-slate-50 dark:border-slate-800/40 hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors';
+    tr.innerHTML = '<td class="px-6 py-4 text-center"><input type="checkbox" class="course-checkbox w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer" data-code="' + c.code + '"' +
+      (isSelected ? ' checked' : '') + (wouldExceed ? ' disabled' : '') + '></td>' +
+      '<td class="px-6 py-4"><button class="text-indigo-600 dark:text-indigo-400 font-bold text-xs hover:underline bg-transparent border-0 cursor-pointer course-code-btn" data-code="' + c.code + '">' + c.code + '</button></td>' +
+      '<td class="px-6 py-4 text-xs font-semibold text-slate-700 dark:text-slate-300">' + c.title + '</td>' +
+      '<td class="px-6 py-4 text-center text-xs font-bold text-slate-600 dark:text-slate-400">' + c.units + '</td>' +
+      '<td class="px-6 py-4 text-center"><span class="inline-block px-2 py-0.5 rounded-md text-[9px] font-bold ' +
+      (c.type === 'Core' ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400' : 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400') +
+      '">' + c.type + '</span></td>';
+    tbody.appendChild(tr);
   }
 
-  STATE.weeklySchedule.forEach(item => {
-    const dayCard = document.createElement("div");
-    dayCard.className = "glass-panel p-5 rounded-3xl border border-slate-100 dark:border-slate-800/80 flex flex-col gap-4";
-    
-    let slotsHtml = "";
-    if (item.slots.length === 0) {
-      slotsHtml = `<div class="text-xs text-slate-400 py-4 text-center">No scheduled lectures.</div>`;
-    } else {
-      item.slots.forEach(slot => {
-        let badgeColor = "bg-indigo-50 border-indigo-100 text-indigo-700 dark:bg-indigo-950/20 dark:border-indigo-900/40 dark:text-indigo-300";
-        if (slot.color === "emerald") badgeColor = "bg-emerald-50 border-emerald-100 text-emerald-700 dark:bg-emerald-950/20 dark:border-emerald-900/40 dark:text-emerald-300";
-        if (slot.color === "amber") badgeColor = "bg-amber-50 border-amber-100 text-amber-700 dark:bg-amber-950/20 dark:border-amber-900/40 dark:text-amber-300";
-        if (slot.color === "purple") badgeColor = "bg-purple-50 border-purple-100 text-purple-700 dark:bg-purple-950/20 dark:border-purple-900/40 dark:text-indigo-300";
+  // Update counts
+  document.getElementById('selected-courses-count').textContent = selected.length;
+  var unitsEl = document.getElementById('selected-units-count');
+  if (unitsEl) unitsEl.textContent = totalUnits + ' / 24';
 
-        slotsHtml += `
-          <div class="p-3.5 rounded-2xl border flex justify-between items-center gap-3 hover:translate-x-1.5 transition-transform duration-300 ${badgeColor}">
-            <div>
-              <span onclick="openCourseDrawer('${slot.course.split('/')[0]}')" class="font-black text-xs hover:underline cursor-pointer">${slot.course}</span>
-              <div class="text-[9px] opacity-80 font-semibold truncate mt-0.5 max-w-40">${slot.title}</div>
-              <div class="text-[9px] opacity-75 mt-1 font-bold flex items-center gap-1">
-                📍 ${slot.venue}
-              </div>
-            </div>
-            <span class="text-[9px] font-bold px-2 py-0.5 rounded bg-white/60 dark:bg-slate-900/40 whitespace-nowrap">${slot.time}</span>
-          </div>
-        `;
-      });
-    }
-
-    dayCard.innerHTML = `
-      <div class="border-b border-slate-100 dark:border-slate-800 pb-2.5 flex justify-between items-center">
-        <h3 class="font-extrabold text-xs text-slate-850 dark:text-slate-200">${item.day}</h3>
-        <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wider">${item.slots.length} Lectures</span>
-      </div>
-      <div class="flex flex-col gap-2.5">
-        ${slotsHtml}
-      </div>
-    `;
-    tableContainer.appendChild(dayCard);
-  });
-
-  const renderExams = () => {
-    examsTable.innerHTML = "";
-    
-    // Sort exams by date order
-    const exams = STATE.examsSchedule;
-    exams.forEach(ex => {
-      const row = document.createElement("tr");
-      row.className = "border-b border-slate-100 dark:border-slate-800/80 hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors";
-      row.innerHTML = `
-        <td class="px-6 py-4">
-          <span onclick="openCourseDrawer('${ex.code}')" class="font-bold text-xs text-indigo-600 hover:underline cursor-pointer">${ex.code}</span>
-        </td>
-        <td class="px-6 py-4 text-xs text-slate-700 dark:text-slate-300 font-medium">${ex.title}</td>
-        <td class="px-6 py-4 text-xs text-slate-500 dark:text-slate-400 font-medium">${ex.date} (${ex.time})</td>
-        <td class="px-6 py-4 text-xs text-slate-700 dark:text-slate-300 font-semibold">${ex.venue}</td>
-        <td class="px-6 py-4 text-center font-black text-xs text-indigo-650">${ex.seat}</td>
-      `;
-      examsTable.appendChild(row);
-    });
-  };
+  // Submit button
+  validateRegistration();
 }
 
-// Hostel Residence Module
-function initHostelModule() {
-  const roommatesList = document.getElementById("roommates-container");
-  const modal = document.getElementById("hostel-request-modal");
-  const openBtn = document.getElementById("open-hostel-request-btn");
-  const closeBtn = document.getElementById("close-hostel-modal");
-  const requestForm = document.getElementById("hostel-request-form");
+function handleCourseCheckbox(e) {
+  var code = e.target.getAttribute('data-code');
+  var selected = window.STATE.selectedCourses || [];
+  var idx = selected.indexOf(code);
+  if (e.target.checked) {
+    if (idx === -1) selected.push(code);
+  } else {
+    if (idx !== -1) selected.splice(idx, 1);
+  }
+  window.STATE.selectedCourses = selected;
+  saveState();
+  renderCourseRegistration();
+}
 
-  if (!roommatesList) return;
+function openCourseDrawer(code) {
+  var c = COURSES_DATA.find(function(co) { return co.code === code; });
+  if (!c) return;
+  document.getElementById('drawer-course-code').textContent = c.code;
+  document.getElementById('drawer-course-title').textContent = c.title;
+  document.getElementById('drawer-course-lecturer').textContent = c.lecturer;
+  document.getElementById('drawer-course-units').textContent = c.units + ' Units';
+  document.getElementById('drawer-course-type').textContent = c.type;
+  document.getElementById('drawer-course-desc').textContent = c.description;
+  var drawer = document.getElementById('course-outline-drawer');
+  drawer.classList.remove('drawer-closed');
+}
 
-  const renderRoommates = () => {
-    roommatesList.innerHTML = "";
-    
-    STATE.hostelRoommates.forEach(rm => {
-      const card = document.createElement("div");
-      card.className = "p-4 rounded-2xl border border-slate-100 dark:border-slate-800/85 bg-slate-50/40 dark:bg-slate-850 flex items-center justify-between gap-4";
-      card.innerHTML = `
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-indigo-600 text-white flex items-center justify-center font-bold text-xs">
-            ${rm.avatar}
-          </div>
-          <div>
-            <h4 class="font-bold text-xs text-slate-800 dark:text-slate-205">${rm.name}</h4>
-            <span class="text-[9px] text-slate-400 font-semibold">${rm.matric} | ${rm.level}</span>
-          </div>
-        </div>
-        <a href="tel:${rm.phone}" class="px-3 py-1.5 rounded-lg bg-white border dark:bg-slate-900 border-slate-200 dark:border-slate-700 font-bold text-[9px] text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">
-          Call Contact
-        </a>
-      `;
-      roommatesList.appendChild(card);
-    });
+function closeCourseDrawer() {
+  document.getElementById('course-outline-drawer').classList.add('drawer-closed');
+}
 
-    // Update status indicators
-    const statusEl = document.getElementById("hostel-room-status");
-    if (statusEl) statusEl.textContent = STATE.student.hostelStatus;
-    
-    const badge = document.getElementById("hostel-room-status");
-    if (badge && openBtn) {
-      if (STATE.student.hostelStatus.includes("Pending")) {
-        badge.className = "font-bold text-amber-600 dark:text-amber-400 animate-pulse";
-        openBtn.disabled = true;
-        openBtn.classList.add("opacity-50", "cursor-not-allowed");
-        openBtn.textContent = "Change Request Pending Approval";
-      } else {
-        badge.className = "font-bold text-emerald-600 dark:text-emerald-400";
-        openBtn.disabled = false;
-        openBtn.classList.remove("opacity-50", "cursor-not-allowed");
-        openBtn.textContent = "Submit Change Room Request";
-      }
+function validateRegistration() {
+  var selected = window.STATE.selectedCourses || [];
+  var totalUnits = selected.reduce(function(sum, code) {
+    var c = COURSES_DATA.find(function(co) { return co.code === code; });
+    return sum + (c ? c.units : 0);
+  }, 0);
+  var btn = document.getElementById('submit-registration-btn');
+  if (btn) btn.disabled = (totalUnits < 12 || totalUnits > 24);
+}
+
+function submitRegistration() {
+  var selected = window.STATE.selectedCourses || [];
+  var totalUnits = selected.reduce(function(sum, code) {
+    var c = COURSES_DATA.find(function(co) { return co.code === code; });
+    return sum + (c ? c.units : 0);
+  }, 0);
+
+  if (totalUnits < 12) { showToast('Minimum of 12 credit units required.', 'error'); return; }
+  if (totalUnits > 24) { showToast('Maximum of 24 credit units allowed.', 'error'); return; }
+  if (STUDENT_DATA.tuitionBalance > 0) { showToast('Please clear outstanding tuition balance before registering.', 'error'); return; }
+
+  // Populate slip
+  var s = STUDENT_DATA;
+  document.getElementById('slip-student-name').textContent = s.name;
+  document.getElementById('slip-student-matric').textContent = s.matric;
+  document.getElementById('slip-student-dept').textContent = s.dept;
+  document.getElementById('slip-student-level').textContent = s.level;
+  document.getElementById('slip-student-date').textContent = new Date().toLocaleString();
+
+  var tbody = document.getElementById('slip-courses-table-body');
+  tbody.innerHTML = '';
+  var serial = 1;
+  for (var i = 0; i < COURSES_DATA.length; i++) {
+    if (selected.indexOf(COURSES_DATA[i].code) !== -1) {
+      var c = COURSES_DATA[i];
+      var tr = document.createElement('tr');
+      tr.className = 'border-b border-slate-50 dark:border-slate-800/40';
+      tr.innerHTML = '<td class="px-4 py-2 text-center text-xs text-slate-500">' + serial + '</td>' +
+        '<td class="px-4 py-2 text-xs font-semibold text-slate-700">' + c.code + '</td>' +
+        '<td class="px-4 py-2 text-xs text-slate-600">' + c.title + '</td>' +
+        '<td class="px-4 py-2 text-center text-xs font-bold">' + c.units + '</td>' +
+        '<td class="px-4 py-2 text-center text-xs">' + c.type + '</td>';
+      tbody.appendChild(tr);
+      serial++;
     }
-  };
+  }
+  document.getElementById('slip-total-units').textContent = totalUnits;
+  document.getElementById('registration-slip-modal').style.display = 'flex';
+}
 
-  if (openBtn && modal) {
-    openBtn.addEventListener("click", () => {
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-    });
+function closeSlipModal() {
+  document.getElementById('registration-slip-modal').style.display = 'none';
+}
+
+function printSlip() {
+  window.print();
+}
+
+// ─── RESULT CHECKER ──────────────────────────────────────────
+function renderResultChecker() {
+  var selector = document.getElementById('semester-selector');
+  if (!selector) return;
+  selector.innerHTML = '';
+  for (var i = 0; i < SEMESTER_DATA.length; i++) {
+    var opt = document.createElement('option');
+    opt.value = SEMESTER_DATA[i].id;
+    opt.textContent = SEMESTER_DATA[i].label;
+    selector.appendChild(opt);
+  }
+  displaySemesterResults(SEMESTER_DATA[0].id);
+}
+
+function displaySemesterResults(semId) {
+  var sem = SEMESTER_DATA.find(function(s) { return s.id === semId; });
+  if (!sem) return;
+
+  // Table
+  var tbody = document.getElementById('results-table-body');
+  tbody.innerHTML = '';
+  var totalWeighted = 0;
+  var totalUnits = 0;
+
+  for (var i = 0; i < sem.courses.length; i++) {
+    var c = sem.courses[i];
+    var weighted = c.units * c.gradePoint;
+    totalWeighted += weighted;
+    totalUnits += c.units;
+    var tr = document.createElement('tr');
+    tr.className = 'border-b border-slate-50 dark:border-slate-800/40 hover:bg-slate-50/50 dark:hover:bg-slate-800/20';
+    tr.innerHTML = '<td class="px-6 py-4 text-xs font-semibold text-slate-700">' + c.code + '</td>' +
+      '<td class="px-6 py-4 text-xs text-slate-600">' + c.title + '</td>' +
+      '<td class="px-6 py-4 text-center text-xs font-bold">' + c.units + '</td>' +
+      '<td class="px-6 py-4 text-center"><span class="inline-block px-2 py-0.5 rounded font-bold text-xs ' +
+      (c.gradePoint >= 4 ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' :
+       c.gradePoint >= 3 ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400' :
+       'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400') +
+      '">' + c.grade + '</span></td>' +
+      '<td class="px-6 py-4 text-center text-xs font-bold text-slate-700">' + c.gradePoint.toFixed(1) + '</td>' +
+      '<td class="px-6 py-4 text-center text-xs font-bold text-slate-700">' + weighted.toFixed(1) + '</td>';
+    tbody.appendChild(tr);
   }
 
-  if (closeBtn && modal) {
-    closeBtn.addEventListener("click", () => {
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-    });
+  // Stats
+  var gpa = totalUnits > 0 ? (totalWeighted / totalUnits) : 0;
+  var semIdx = SEMESTER_DATA.indexOf(sem);
+  var cumWeighted = 0;
+  var cumUnits = 0;
+  for (var j = 0; j <= semIdx; j++) {
+    for (var k = 0; k < SEMESTER_DATA[j].courses.length; k++) {
+      cumWeighted += SEMESTER_DATA[j].courses[k].units * SEMESTER_DATA[j].courses[k].gradePoint;
+      cumUnits += SEMESTER_DATA[j].courses[k].units;
+    }
   }
+  var cgpa = cumUnits > 0 ? (cumWeighted / cumUnits) : 0;
 
-  if (requestForm && modal) {
-    requestForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const pref = document.getElementById("pref-hostel-select").value;
-      
-      STATE.student.hostelStatus = "Change Request Pending Approval";
-      STATE.student.prefHostel = pref;
-      saveState();
-      
-      showToast(`Room change request submitted for ${pref}. Residence Board will review this.`);
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-      renderRoommates();
-    });
+  var statsContainer = document.getElementById('result-stats-container');
+  statsContainer.innerHTML = '';
+  var stats = [
+    { label: 'Total Credit Units', value: totalUnits },
+    { label: 'Semester GPA', value: gpa.toFixed(2) },
+    { label: 'Cumulative CGPA', value: cgpa.toFixed(2) }
+  ];
+  for (var s = 0; s < stats.length; s++) {
+    var card = document.createElement('div');
+    card.className = 'glass-panel p-5 rounded-2xl border border-slate-100 dark:border-slate-800/80 text-center';
+    card.innerHTML = '<span class="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500">' + stats[s].label + '</span>' +
+      '<p class="text-2xl font-black text-slate-800 dark:text-slate-200 mt-1">' + stats[s].value + '</p>';
+    statsContainer.appendChild(card);
   }
-
-  renderRoommates();
+  updateChartColor();
 }
 
-// Digital Library
-function initLibraryModule() {
-  const container = document.getElementById("library-list-container");
-  const searchInput = document.getElementById("library-search-input");
-  const typeFilter = document.getElementById("library-type-filter");
+function updateChartColor() {
+  drawGpaChart();
+}
 
-  if (!container || !searchInput || !typeFilter) return;
-
-  const renderFiles = () => {
-    container.innerHTML = "";
-    const query = searchInput.value.toLowerCase();
-    const type = typeFilter.value;
-
-    const filtered = STATE.libraryFiles.filter(file => {
-      const matchSearch = file.name.toLowerCase().includes(query) || file.code.toLowerCase().includes(query) || file.author.toLowerCase().includes(query);
-      const matchType = type === "All" || file.type === type;
-      return matchSearch && matchType;
-    });
-
-    if (filtered.length === 0) {
-      container.innerHTML = `<div class="col-span-full text-center text-xs text-slate-400 py-12 font-bold">No lecture files or reference materials found.</div>`;
-      return;
+function generateTranscript() {
+  var w = window.open('', '_blank');
+  if (!w) { showToast('Please allow pop-ups for this site.', 'error'); return; }
+  var s = STUDENT_DATA;
+  var cumWeighted = 0;
+  var cumUnits = 0;
+  var rows = '';
+  for (var i = 0; i < SEMESTER_DATA.length; i++) {
+    var sem = SEMESTER_DATA[i];
+    var semW = 0, semU = 0;
+    for (var j = 0; j < sem.courses.length; j++) {
+      semW += sem.courses[j].units * sem.courses[j].gradePoint;
+      semU += sem.courses[j].units;
+      cumWeighted += sem.courses[j].units * sem.courses[j].gradePoint;
+      cumUnits += sem.courses[j].units;
     }
-
-    filtered.forEach(file => {
-      const card = document.createElement("div");
-      card.className = "glass-panel p-5 rounded-3xl flex flex-col justify-between gap-4 border border-slate-100 dark:border-slate-800/80 shadow-xs glass-card-hover";
-      
-      let badgeType = "bg-indigo-50 text-indigo-750 dark:bg-indigo-950 dark:text-indigo-400";
-      if (file.type === "Book") badgeType = "bg-amber-50 text-amber-750 dark:bg-amber-950 dark:text-indigo-400";
-      if (file.type === "Exam") badgeType = "bg-emerald-50 text-emerald-750 dark:bg-emerald-950 dark:text-emerald-400";
-
-      card.innerHTML = `
-        <div>
-          <div class="flex justify-between items-start mb-3">
-            <span onclick="openCourseDrawer('${file.code}')" class="font-extrabold text-xs text-indigo-650 hover:underline cursor-pointer">${file.code}</span>
-            <span class="px-2 py-0.5 text-[8px] font-bold rounded ${badgeType} uppercase">${file.type}</span>
-          </div>
-          <h4 class="font-bold text-xs text-slate-800 dark:text-slate-200 mt-1 leading-snug truncate-2-lines">${file.name}</h4>
-          <p class="text-[9px] text-slate-400 dark:text-slate-500 font-semibold mt-1">Author: ${file.author}</p>
-        </div>
-        <div class="flex justify-between items-center border-t border-slate-100 dark:border-slate-800 pt-3">
-          <span class="text-[9px] font-bold text-slate-400">${file.size}</span>
-          <div class="flex gap-2">
-            <button onclick="previewLibraryFile('${file.id}')" class="px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-indigo-600 dark:text-indigo-400 rounded-lg text-[9px] font-extrabold cursor-pointer">
-              Read Notes
-            </button>
-            <button onclick="downloadLibraryFile(this, '${file.name}')" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-[9px] font-extrabold transition-all cursor-pointer">
-              Download PDF
-            </button>
-          </div>
-        </div>
-      `;
-      container.appendChild(card);
-    });
-  };
-
-  searchInput.addEventListener("input", renderFiles);
-  typeFilter.addEventListener("change", renderFiles);
-  renderFiles();
-}
-
-function previewLibraryFile(fileId) {
-  const file = STATE.libraryFiles.find(f => f.id == fileId);
-  if (!file) return;
-
-  const previewModal = document.createElement("div");
-  previewModal.className = "fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4";
-  previewModal.innerHTML = `
-    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col overflow-hidden max-h-[80vh] animate-fade-in">
-      <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50">
-        <div>
-          <span class="text-[10px] font-bold text-indigo-600 uppercase">${file.code} - ${file.type}</span>
-          <h3 class="font-extrabold text-sm text-slate-850 dark:text-slate-205 mt-0.5">${file.name}</h3>
-        </div>
-        <button onclick="this.closest('.fixed').remove()" class="p-1 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/80">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-      </div>
-      <div class="flex-1 overflow-y-auto p-6 md:p-8 font-mono text-xs text-slate-700 dark:text-slate-300 bg-slate-50/30 dark:bg-slate-950/20 whitespace-pre-wrap leading-relaxed">
-        ${file.preview}
-      </div>
-      <div class="p-5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex justify-end gap-3">
-        <button onclick="this.closest('.fixed').remove()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold transition-colors cursor-pointer">
-          Close Reader
-        </button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(previewModal);
-}
-
-function downloadLibraryFile(button, filename) {
-  const originalText = button.textContent;
-  button.disabled = true;
-  button.classList.add("opacity-50", "cursor-not-allowed");
-  
-  let percent = 0;
-  const interval = setInterval(() => {
-    percent += 20;
-    button.textContent = `${percent}%`;
-    
-    if (percent >= 100) {
-      clearInterval(interval);
-      button.textContent = originalText;
-      button.disabled = false;
-      button.classList.remove("opacity-50", "cursor-not-allowed");
-      showToast(`Finished downloading: ${filename}`);
+    var semGpa = semU > 0 ? (semW / semU).toFixed(2) : '0.00';
+    rows += '<tr style="background:#f8fafc;"><td colspan="6" style="padding:10px 12px;font-weight:800;font-size:12px;color:#1e293b;">' + sem.label + ' — GPA: ' + semGpa + '</td></tr>';
+    for (var k = 0; k < sem.courses.length; k++) {
+      var c = sem.courses[k];
+      rows += '<tr style="border-bottom:1px solid #e2e8f0;">' +
+        '<td style="padding:6px 12px;font-size:11px;">' + c.code + '</td>' +
+        '<td style="padding:6px 12px;font-size:11px;">' + c.title + '</td>' +
+        '<td style="padding:6px 12px;text-align:center;font-size:11px;">' + c.units + '</td>' +
+        '<td style="padding:6px 12px;text-align:center;font-size:11px;font-weight:700;">' + c.grade + '</td>' +
+        '<td style="padding:6px 12px;text-align:center;font-size:11px;">' + c.gradePoint + '</td>' +
+        '<td style="padding:6px 12px;text-align:center;font-size:11px;">' + (c.units * c.gradePoint) + '</td></tr>';
     }
-  }, 200);
+  }
+  var finalCgpa = cumUnits > 0 ? (cumWeighted / cumUnits).toFixed(2) : '0.00';
+
+  w.document.write('<!DOCTYPE html><html><head><title>Transcript — ' + s.name + '</title>' +
+    '<style>body{font-family:Georgia,serif;font-size:12pt;color:#000;padding:40px;max-width:800px;margin:auto;}' +
+    'h1{font-size:18pt;text-align:center;margin-bottom:2px;}h2{font-size:11pt;text-align:center;color:#555;margin-top:0;font-weight:400;}' +
+    '.info{display:flex;justify-content:space-between;font-size:10pt;margin:20px 0;padding:10px 0;border-top:2px solid #000;border-bottom:2px solid #000;}' +
+    'table{width:100%;border-collapse:collapse;margin-top:10px;}th{background:#1e293b;color:#fff;padding:8px 12px;font-size:10px;text-align:left;}' +
+    'td{padding:6px 12px;font-size:11px;} .cgpa{text-align:right;font-size:14pt;font-weight:800;margin-top:20px;}' +
+    '.footer{text-align:center;font-size:9pt;color:#888;margin-top:40px;border-top:1px solid #ccc;padding-top:15px;}' +
+    '@media print{body{padding:20px;}}</style></head><body>' +
+    '<h1>REDEEMER\'S UNIVERSITY</h1><h2>Ede, Osun State, Nigeria — Official Academic Transcript</h2>' +
+    '<div class="info"><span><strong>' + s.name + '</strong> — ' + s.matric + '</span><span><strong>Programme:</strong> B.Sc. ' + s.dept + '</span></div>' +
+    '<table><tr><th>Code</th><th>Course Title</th><th>Units</th><th>Grade</th><th>GP</th><th>W.P.</th></tr>' + rows + '</table>' +
+    '<div class="cgpa">Cumulative GPA: ' + finalCgpa + '</div>' +
+    '<div class="footer">This is an unofficial transcript generated from the student portal for advisory purposes.</div>' +
+    '</body></html>');
+  w.document.close();
 }
 
-// Payment Portal with Receipts Exporter
-function initPaymentPanel() {
-  const ledger = document.getElementById("invoices-ledger-body");
-  const modal = document.getElementById("payment-modal");
-  const payBtn = document.getElementById("pay-fees-btn");
-  const cancelBtn = document.getElementById("close-pay-modal");
-  const checkoutForm = document.getElementById("checkout-card-form");
-  const billingSummary = document.getElementById("billing-summary-container");
-
-  const rModal = document.getElementById("receipt-modal");
-  const rCancelBtn = document.getElementById("close-receipt-modal");
-  const rPrintBtn = document.getElementById("print-receipt-btn");
-
-  const renderLedger = () => {
-    ledger.innerHTML = "";
-    
-    const invoices = [...STATE.paymentInvoices].sort((a,b) => {
-      if (a.status === "Unpaid" && b.status === "Paid") return -1;
-      if (a.status === "Paid" && b.status === "Unpaid") return 1;
-      return 0;
-    });
-
-    invoices.forEach(inv => {
-      const row = document.createElement("tr");
-      row.className = "border-b border-slate-100 dark:border-slate-800/80 hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors";
-      
-      const receiptBtn = inv.status === "Paid" 
-        ? `<button onclick="openReceiptModal('${inv.id}')" class="text-indigo-600 hover:text-indigo-800 font-extrabold text-xs cursor-pointer">View PDF</button>` 
-        : `<span class="text-slate-400 font-bold text-xs">-</span>`;
-
-      row.innerHTML = `
-        <td class="px-6 py-4 font-bold text-xs text-slate-805 dark:text-slate-202">${inv.id}</td>
-        <td class="px-6 py-4 text-xs text-slate-700 dark:text-slate-300 font-medium">${inv.title}</td>
-        <td class="px-6 py-4 text-xs text-slate-500 dark:text-slate-400 font-medium">${new Date(inv.date).toLocaleDateString()}</td>
-        <td class="px-6 py-4 text-center text-xs text-slate-850 dark:text-slate-205 font-black">$${inv.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-        <td class="px-6 py-4 text-center">
-          <span class="px-2.5 py-1 text-[10px] font-bold rounded-full ${
-            inv.status === "Paid" 
-              ? "bg-emerald-100 text-emerald-805 dark:bg-emerald-950/80 dark:text-emerald-300" 
-              : "bg-rose-100 text-rose-805 dark:bg-rose-950/80 dark:text-rose-300"
-          }">
-            ${inv.status}
-          </span>
-        </td>
-        <td class="px-6 py-4 text-center">${receiptBtn}</td>
-      `;
-      ledger.appendChild(row);
-    });
-
-    billingSummary.innerHTML = `
-      <div class="glass-panel p-5 rounded-3xl flex flex-col shadow-xs">
-        <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">Total Invoiced</span>
-        <span class="text-2xl font-black text-slate-805 dark:text-slate-200 mt-1">
-          $${STATE.paymentInvoices.reduce((sum, i) => sum + i.amount, 0).toLocaleString(undefined, {minimumFractionDigits: 2})}
-        </span>
-      </div>
-      <div class="glass-panel p-5 rounded-3xl flex flex-col border border-emerald-100 dark:border-emerald-900/30 shadow-xs">
-        <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">Amount Settled</span>
-        <span class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">
-          $${STATE.paymentInvoices.filter(i => i.status === "Paid").reduce((sum, i) => sum + i.amount, 0).toLocaleString(undefined, {minimumFractionDigits: 2})}
-        </span>
-      </div>
-      <div class="glass-panel p-5 rounded-3xl flex flex-col border border-rose-100 dark:border-rose-900/30 shadow-xs">
-        <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">Outstanding Balance</span>
-        <span class="text-2xl font-black text-rose-600 dark:text-rose-400 mt-1">
-          $${STATE.student.outstandingBalance.toLocaleString(undefined, {minimumFractionDigits: 2})}
-        </span>
-      </div>
-    `;
-
-    if (STATE.student.outstandingBalance > 0) payBtn.classList.remove("hidden");
-    else payBtn.classList.add("hidden");
-  };
-
-  payBtn.addEventListener("click", () => {
-    document.getElementById("amount-to-pay-label").textContent = `$${STATE.student.outstandingBalance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-    modal.classList.remove("hidden");
-    modal.classList.add("flex");
-  });
-
-  cancelBtn.addEventListener("click", () => {
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-  });
-
-  // Receipt popup logic
-  window.openReceiptModal = (invoiceId) => {
-    const inv = STATE.paymentInvoices.find(i => i.id === invoiceId);
-    if (!inv) return;
-
-    document.getElementById("receipt-id-val").textContent = `REC-${Math.floor(100000 + Math.random() * 900000)}`;
-    document.getElementById("receipt-invoice-val").textContent = inv.id;
-    document.getElementById("receipt-desc-val").textContent = inv.title;
-    document.getElementById("receipt-date-val").textContent = new Date(inv.date).toLocaleDateString();
-    document.getElementById("receipt-amount-val").textContent = `$${inv.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-
-    rModal.classList.remove("hidden");
-    rModal.classList.add("flex");
-  };
-
-  rCancelBtn.addEventListener("click", () => {
-    rModal.classList.add("hidden");
-    rModal.classList.remove("flex");
-  });
-
-  rPrintBtn.addEventListener("click", () => {
-    window.print();
-  });
-
-  // Credit card inputs formatting
-  const cardInput = document.getElementById("card-number-input");
-  cardInput.addEventListener("input", (e) => {
-    let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-    let matches = v.match(/\d{4,16}/g);
-    let match = matches && matches[0] || '';
-    let parts = [];
-    for (let i=0, len=match.length; i<len; i+=4) parts.push(match.substring(i, i+4));
-    e.target.value = parts.length > 0 ? parts.join(' ') : v;
-  });
-
-  const cardExpiry = document.getElementById("card-expiry-input");
-  cardExpiry.addEventListener("input", (e) => {
-    let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-    if (v.length >= 2) e.target.value = v.substring(0,2) + '/' + v.substring(2,4);
-    else e.target.value = v;
-  });
-
-  checkoutForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const submitBtn = checkoutForm.querySelector("button[type='submit']");
-    const originalText = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = `
-      <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" fill="none" viewBox="0 0 24 24">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-      </svg>
-      Settle Secure Payment...
-    `;
-
-    setTimeout(() => {
-      STATE.student.paidBalance += STATE.student.outstandingBalance;
-      STATE.student.outstandingBalance = 0;
-      
-      STATE.paymentInvoices.forEach(inv => {
-        if (inv.status === "Unpaid") {
-          inv.status = "Paid";
-          inv.date = new Date().toISOString().split('T')[0];
-        }
-      });
-      
-      saveState();
-      checkoutForm.reset();
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-      
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-      
-      showToast("Fees transaction approved. Outstanding tuition balance cleared!");
-      initDashboard();
-      renderLedger();
-      initCourseRegistration();
-    }, 2000);
-  });
-
-  renderLedger();
+// ─── TIMETABLE & EXAMS ───────────────────────────────────────
+function renderTimetable() {
+  renderSchedule();
+  renderExams();
 }
 
-// Lecturer Feedback Evaluation
-function initEvaluationModule() {
-  const list = document.getElementById("eval-courses-list");
-  const form = document.getElementById("evaluation-questions-form");
-  const placeholder = document.getElementById("eval-form-placeholder");
-  const formTitle = document.getElementById("eval-form-title");
-  const codeInput = document.getElementById("eval-course-code-input");
-  const commentsInput = document.getElementById("eval-comments");
-
-  if (!list || !form) return;
-
-  // Local rating states
-  let activeRatings = { clarity: 0, punctuality: 0, feedback: 0 };
-
-  const renderCourseList = () => {
-    list.innerHTML = "";
-    
-    // Evaluate only registered courses
-    const selected = STATE.availableCourses.filter(c => c.selected);
-    
-    if (selected.length === 0) {
-      list.innerHTML = `<div class="text-xs text-slate-400 py-4 text-center font-bold">Please complete course registration first.</div>`;
-      return;
-    }
-
-    selected.forEach(course => {
-      const evaluated = STATE.evaluations[course.code] === true;
-      const btn = document.createElement("button");
-      btn.className = `w-full text-left p-3.5 rounded-xl border flex items-center justify-between transition-colors ${
-        evaluated 
-          ? "bg-slate-50 dark:bg-slate-850/50 border-slate-100 dark:border-slate-800 opacity-60 text-slate-400 cursor-default" 
-          : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer"
-      }`;
-
-      const rightIcon = evaluated ? "✅ Done" : "⭐ Rate";
-      btn.innerHTML = `
-        <div>
-          <span class="font-extrabold text-xs text-indigo-650">${course.code}</span>
-          <div class="text-[10px] truncate mt-0.5 max-w-44 text-slate-500">${course.title}</div>
-        </div>
-        <span class="text-[9px] font-bold tracking-tight">${rightIcon}</span>
-      `;
-
-      if (!evaluated) {
-        btn.addEventListener("click", () => {
-          selectCourseForEvaluation(course.code, course.title);
-        });
-      }
-
-      list.appendChild(btn);
-    });
-  };
-
-  const selectCourseForEvaluation = (code, title) => {
-    placeholder.classList.add("hidden");
-    form.classList.remove("hidden");
-    
-    formTitle.textContent = `Evaluate Lecturer: ${code}`;
-    codeInput.value = code;
-    
-    // Reset star colors
-    activeRatings = { clarity: 0, punctuality: 0, feedback: 0 };
-    resetStars();
-    commentsInput.value = "";
-  };
-
-  const resetStars = () => {
-    document.querySelectorAll(".eval-star").forEach(star => {
-      star.style.filter = "grayscale(1)";
-    });
-  };
-
-  // Handle click on stars
-  document.querySelectorAll("[data-rating]").forEach(group => {
-    const key = group.getAttribute("data-rating");
-    const stars = group.querySelectorAll(".eval-star");
-    
-    stars.forEach(star => {
-      star.addEventListener("click", (e) => {
-        const val = parseInt(e.target.getAttribute("data-val"));
-        activeRatings[key] = val;
-        
-        stars.forEach((s, idx) => {
-          if (idx < val) s.style.filter = "none";
-          else s.style.filter = "grayscale(1)";
-        });
-      });
-    });
-  });
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const code = codeInput.value;
-
-    if (activeRatings.clarity === 0 || activeRatings.punctuality === 0 || activeRatings.feedback === 0) {
-      showToast("Please rate all evaluation questions.", "error");
-      return;
-    }
-
-    STATE.evaluations[code] = true;
-    saveState();
-    
-    showToast(`Evaluation for ${code} submitted anonymously. Thank you!`);
-    
-    form.classList.add("hidden");
-    placeholder.classList.remove("hidden");
-    formTitle.textContent = "Course Evaluation Form";
-
-    renderCourseList();
-  });
-
-  renderCourseList();
-}
-
-// Campus Directory Module
-function initCampusDirectory() {
-  const container = document.getElementById("campus-directory-container");
+function renderSchedule() {
+  var container = document.getElementById('schedule-cards-container');
   if (!container) return;
-  container.innerHTML = "";
-
-  STATE.campusLandmarks.forEach(ld => {
-    const card = document.createElement("div");
-    card.className = "glass-panel p-5 rounded-3xl flex flex-col justify-between gap-4 border border-slate-100 dark:border-slate-800/80 shadow-xs glass-card-hover";
-    card.innerHTML = `
-      <div>
-        <div class="flex justify-between items-center">
-          <span class="text-2xl">${ld.icon}</span>
-          <span class="px-2 py-0.5 text-[8px] font-bold rounded bg-slate-100 text-slate-800 dark:bg-slate-850 dark:text-slate-300 uppercase">${ld.category}</span>
-        </div>
-        <h4 class="font-bold text-xs text-slate-800 dark:text-slate-200 mt-3 leading-snug">${ld.name}</h4>
-        <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1 font-medium leading-relaxed">${ld.desc}</p>
-      </div>
-      <div class="border-t border-slate-100 dark:border-slate-800 pt-3 flex justify-between items-center text-[9px] font-bold text-slate-400">
-        <span>📍 ${ld.location}</span>
-        <span>🕒 ${ld.hours}</span>
-      </div>
-    `;
+  container.innerHTML = '';
+  var days = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+  for (var d = 0; d < days.length; d++) {
+    var dayClasses = SCHEDULE_DATA.filter(function(c) { return c.day === days[d]; });
+    if (dayClasses.length === 0) continue;
+    var card = document.createElement('div');
+    card.className = 'glass-panel p-4 rounded-2xl border border-slate-100 dark:border-slate-800/80 glass-card-hover';
+    var header = document.createElement('div');
+    header.className = 'flex items-center gap-2 mb-3 pb-2 border-b border-slate-100 dark:border-slate-800';
+    header.innerHTML = '<span class="font-extrabold text-xs text-slate-800 dark:text-slate-200 uppercase">' + days[d] + '</span>';
+    card.appendChild(header);
+    for (var c = 0; c < dayClasses.length; c++) {
+      var cl = dayClasses[c];
+      var item = document.createElement('div');
+      item.className = 'flex items-start gap-3 py-2';
+      var timeColor = '#4f46e5';
+      if (cl.code === 'CSC407') timeColor = '#0891b2';
+      else if (cl.code === 'GNS401') timeColor = '#d97706';
+      item.innerHTML = '<div class="w-0.5 h-full min-h-10 rounded-full flex-shrink-0" style="background:' + timeColor + '"></div>' +
+        '<div class="flex-1 min-w-0"><p class="text-xs font-bold text-slate-700 dark:text-slate-300 truncate">' + cl.course + '</p>' +
+        '<p class="text-[10px] text-slate-400 mt-0.5">' + cl.time + '</p></div>' +
+        '<div class="text-right flex-shrink-0"><p class="text-[9px] font-bold text-indigo-600 dark:text-indigo-400">' + cl.code + '</p>' +
+        '<p class="text-[9px] text-slate-400">' + cl.venue + '</p></div>';
+      card.appendChild(item);
+    }
     container.appendChild(card);
+  }
+}
+
+function renderExams() {
+  var tbody = document.getElementById('exams-timetable-body');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  for (var i = 0; i < EXAMS_DATA.length; i++) {
+    var e = EXAMS_DATA[i];
+    var tr = document.createElement('tr');
+    tr.className = 'border-b border-slate-50 dark:border-slate-800/40 hover:bg-slate-50/50 dark:hover:bg-slate-800/20';
+    tr.innerHTML = '<td class="px-6 py-4 text-xs font-bold text-indigo-600">' + e.code + '</td>' +
+      '<td class="px-6 py-4 text-xs text-slate-700 dark:text-slate-300">' + e.title + '</td>' +
+      '<td class="px-6 py-4 text-xs text-slate-600">' + e.dateTime + '</td>' +
+      '<td class="px-6 py-4 text-xs font-semibold">' + e.venue + '</td>' +
+      '<td class="px-6 py-4 text-center"><span class="inline-block px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400">' + e.seat + '</span></td>';
+    tbody.appendChild(tr);
+  }
+}
+
+function switchSubTab(tab) {
+  var timetableBtn = document.getElementById('tab-sub-timetable');
+  var examsBtn = document.getElementById('tab-sub-exams');
+  var timetableView = document.getElementById('sub-timetable-view');
+  var examsView = document.getElementById('sub-exams-view');
+
+  if (tab === 'timetable') {
+    timetableBtn.className = 'px-5 py-2.5 text-xs font-extrabold rounded-xl bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors cursor-pointer border-0';
+    examsBtn.className = 'px-5 py-2.5 text-xs font-extrabold rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer border-0';
+    timetableView.classList.remove('hidden');
+    examsView.classList.add('hidden');
+  } else {
+    examsBtn.className = 'px-5 py-2.5 text-xs font-extrabold rounded-xl bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors cursor-pointer border-0';
+    timetableBtn.className = 'px-5 py-2.5 text-xs font-extrabold rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer border-0';
+    examsView.classList.remove('hidden');
+    timetableView.classList.add('hidden');
+  }
+}
+
+// ─── HOSTEL ALLOCATION ──────────────────────────────────────
+function renderHostel() {
+  var h = HOSTEL_DATA;
+  document.getElementById('hostel-assigned-name').textContent = h.hall;
+  document.getElementById('hostel-room-detail').textContent = h.block + ', ' + h.room + ' (' + h.bedspace + ')';
+  document.getElementById('hostel-room-status').textContent = h.status;
+
+  var container = document.getElementById('roommates-container');
+  container.innerHTML = '';
+  for (var i = 0; i < h.roommates.length; i++) {
+    var r = h.roommates[i];
+    var initials = r.name.split(' ').map(function(n) { return n[0]; }).join('');
+    var card = document.createElement('div');
+    card.className = 'flex items-center gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60';
+    card.innerHTML = '<div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-black text-xs flex-shrink-0">' + initials + '</div>' +
+      '<div class="flex-1 min-w-0"><p class="text-xs font-bold text-slate-700 dark:text-slate-300 truncate">' + r.name + '</p>' +
+      '<p class="text-[10px] text-slate-400">' + r.matric + '</p></div>' +
+      '<div class="flex gap-2"><a href="tel:' + r.phone + '" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-indigo-600 transition-colors" title="Call">' +
+      '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></a>' +
+      '<a href="mailto:' + r.email + '" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-indigo-600 transition-colors" title="Email">' +
+      '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></a></div>';
+    container.appendChild(card);
+  }
+}
+
+// ─── PAYMENTS ───────────────────────────────────────────────
+function renderPayments() {
+  renderBillingSummary();
+  renderInvoices();
+}
+
+function renderBillingSummary() {
+  var container = document.getElementById('billing-summary-container');
+  if (!container) return;
+  container.innerHTML = '';
+  var paid = 0, outstanding = 0, count = INVOICES_DATA.length;
+  for (var i = 0; i < INVOICES_DATA.length; i++) {
+    if (INVOICES_DATA[i].status === 'paid') paid += INVOICES_DATA[i].amount;
+    else outstanding += INVOICES_DATA[i].amount;
+  }
+  var cards = [
+    { label: 'Total Paid', value: '$' + paid.toFixed(2), color: 'text-emerald-600 dark:text-emerald-400' },
+    { label: 'Outstanding', value: '$' + outstanding.toFixed(2), color: 'text-rose-600 dark:text-rose-400' },
+    { label: 'Total Invoices', value: count.toString(), color: 'text-indigo-600 dark:text-indigo-400' }
+  ];
+  for (var j = 0; j < cards.length; j++) {
+    var card = document.createElement('div');
+    card.className = 'glass-panel p-5 rounded-2xl border border-slate-100 dark:border-slate-800/80 text-center';
+    card.innerHTML = '<span class="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500">' + cards[j].label + '</span>' +
+      '<p class="text-2xl font-black mt-1 ' + cards[j].color + '">' + cards[j].value + '</p>';
+    container.appendChild(card);
+  }
+
+  // Show/hide pay button
+  var btn = document.getElementById('pay-fees-btn');
+  if (btn) btn.style.display = outstanding > 0 ? 'inline-flex' : 'none';
+}
+
+function renderInvoices() {
+  var tbody = document.getElementById('invoices-ledger-body');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  for (var i = 0; i < INVOICES_DATA.length; i++) {
+    var inv = INVOICES_DATA[i];
+    var isPaid = inv.status === 'paid';
+    var tr = document.createElement('tr');
+    tr.className = 'border-b border-slate-50 dark:border-slate-800/40 hover:bg-slate-50/50 dark:hover:bg-slate-800/20';
+    tr.innerHTML = '<td class="px-6 py-4 text-xs font-bold text-slate-700">' + inv.id + '</td>' +
+      '<td class="px-6 py-4 text-xs text-slate-600">' + inv.description + '</td>' +
+      '<td class="px-6 py-4 text-xs text-slate-500">' + inv.date + '</td>' +
+      '<td class="px-6 py-4 text-center text-xs font-bold text-slate-700">$' + inv.amount.toFixed(2) + '</td>' +
+      '<td class="px-6 py-4 text-center"><span class="inline-block px-2 py-0.5 rounded text-[9px] font-bold ' +
+      (isPaid ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-rose-50 text-rose-700 dark:bg-rose-900/20 dark:text-rose-400') +
+      '">' + (isPaid ? 'Paid' : 'Unpaid') + '</span></td>' +
+      '<td class="px-6 py-4 text-center">' +
+      (isPaid ? '<button onclick="showToast(\'Receipt downloaded: ' + inv.id + '\', \'success\')" class="text-[10px] font-bold text-indigo-600 hover:underline bg-transparent border-0 cursor-pointer">Receipt</button>' : '<span class="text-[10px] text-slate-400">—</span>') +
+      '</td>';
+    tbody.appendChild(tr);
+  }
+}
+
+function openPayModal() {
+  var outstanding = 0;
+  for (var i = 0; i < INVOICES_DATA.length; i++) {
+    if (INVOICES_DATA[i].status === 'unpaid') outstanding += INVOICES_DATA[i].amount;
+  }
+  document.getElementById('amount-to-pay-label').textContent = '$' + outstanding.toFixed(2);
+  document.getElementById('payment-modal').style.display = 'flex';
+}
+
+function closePayModal() {
+  document.getElementById('payment-modal').style.display = 'none';
+}
+
+function handleCheckout(e) {
+  e.preventDefault();
+  var cardNum = document.getElementById('card-number-input').value.replace(/\s/g, '');
+  var expiry = document.getElementById('card-expiry-input').value;
+  var cvv = document.getElementById('card-cvv-input').value;
+
+  if (cardNum.length < 16) { showToast('Please enter a valid 16-digit card number.', 'error'); return; }
+  if (!/^\d{2}\/\d{2}$/.test(expiry)) { showToast('Please enter a valid expiry date (MM/YY).', 'error'); return; }
+  if (cvv.length < 3) { showToast('Please enter a valid CVV.', 'error'); return; }
+
+  var btn = e.target.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+
+  setTimeout(function() {
+    for (var i = 0; i < INVOICES_DATA.length; i++) {
+      if (INVOICES_DATA[i].status === 'unpaid') INVOICES_DATA[i].status = 'paid';
+    }
+    STUDENT_DATA.tuitionBalance = 0;
+    showToast('Payment successful! Outstanding balance cleared.', 'success');
+    closePayModal();
+    renderPayments();
+    btn.disabled = false;
+    btn.textContent = 'Submit Tuition Payment';
+    document.getElementById('checkout-card-form').reset();
+  }, 1500);
+}
+
+// ─── SETTINGS ────────────────────────────────────────────────
+function renderSettings() {
+  var s = STUDENT_DATA;
+  var emailEl = document.getElementById('settings-email');
+  var phoneEl = document.getElementById('settings-phone');
+  var addrEl = document.getElementById('settings-address');
+  if (emailEl) emailEl.value = s.email;
+  if (phoneEl) phoneEl.value = s.phone;
+  if (addrEl) addrEl.value = s.address;
+
+  // ID Card auto-flip
+  setTimeout(function() {
+    var inner = document.querySelector('.id-card-inner');
+    if (inner) inner.classList.add('flipped');
+    setTimeout(function() {
+      if (inner) inner.classList.remove('flipped');
+    }, 1000);
+  }, 3000);
+}
+
+function handleProfileSave(e) {
+  e.preventDefault();
+  STUDENT_DATA.email = document.getElementById('settings-email').value;
+  STUDENT_DATA.phone = document.getElementById('settings-phone').value;
+  STUDENT_DATA.address = document.getElementById('settings-address').value;
+  saveState();
+  showToast('Profile updated successfully.', 'success');
+}
+
+function handlePasswordChange(e) {
+  e.preventDefault();
+  var cur = document.getElementById('settings-cur-pass').value;
+  var newP = document.getElementById('settings-new-pass').value;
+  var conf = document.getElementById('settings-conf-pass').value;
+
+  if (cur !== 'password') { showToast('Current password is incorrect.', 'error'); return; }
+  if (newP.length < 6) { showToast('New password must be at least 6 characters.', 'error'); return; }
+  if (newP !== conf) { showToast('Passwords do not match.', 'error'); return; }
+
+  showToast('Password updated successfully.', 'success');
+  document.getElementById('security-settings-form').reset();
+}
+
+function toggleIdCard() {
+  var inner = document.querySelector('.id-card-inner');
+  if (inner) inner.classList.toggle('flipped');
+}
+
+function handlePhotoUpload(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var imgs = document.querySelectorAll('.student-photo');
+    for (var i = 0; i < imgs.length; i++) {
+      imgs[i].src = ev.target.result;
+    }
+    showToast('Profile photo updated.', 'success');
+  };
+  reader.readAsDataURL(file);
+}
+
+function printIdCard() {
+  window.print();
+}
+
+// ─── NOTIFICATIONS ──────────────────────────────────────────
+function renderNotifications() {
+  var list = document.getElementById('notif-list');
+  if (!list) return;
+  list.innerHTML = '';
+  var unreadCount = 0;
+  for (var i = 0; i < NOTIFICATIONS_DATA.length; i++) {
+    var n = NOTIFICATIONS_DATA[i];
+    var isUnread = !n.read;
+    if (isUnread) unreadCount++;
+    var item = document.createElement('div');
+    item.className = 'p-4 border-b border-slate-100 dark:border-slate-800/60' + (isUnread ? ' bg-indigo-50/30 dark:bg-indigo-950/10' : '');
+    item.innerHTML = '<div class="flex items-start gap-3"><div class="flex-1 min-w-0">' +
+      '<div class="flex items-center gap-2"><p class="text-xs font-bold text-slate-700 dark:text-slate-300">' + n.title + '</p>' +
+      (isUnread ? '<span class="w-1.5 h-1.5 rounded-full bg-indigo-500 flex-shrink-0"></span>' : '') +
+      '</div><p class="text-[10px] text-slate-500 mt-1">' + n.message + '</p>' +
+      '<p class="text-[9px] text-slate-400 mt-1.5">' + n.time + '</p></div></div>';
+    list.appendChild(item);
+  }
+  var badge = document.getElementById('notif-badge');
+  if (badge) {
+    badge.textContent = unreadCount;
+    badge.style.display = unreadCount > 0 ? 'flex' : 'none';
+  }
+}
+
+function toggleNotifications() {
+  var dd = document.getElementById('notif-dropdown');
+  dd.classList.toggle('hidden');
+}
+
+function markAllRead() {
+  for (var i = 0; i < NOTIFICATIONS_DATA.length; i++) {
+    NOTIFICATIONS_DATA[i].read = true;
+  }
+  renderNotifications();
+  showToast('All notifications marked as read.', 'success');
+}
+
+// ─── MOBILE ──────────────────────────────────────────────────
+function toggleMobileMenu() {
+  var sidebar = document.getElementById('sidebar');
+  sidebar.classList.toggle('-translate-x-full');
+}
+
+// ─── EVENT SETUP ─────────────────────────────────────────────
+function setupEvents() {
+  // Login
+  var loginForm = document.getElementById('login-form');
+  if (loginForm) loginForm.addEventListener('submit', handleLogin);
+
+  // Logout
+  var logoutBtn = document.getElementById('logout-btn');
+  if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
+
+  // Theme toggle
+  var themeBtn = document.getElementById('theme-toggle');
+  if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+
+  // Tab routing
+  var tabLinks = document.querySelectorAll('#sidebar [data-tab]');
+  for (var i = 0; i < tabLinks.length; i++) {
+    tabLinks[i].addEventListener('click', function(e) {
+      e.preventDefault();
+      var tab = this.getAttribute('data-tab');
+      if (tab) switchTab(tab);
+    });
+  }
+
+  // Mobile menu
+  var mobileBtn = document.getElementById('mobile-menu-toggle');
+  if (mobileBtn) mobileBtn.addEventListener('click', toggleMobileMenu);
+
+  // Notifications
+  var notifBtn = document.getElementById('notif-toggle-btn');
+  if (notifBtn) notifBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    toggleNotifications();
+  });
+  var markReadBtn = document.getElementById('notif-mark-read');
+  if (markReadBtn) markReadBtn.addEventListener('click', markAllRead);
+
+  // Close notif dropdown on outside click
+  document.addEventListener('click', function() {
+    var dd = document.getElementById('notif-dropdown');
+    if (dd && !dd.classList.contains('hidden')) dd.classList.add('hidden');
+  });
+  var notifToggle = document.getElementById('notif-toggle-btn');
+  if (notifToggle) {
+    notifToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  }
+  var notifDropdown = document.getElementById('notif-dropdown');
+  if (notifDropdown) {
+    notifDropdown.addEventListener('click', function(e) { e.stopPropagation(); });
+  }
+
+  // Course registration events (delegated)
+  document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('course-checkbox')) handleCourseCheckbox(e);
+  });
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('course-code-btn')) {
+      openCourseDrawer(e.target.getAttribute('data-code'));
+    }
+  });
+
+  // Submit registration
+  var submitBtn = document.getElementById('submit-registration-btn');
+  if (submitBtn) submitBtn.addEventListener('click', submitRegistration);
+
+  // Slip modal
+  var closeSlip = document.getElementById('close-slip-modal');
+  if (closeSlip) closeSlip.addEventListener('click', closeSlipModal);
+  var printSlipBtn = document.getElementById('print-slip-btn');
+  if (printSlipBtn) printSlipBtn.addEventListener('click', printSlip);
+  var slipModal = document.getElementById('registration-slip-modal');
+  if (slipModal) slipModal.addEventListener('click', function(e) {
+    if (e.target === this) closeSlipModal();
+  });
+
+  // Payment modal
+  var payBtn = document.getElementById('pay-fees-btn');
+  if (payBtn) payBtn.addEventListener('click', openPayModal);
+  var closePay = document.getElementById('close-pay-modal');
+  if (closePay) closePay.addEventListener('click', closePayModal);
+  var payModal = document.getElementById('payment-modal');
+  if (payModal) payModal.addEventListener('click', function(e) {
+    if (e.target === this) closePayModal();
+  });
+  var checkoutForm = document.getElementById('checkout-card-form');
+  if (checkoutForm) checkoutForm.addEventListener('submit', handleCheckout);
+
+  // Course outline drawer
+  var closeDrawer = document.getElementById('close-drawer-btn');
+  if (closeDrawer) closeDrawer.addEventListener('click', closeCourseDrawer);
+
+  // Timetable sub-tabs
+  var tabTim = document.getElementById('tab-sub-timetable');
+  if (tabTim) tabTim.addEventListener('click', function() { switchSubTab('timetable'); });
+  var tabEx = document.getElementById('tab-sub-exams');
+  if (tabEx) tabEx.addEventListener('click', function() { switchSubTab('exams'); });
+
+  // Settings forms
+  var profileForm = document.getElementById('profile-settings-form');
+  if (profileForm) profileForm.addEventListener('submit', handleProfileSave);
+  var securityForm = document.getElementById('security-settings-form');
+  if (securityForm) securityForm.addEventListener('submit', handlePasswordChange);
+
+  // ID Card
+  var idCard = document.querySelector('.id-card-view');
+  if (idCard) idCard.addEventListener('click', toggleIdCard);
+  var printIdBtn = document.getElementById('print-id-card-btn');
+  if (printIdBtn) printIdBtn.addEventListener('click', printIdCard);
+
+  // Photo upload
+  var photoInput = document.getElementById('settings-photo-upload');
+  if (photoInput) photoInput.addEventListener('change', handlePhotoUpload);
+
+  // Semester selector
+  var semSelector = document.getElementById('semester-selector');
+  if (semSelector) semSelector.addEventListener('change', function() {
+    displaySemesterResults(this.value);
+  });
+
+  // Transcript
+  var transBtn = document.getElementById('view-transcript-btn');
+  if (transBtn) transBtn.addEventListener('click', generateTranscript);
+
+  // Window resize → redraw chart
+  var resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(drawGpaChart, 200);
   });
 }
 
-// Support Helpdesk Module
-function initHelpdeskModule() {
-  const ledger = document.getElementById("tickets-ledger-body");
-  const ticketForm = document.getElementById("helpdesk-ticket-form");
-  const chatModal = document.getElementById("ticket-chat-modal");
-  const chatCloseBtn = document.getElementById("close-chat-modal");
-  const chatMessagesContainer = document.getElementById("chat-messages-container");
-  const chatInputForm = document.getElementById("chat-input-form");
-  const chatTextInput = document.getElementById("chat-text-input");
-  const unreadBadge = document.getElementById("helpdesk-alert-badge");
-
-  if (!ledger || !ticketForm) return;
-
-  const renderLedger = () => {
-    ledger.innerHTML = "";
-    
-    STATE.supportTickets.forEach(ticket => {
-      const row = document.createElement("tr");
-      row.className = "border-b border-slate-100 dark:border-slate-800/80 hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors";
-      row.innerHTML = `
-        <td class="px-4 py-3 font-bold text-xs text-slate-850 dark:text-slate-200">${ticket.id}</td>
-        <td class="px-4 py-3 text-xs text-slate-500 dark:text-slate-400 font-semibold">${ticket.category}</td>
-        <td class="px-4 py-3 text-xs text-slate-705 dark:text-slate-305 font-medium truncate max-w-40">${ticket.subject}</td>
-        <td class="px-4 py-3 text-center">
-          <span class="px-2 py-0.5 text-[9px] font-bold rounded-full ${
-            ticket.status === "Resolved" 
-              ? "bg-emerald-100 text-emerald-805 dark:bg-emerald-950/80 dark:text-emerald-300" 
-              : "bg-amber-100 text-amber-805 dark:bg-amber-950/80 dark:text-amber-300"
-          }">
-            ${ticket.status}
-          </span>
-        </td>
-        <td class="px-4 py-3 text-center">
-          <button onclick="openChatWindow('${ticket.id}')" class="px-2.5 py-1 text-[10px] font-extrabold bg-indigo-50 hover:bg-indigo-100 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400 rounded-lg transition-colors cursor-pointer">
-            Open Chat
-          </button>
-        </td>
-      `;
-      ledger.appendChild(row);
-    });
-  };
-
-  ticketForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    
-    const cat = document.getElementById("ticket-category").value;
-    const sub = document.getElementById("ticket-subject").value;
-    const msg = document.getElementById("ticket-message").value;
-
-    const id = `TKT-${Math.floor(1000 + Math.random() * 9000)}`;
-    const newTicket = {
-      id,
-      category: cat,
-      subject: sub,
-      status: "Open",
-      date: new Date().toISOString().split('T')[0],
-      messages: [
-        { sender: "student", message: msg, time: new Date().toLocaleTimeString(undefined, {hour: '2-digit', minute:'2-digit'}) }
-      ]
-    };
-
-    STATE.supportTickets.unshift(newTicket);
-    saveState();
-    ticketForm.reset();
-    showToast(`Ticket ${id} registered. Portal support will respond in a moment.`);
-    renderLedger();
-
-    setTimeout(() => {
-      let reply = "Hello Ama, we have logged this ticket and assigned it to the academic registry desk.";
-      if (cat.includes("Finance")) {
-        reply = "Hello Ama, our payment logs are being reconciled. If you have completed transaction pings, please send the reference ID.";
-      } else if (cat.includes("ICT")) {
-        reply = "Hi Ama, we have flushed your portal session logs. Please refresh your browser window and check your outline again.";
-      }
-      
-      newTicket.messages.push({
-        sender: "admin",
-        message: reply,
-        time: new Date().toLocaleTimeString(undefined, {hour: '2-digit', minute:'2-digit'})
-      });
-      saveState();
-      showToast(`Support Admin replied to ticket ${id}!`);
-      unreadBadge.classList.remove("hidden");
-      
-      if (activeTicketId === id) {
-        renderChatMessages();
-      }
-    }, 3500);
-  });
-
-  window.openChatWindow = (ticketId) => {
-    activeTicketId = ticketId;
-    unreadBadge.classList.add("hidden");
-    const ticket = STATE.supportTickets.find(t => t.id === ticketId);
-    if (!ticket) return;
-
-    document.getElementById("chat-ticket-id").textContent = ticket.id;
-    document.getElementById("chat-ticket-subject").textContent = ticket.subject;
-
-    renderChatMessages();
-    chatModal.classList.remove("hidden");
-    chatModal.classList.add("flex");
-  };
-
-  const renderChatMessages = () => {
-    const ticket = STATE.supportTickets.find(t => t.id === activeTicketId);
-    if (!ticket) return;
-
-    chatMessagesContainer.innerHTML = "";
-    
-    ticket.messages.forEach(m => {
-      const msgRow = document.createElement("div");
-      msgRow.className = `flex ${m.sender === "student" ? "justify-end" : "justify-start"}`;
-      
-      const isStudent = m.sender === "student";
-      const bgBox = isStudent 
-        ? "bg-indigo-600 text-white rounded-tr-none" 
-        : "bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-800 dark:text-slate-205 rounded-tl-none";
-
-      msgRow.innerHTML = `
-        <div class="max-w-[75%] p-3.5 rounded-2xl shadow-xs ${bgBox}">
-          <p class="text-xs leading-relaxed font-medium">${m.message}</p>
-          <span class="text-[8px] opacity-70 block text-right mt-1.5 font-bold">${m.time}</span>
-        </div>
-      `;
-      chatMessagesContainer.appendChild(msgRow);
-    });
-
-    chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
-  };
-
-  chatInputForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const text = chatTextInput.value.trim();
-    if (!text) return;
-
-    const ticket = STATE.supportTickets.find(t => t.id === activeTicketId);
-    if (!ticket) return;
-
-    ticket.messages.push({
-      sender: "student",
-      message: text,
-      time: new Date().toLocaleTimeString(undefined, {hour: '2-digit', minute:'2-digit'})
-    });
-
-    saveState();
-    chatTextInput.value = "";
-    renderChatMessages();
-
-    setTimeout(() => {
-      ticket.messages.push({
-        sender: "admin",
-        message: "Thank you for the update. This has been appended to the ticket log. We will contact you soon.",
-        time: new Date().toLocaleTimeString(undefined, {hour: '2-digit', minute:'2-digit'})
-      });
-      saveState();
-      if (activeTicketId === ticket.id) {
-        renderChatMessages();
-      }
-    }, 2000);
-  });
-
-  chatCloseBtn.addEventListener("click", () => {
-    chatModal.classList.add("hidden");
-    chatModal.classList.remove("flex");
-    activeTicketId = null;
-  });
-
-  renderLedger();
+// ─── INIT ────────────────────────────────────────────────────
+function initApp() {
+  applyTheme(window.STATE.theme);
+  renderNotifications();
+  switchTab(window.STATE.currentTab || 'dashboard');
 }
 
-// Settings & ID Card Badge Module
-function initSettings() {
-  const profileForm = document.getElementById("profile-settings-form");
-  const securityForm = document.getElementById("security-settings-form");
-  const uploadInput = document.getElementById("settings-photo-upload");
-  const printIdBtn = document.getElementById("print-id-card-btn");
+// ─── DOM READY ───────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  loadState();
 
-  document.getElementById("settings-email").value = STATE.student.email;
-  document.getElementById("settings-phone").value = STATE.student.phone;
-  document.getElementById("settings-address").value = STATE.student.address;
+  // Auto-login check
+  if (window.STATE.loggedIn && window.STATE.user) {
+    document.getElementById('login-page').style.display = 'none';
+    document.getElementById('portal-container').style.display = 'flex';
+    initApp();
+  } else {
+    document.getElementById('login-page').style.display = 'flex';
+    document.getElementById('portal-container').style.display = 'none';
+  }
 
-  profileForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    STATE.student.email = document.getElementById("settings-email").value;
-    STATE.student.phone = document.getElementById("settings-phone").value;
-    STATE.student.address = document.getElementById("settings-address").value;
-    
-    saveState();
-    showToast("Profile details updated successfully!");
-    updateProfileDisplays();
-  });
+  setupEvents();
 
-  securityForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const cur = document.getElementById("settings-cur-pass").value;
-    const nPass = document.getElementById("settings-new-pass").value;
-    const conf = document.getElementById("settings-confirm-pass").value;
+  // Card number formatting
+  var cardInput = document.getElementById('card-number-input');
+  if (cardInput) {
+    cardInput.addEventListener('input', function() {
+      var v = this.value.replace(/[^\d]/g, '').substring(0, 16);
+      var parts = [];
+      for (var i = 0; i < v.length; i += 4) parts.push(v.substring(i, i + 4));
+      this.value = parts.join(' ');
+    });
+  }
 
-    if (!cur || !nPass || !conf) {
-      showToast("All security fields are required.", "error");
-      return;
-    }
-
-    if (nPass !== conf) {
-      showToast("Passwords do not match.", "error");
-      return;
-    }
-
-    showToast("Password updated successfully.");
-    securityForm.reset();
-  });
-
-  uploadInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    if (file.size > 2000000) {
-      showToast("Selected image file exceeds the 2MB portal cap limit.", "error");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      STATE.student.photo = event.target.result;
-      saveState();
-      updateProfileDisplays();
-      showToast("Portal avatar uploaded successfully.");
-    };
-    reader.readAsDataURL(file);
-  });
-
-  printIdBtn.addEventListener("click", () => {
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>Student ID Badge - Print Preview</title>
-          <link href="https://cdn.tailwindcss.com" rel="stylesheet">
-          <style>
-            body { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background-color: #f8fafc; font-family: 'Outfit', sans-serif; }
-            .id-card-print { width: 3.375in; height: 2.125in; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); margin: 20px; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: white; display: flex; flex-direction: column; justify-content: space-between; padding: 16px; border: 1px solid #e2e8f0; position: relative; }
-            @media print {
-              body { background: white !important; }
-              .no-print { display: none !important; }
-              .id-card-print { margin: 0; border: 1px solid #000; box-shadow: none !important; page-break-after: always; }
-            }
-          </style>
-        </head>
-        <body onload="window.print()">
-          <div class="no-print text-center text-sm font-bold text-slate-500 mb-6">
-            Press print dialog. Back card is printed on subsequent sheets if duplex is desired.
-          </div>
-          
-          <!-- Front -->
-          <div class="id-card-print">
-            <div class="flex justify-between items-start border-b border-white/10 pb-1">
-              <span class="font-extrabold text-[9px] tracking-tight">REDEEMER'S UNIVERSITY</span>
-              <span class="text-[7px] font-bold bg-white/10 px-1.5 py-0.5 rounded text-indigo-200">STUDENT</span>
-            </div>
-            <div class="flex gap-3 my-2 flex-1 items-center">
-              <img class="w-14 h-16 rounded object-cover border border-white/10" src="${STATE.student.photo}">
-              <div>
-                <h4 class="font-bold text-[11px] leading-tight">${STATE.student.name}</h4>
-                <span class="text-[8px] font-mono text-slate-400 tracking-wider">${STATE.student.matricNo}</span>
-                <span class="text-[7px] text-indigo-300 block mt-1">B.Sc. Computer Science</span>
-              </div>
-            </div>
-            <div class="flex justify-between items-center text-[6px] text-slate-400 border-t border-white/10 pt-1">
-              <span>Class: First Class</span>
-              <span>Blood: O+</span>
-              <span>Expiry: 10/2026</span>
-            </div>
-          </div>
-
-          <!-- Back -->
-          <div class="id-card-print" style="background: #020617;">
-            <div class="w-full h-3.5 bg-slate-800 mt-2"></div>
-            <div class="text-[6px] text-slate-400 text-center px-4 leading-normal">
-              This card is the property of Redeemer's University. If found, please return to office of Registrar, Ede, Osun.
-            </div>
-            <div class="flex justify-between items-end border-t border-slate-900 pt-2">
-              <div class="bg-slate-200 h-5 w-32 flex items-center justify-around overflow-hidden rounded">
-                <div class="h-full bg-slate-950 w-0.5"></div><div class="h-full bg-slate-950 w-1.5"></div><div class="h-full bg-slate-950 w-0.5"></div><div class="h-full bg-slate-950 w-2"></div><div class="h-full bg-slate-950 w-0.5"></div>
-              </div>
-              <span class="text-[7px] text-slate-500 font-mono">CMP2026</span>
-            </div>
-          </div>
-        </body>
-      </html>
-    `);
-    printWindow.document.close();
-  });
-}
+  // Expiry formatting
+  var expiryInput = document.getElementById('card-expiry-input');
+  if (expiryInput) {
+    expiryInput.addEventListener('input', function() {
+      var v = this.value.replace(/[^\d]/g, '').substring(0, 4);
+      if (v.length >= 3) v = v.substring(0, 2) + '/' + v.substring(2);
+      this.value = v;
+    });
+  }
+});
