@@ -25,7 +25,8 @@ const DEFAULT_STATE = {
     hostelStatus: "Allocated & Settled",
     prefHostel: "Redemption Hall",
     hostelRoom: "Block B, Room 104 (Bedspace 3)",
-    isDark: false
+    isDark: false,
+    loggedIn: false
   },
 
   notifications: [
@@ -199,6 +200,9 @@ function loadState() {
       if (!STATE.examsSchedule) STATE.examsSchedule = DEFAULT_STATE.examsSchedule;
       if (!STATE.campusLandmarks) STATE.campusLandmarks = DEFAULT_STATE.campusLandmarks;
       if (!STATE.evaluations) STATE.evaluations = DEFAULT_STATE.evaluations;
+      if (STATE.student) {
+        if (STATE.student.loggedIn === undefined) STATE.student.loggedIn = false;
+      }
     } catch (e) {
       STATE = JSON.parse(JSON.stringify(DEFAULT_STATE));
     }
@@ -217,6 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   setupSidebarNavigation();
   setupMobileDrawerHandlers();
+  initLoginGate();
   initDashboard();
   initNotificationPanel();
   initCourseRegistration();
@@ -234,6 +239,73 @@ document.addEventListener("DOMContentLoaded", () => {
   // View home
   switchTab("dashboard");
 });
+
+// Secure Portal Session Login Gate
+function initLoginGate() {
+  const loginPage = document.getElementById("login-page");
+  const portalContainer = document.getElementById("portal-container");
+  const loginForm = document.getElementById("login-form");
+  const matricInput = document.getElementById("login-matric");
+  const passwordInput = document.getElementById("login-password");
+  const logoutBtn = document.getElementById("logout-btn");
+
+  if (!loginPage || !portalContainer || !loginForm) return;
+
+  // Initialize session state on page load
+  if (STATE.student && STATE.student.loggedIn) {
+    loginPage.classList.add("hidden");
+    portalContainer.classList.remove("hidden");
+  } else {
+    loginPage.classList.remove("hidden");
+    portalContainer.classList.add("hidden");
+  }
+
+  // Handle Login submission
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const matric = matricInput.value.trim().toUpperCase();
+    const pass = passwordInput.value;
+
+    if (matric === "RUN/CMP/22/1042" && pass === "password") {
+      STATE.student.loggedIn = true;
+      saveState();
+      
+      // Transition display
+      loginPage.classList.add("hidden");
+      portalContainer.classList.remove("hidden");
+      
+      showToast("Authentication successful. Session established.");
+      
+      // Re-initialize state and redraw charts to ensure layout fits correctly
+      initDashboard();
+      drawCGPAChart();
+    } else {
+      showToast("Invalid credentials. Please use the demo login values.", "error");
+    }
+  });
+
+  // Handle Logout button
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      STATE.student.loggedIn = false;
+      saveState();
+      
+      // Transition display back
+      loginPage.classList.remove("hidden");
+      portalContainer.classList.add("hidden");
+      
+      // Reset inputs
+      matricInput.value = "";
+      passwordInput.value = "";
+      
+      showToast("Session terminated successfully.");
+      
+      // Switch tab back to dashboard so that next login is on dashboard
+      switchTab("dashboard");
+    });
+  }
+}
 
 // Toast Notifications Helper
 function showToast(message, type = "success") {
@@ -601,7 +673,6 @@ function initCourseRegistration() {
         course.selected = e.target.checked;
         saveState();
         recalculateUnits();
-        initGPAValPlanner(); 
         initEvaluationModule(); // Re-sync Lecturer evaluations
       });
 
@@ -715,32 +786,14 @@ function initCourseRegistration() {
   renderCourses();
 }
 
-// Result Checker & GPA Planner Module
+// Statement of Results Module
 function initResultChecker() {
   const select = document.getElementById("semester-selector");
   const table = document.getElementById("results-table-body");
   const statsContainer = document.getElementById("result-stats-container");
   const transcriptBtn = document.getElementById("view-transcript-btn");
 
-  const tabResultsBtn = document.getElementById("tab-sub-results");
-  const tabPlannerBtn = document.getElementById("tab-sub-planner");
-  const resultsView = document.getElementById("sub-results-view");
-  const plannerView = document.getElementById("sub-planner-view");
-
-  tabResultsBtn.addEventListener("click", () => {
-    tabResultsBtn.className = "px-5 py-2.5 text-xs font-extrabold rounded-xl bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors cursor-pointer";
-    tabPlannerBtn.className = "px-5 py-2.5 text-xs font-extrabold rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer";
-    resultsView.classList.remove("hidden");
-    plannerView.classList.add("hidden");
-  });
-
-  tabPlannerBtn.addEventListener("click", () => {
-    tabPlannerBtn.className = "px-5 py-2.5 text-xs font-extrabold rounded-xl bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors cursor-pointer";
-    tabResultsBtn.className = "px-5 py-2.5 text-xs font-extrabold rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer";
-    plannerView.classList.remove("hidden");
-    resultsView.classList.add("hidden");
-    initGPAValPlanner();
-  });
+  if (!select || !table || !statsContainer || !transcriptBtn) return;
   
   select.innerHTML = "";
   Object.keys(STATE.pastResults).forEach(key => {
@@ -924,144 +977,7 @@ function initResultChecker() {
   });
 }
 
-// GPA Target Solver math
-function calculateRequiredSemesterGPA() {
-  const goalInput = document.getElementById("target-cgpa-goal");
-  const targetCGPA = parseFloat(goalInput.value);
-
-  if (isNaN(targetCGPA) || targetCGPA < 0.00 || targetCGPA > 5.00) {
-    showToast("Please enter a valid target CGPA between 0.00 and 5.00.", "error");
-    return;
-  }
-
-  // Calculate existing credits and points
-  let pastCredits = 0;
-  let pastPoints = 0;
-  
-  Object.keys(STATE.pastResults).forEach(key => {
-    STATE.pastResults[key].courses.forEach(c => {
-      pastCredits += c.units;
-      pastPoints += (c.units * c.points);
-    });
-  });
-
-  const selectedCurrent = STATE.availableCourses.filter(c => c.selected);
-  const currentCredits = selectedCurrent.reduce((sum, c) => sum + c.units, 0);
-
-  if (currentCredits === 0) {
-    showToast("Please register courses first to calculate required GPA.", "error");
-    return;
-  }
-
-  const totalCredits = pastCredits + currentCredits;
-  const targetTotalPoints = targetCGPA * totalCredits;
-  const requiredPointsForSemester = targetTotalPoints - pastPoints;
-  const requiredGPA = requiredPointsForSemester / currentCredits;
-
-  if (requiredGPA > 5.00) {
-    showToast(`Mathematically impossible! You would need a GPA of ${requiredGPA.toFixed(2)} this semester to hit a CGPA of ${targetCGPA.toFixed(2)}. Max GPA is 5.00.`, "error");
-  } else if (requiredGPA <= 0.00) {
-    showToast(`Goal already secured! You only need a GPA of 0.00 this semester to maintain a CGPA of ${targetCGPA.toFixed(2)}.`);
-  } else {
-    showToast(`To achieve a CGPA of ${targetCGPA.toFixed(2)}, you must score a GPA of exactly ${requiredGPA.toFixed(2)} in your current ${currentCredits} registered credits.`);
-  }
-}
-
-// GPA Simulator Setup
-function initGPAValPlanner() {
-  const container = document.getElementById("planner-inputs-container");
-  container.innerHTML = "";
-
-  const selected = STATE.availableCourses.filter(c => c.selected);
-  
-  if (selected.length === 0) {
-    container.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-xs text-slate-400 font-semibold">Please select courses in Course Registration first to simulate results.</td></tr>`;
-    calculateSimulatedGPA();
-    return;
-  }
-
-  selected.forEach(course => {
-    const row = document.createElement("tr");
-    row.className = "border-b border-slate-100 dark:border-slate-800/80 hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors";
-    row.innerHTML = `
-      <td class="px-6 py-4">
-        <span onclick="openCourseDrawer('${course.code}')" class="font-bold text-xs text-indigo-600 hover:underline cursor-pointer">${course.code}</span>
-      </td>
-      <td class="px-6 py-4 text-xs text-slate-700 dark:text-slate-300 font-medium">${course.title}</td>
-      <td class="px-6 py-4 text-center text-xs text-slate-600 dark:text-slate-400 font-semibold">${course.units}</td>
-      <td class="px-6 py-4 text-center">
-        <select data-units="${course.units}" class="sim-grade-select px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-bold text-indigo-600 dark:text-indigo-400 focus:outline-none cursor-pointer">
-          <option value="5">A (5.00)</option>
-          <option value="4">B (4.00)</option>
-          <option value="3">C (3.00)</option>
-          <option value="2">D (2.00)</option>
-          <option value="1">E (1.00)</option>
-          <option value="0">F (0.00)</option>
-        </select>
-      </td>
-    `;
-    
-    const select = row.querySelector("select");
-    select.addEventListener("change", calculateSimulatedGPA);
-    container.appendChild(row);
-  });
-
-  calculateSimulatedGPA();
-}
-
-function calculateSimulatedGPA() {
-  const selects = document.querySelectorAll(".sim-grade-select");
-  
-  let totalUnits = 0;
-  let weightedPoints = 0;
-  
-  selects.forEach(select => {
-    const units = parseInt(select.getAttribute("data-units"));
-    const val = parseInt(select.value);
-    totalUnits += units;
-    weightedPoints += (units * val);
-  });
-  
-  const simulatedGPA = totalUnits > 0 ? (weightedPoints / totalUnits) : 0.00;
-  
-  let cumulativeUnits = 0;
-  let cumulativePoints = 0;
-  
-  Object.keys(STATE.pastResults).forEach(key => {
-    STATE.pastResults[key].courses.forEach(c => {
-      cumulativeUnits += c.units;
-      cumulativePoints += (c.units * c.points);
-    });
-  });
-  
-  const currentCGPA = cumulativePoints / cumulativeUnits;
-  
-  const newCumulativeUnits = cumulativeUnits + totalUnits;
-  const newCumulativePoints = cumulativePoints + weightedPoints;
-  const simulatedCGPA = newCumulativeUnits > 0 ? (newCumulativePoints / newCumulativeUnits) : 0.00;
-  
-  const delta = simulatedCGPA - currentCGPA;
-
-  document.getElementById("sim-gpa-val").textContent = simulatedGPA.toFixed(2);
-  document.getElementById("sim-cgpa-val").textContent = simulatedCGPA.toFixed(2);
-  
-  const deltaEl = document.getElementById("sim-cgpa-delta");
-  if (deltaEl) {
-    if (delta >= 0) {
-      deltaEl.textContent = `+${delta.toFixed(2)}`;
-      deltaEl.className = "text-sm font-black text-emerald-600 dark:text-emerald-400";
-    } else {
-      deltaEl.textContent = `${delta.toFixed(2)}`;
-      deltaEl.className = "text-sm font-black text-rose-600 dark:text-rose-400";
-    }
-  }
-
-  const ring = document.getElementById("sim-gpa-ring");
-  if (ring) {
-    const offset = 440 - (simulatedGPA / 5) * 440;
-    ring.style.strokeDashoffset = offset;
-  }
-}
+// GPA Simulation and solver modules removed. Academic indexes are read-only official records.
 
 // Canvas CGPA curve
 function drawCGPAChart() {
@@ -1184,6 +1100,8 @@ function initTimetableAttendance() {
   const tabExams = document.getElementById("tab-sub-exams");
   const timetableSubView = document.getElementById("sub-timetable-view");
   const examsSubView = document.getElementById("sub-exams-view");
+
+  if (!tableContainer || !attendanceContainer || !tabTimetable || !tabExams) return;
 
   tabTimetable.addEventListener("click", () => {
     tabTimetable.className = "px-5 py-2.5 text-xs font-extrabold rounded-xl bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors cursor-pointer";
@@ -1312,6 +1230,8 @@ function initHostelModule() {
   const closeBtn = document.getElementById("close-hostel-modal");
   const requestForm = document.getElementById("hostel-request-form");
 
+  if (!roommatesList) return;
+
   const renderRoommates = () => {
     roommatesList.innerHTML = "";
     
@@ -1336,45 +1256,54 @@ function initHostelModule() {
     });
 
     // Update status indicators
-    document.getElementById("hostel-room-status").textContent = STATE.student.hostelStatus;
+    const statusEl = document.getElementById("hostel-room-status");
+    if (statusEl) statusEl.textContent = STATE.student.hostelStatus;
     
     const badge = document.getElementById("hostel-room-status");
-    if (STATE.student.hostelStatus.includes("Pending")) {
-      badge.className = "font-bold text-amber-600 dark:text-amber-400 animate-pulse";
-      openBtn.disabled = true;
-      openBtn.classList.add("opacity-50", "cursor-not-allowed");
-      openBtn.textContent = "Change Request Pending Approval";
-    } else {
-      badge.className = "font-bold text-emerald-600 dark:text-emerald-400";
-      openBtn.disabled = false;
-      openBtn.classList.remove("opacity-50", "cursor-not-allowed");
-      openBtn.textContent = "Submit Change Room Request";
+    if (badge && openBtn) {
+      if (STATE.student.hostelStatus.includes("Pending")) {
+        badge.className = "font-bold text-amber-600 dark:text-amber-400 animate-pulse";
+        openBtn.disabled = true;
+        openBtn.classList.add("opacity-50", "cursor-not-allowed");
+        openBtn.textContent = "Change Request Pending Approval";
+      } else {
+        badge.className = "font-bold text-emerald-600 dark:text-emerald-400";
+        openBtn.disabled = false;
+        openBtn.classList.remove("opacity-50", "cursor-not-allowed");
+        openBtn.textContent = "Submit Change Room Request";
+      }
     }
   };
 
-  openBtn.addEventListener("click", () => {
-    modal.classList.remove("hidden");
-    modal.classList.add("flex");
-  });
+  if (openBtn && modal) {
+    openBtn.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    });
+  }
 
-  closeBtn.addEventListener("click", () => {
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-  });
+  if (closeBtn && modal) {
+    closeBtn.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    });
+  }
 
-  requestForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const pref = document.getElementById("pref-hostel-select").value;
-    
-    STATE.student.hostelStatus = "Change Request Pending Approval";
-    STATE.student.prefHostel = pref;
-    saveState();
-    
-    showToast(`Room change request submitted for ${pref}. Residence Board will review this.`);
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-    renderRoommates();
-  });
+  if (requestForm && modal) {
+    requestForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const pref = document.getElementById("pref-hostel-select").value;
+      
+      STATE.student.hostelStatus = "Change Request Pending Approval";
+      STATE.student.prefHostel = pref;
+      saveState();
+      
+      showToast(`Room change request submitted for ${pref}. Residence Board will review this.`);
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      renderRoommates();
+    });
+  }
 
   renderRoommates();
 }
@@ -1384,6 +1313,8 @@ function initLibraryModule() {
   const container = document.getElementById("library-list-container");
   const searchInput = document.getElementById("library-search-input");
   const typeFilter = document.getElementById("library-type-filter");
+
+  if (!container || !searchInput || !typeFilter) return;
 
   const renderFiles = () => {
     container.innerHTML = "";
@@ -1667,6 +1598,8 @@ function initEvaluationModule() {
   const codeInput = document.getElementById("eval-course-code-input");
   const commentsInput = document.getElementById("eval-comments");
 
+  if (!list || !form) return;
+
   // Local rating states
   let activeRatings = { clarity: 0, punctuality: 0, feedback: 0 };
 
@@ -1773,6 +1706,7 @@ function initEvaluationModule() {
 // Campus Directory Module
 function initCampusDirectory() {
   const container = document.getElementById("campus-directory-container");
+  if (!container) return;
   container.innerHTML = "";
 
   STATE.campusLandmarks.forEach(ld => {
@@ -1806,6 +1740,8 @@ function initHelpdeskModule() {
   const chatInputForm = document.getElementById("chat-input-form");
   const chatTextInput = document.getElementById("chat-text-input");
   const unreadBadge = document.getElementById("helpdesk-alert-badge");
+
+  if (!ledger || !ticketForm) return;
 
   const renderLedger = () => {
     ledger.innerHTML = "";
