@@ -24,6 +24,10 @@ function loadState() {
     if (raw) {
       const parsed = JSON.parse(raw);
       window.STATE = { ...DEFAULT_STATE, ...parsed };
+      if (window.STATE.user) {
+        // Sync STUDENT_DATA properties with active session state
+        Object.assign(STUDENT_DATA, window.STATE.user);
+      }
     } else {
       window.STATE = { ...DEFAULT_STATE };
     }
@@ -240,8 +244,14 @@ function applyTheme(theme) {
   var btn = document.getElementById('theme-toggle');
   if (btn) {
     btn.innerHTML = theme === 'dark'
-      ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>'
-      : '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>';
+      ? '<svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>'
+      : '<svg class="w-5 h-5 text-slate-600 dark:text-slate-350" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>';
+  }
+  var landingThemeBtn = document.getElementById('landing-theme-toggle');
+  if (landingThemeBtn) {
+    landingThemeBtn.innerHTML = theme === 'dark'
+      ? '<svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>'
+      : '<svg class="w-5 h-5 text-slate-600 dark:text-slate-350" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>';
   }
 }
 
@@ -258,15 +268,45 @@ function handleLogin(e) {
   e.preventDefault();
   var matric = document.getElementById('login-matric').value.trim();
   var password = document.getElementById('login-password').value;
-  if (matric === 'RUN/CMP/22/1042' && password === 'password') {
+
+  if (matric.length > 0) {
     window.STATE.loggedIn = true;
-    window.STATE.user = STUDENT_DATA;
+    
+    // Parse user input and update STUDENT_DATA properties dynamically
+    var name = STUDENT_DATA.name;
+    var matricNo = STUDENT_DATA.matric;
+
+    if (matric.includes('/') || matric.match(/\d/)) {
+      matricNo = matric.toUpperCase();
+    } else {
+      // If it's a name (e.g. "John Doe"), split and capitalize
+      name = matric.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+      matricNo = "RUN/CMP/22/" + Math.floor(1000 + Math.random() * 9000);
+    }
+
+    STUDENT_DATA.name = name;
+    STUDENT_DATA.matric = matricNo;
+    STUDENT_DATA.email = name.toLowerCase().replace(/\s+/g, '.') + "@run.edu.ng";
+
+    window.STATE.user = {
+      name: STUDENT_DATA.name,
+      matric: STUDENT_DATA.matric,
+      email: STUDENT_DATA.email,
+      phone: STUDENT_DATA.phone,
+      address: STUDENT_DATA.address
+    };
+
     saveState();
+    
+    var landingPage = document.getElementById('landing-page');
+    if (landingPage) landingPage.classList.add('hidden');
     document.getElementById('login-page').style.display = 'none';
     document.getElementById('portal-container').style.display = 'flex';
+    
+    showToast('Authentication successful. Welcome, ' + STUDENT_DATA.name);
     initApp();
   } else {
-    showToast('Invalid matric number or password. Please try again.', 'error');
+    showToast('Please enter a matric number or student name.', 'error');
   }
 }
 
@@ -276,9 +316,23 @@ function handleLogout() {
   window.STATE.currentTab = 'dashboard';
   window.STATE.selectedCourses = [];
   saveState();
+
+  // Reset STUDENT_DATA back to default properties on logout
+  STUDENT_DATA.name = 'Ama O. Emmanuel';
+  STUDENT_DATA.matric = 'RUN/CMP/22/1042';
+  STUDENT_DATA.email = 'emmanuel.ama@run.edu.ng';
+  
+  var landingPage = document.getElementById('landing-page');
+  if (landingPage) {
+    landingPage.classList.remove('hidden');
+    document.getElementById('login-page').style.display = 'none';
+  } else {
+    document.getElementById('login-page').style.display = 'flex';
+  }
+
   document.getElementById('portal-container').style.display = 'none';
-  document.getElementById('login-page').style.display = 'flex';
   document.getElementById('login-form').reset();
+  showToast('Session terminated successfully.');
 }
 
 // ─── TAB ROUTING ─────────────────────────────────────────────
@@ -1056,6 +1110,49 @@ function toggleMobileMenu() {
 
 // ─── EVENT SETUP ─────────────────────────────────────────────
 function setupEvents() {
+  // Landing page routing
+  var goToLoginBtn = document.getElementById('go-to-login-btn');
+  var heroPortalBtn = document.getElementById('hero-portal-btn');
+  var landingPage = document.getElementById('landing-page');
+
+  if (goToLoginBtn) {
+    goToLoginBtn.addEventListener('click', function() {
+      if (landingPage) landingPage.classList.add('hidden');
+      document.getElementById('login-page').style.display = 'flex';
+    });
+  }
+
+  if (heroPortalBtn) {
+    heroPortalBtn.addEventListener('click', function() {
+      if (landingPage) landingPage.classList.add('hidden');
+      document.getElementById('login-page').style.display = 'flex';
+    });
+  }
+
+  var landingLogo = document.querySelector('#landing-page nav .flex.items-center');
+  if (landingLogo) {
+    landingLogo.style.cursor = 'pointer';
+    landingLogo.addEventListener('click', function() {
+      if (landingPage) landingPage.classList.remove('hidden');
+      document.getElementById('login-page').style.display = 'none';
+    });
+  }
+
+  var loginLogo = document.querySelector('#login-page .text-center');
+  if (loginLogo) {
+    loginLogo.style.cursor = 'pointer';
+    loginLogo.addEventListener('click', function() {
+      if (landingPage) landingPage.classList.remove('hidden');
+      document.getElementById('login-page').style.display = 'none';
+    });
+  }
+
+  // Landing page theme toggle
+  var landingThemeBtn = document.getElementById('landing-theme-toggle');
+  if (landingThemeBtn) {
+    landingThemeBtn.addEventListener('click', toggleTheme);
+  }
+
   // Login
   var loginForm = document.getElementById('login-form');
   if (loginForm) loginForm.addEventListener('submit', handleLogin);
@@ -1198,13 +1295,17 @@ function initApp() {
 document.addEventListener('DOMContentLoaded', function() {
   loadState();
 
+  var landingPage = document.getElementById('landing-page');
+
   // Auto-login check
   if (window.STATE.loggedIn && window.STATE.user) {
+    if (landingPage) landingPage.classList.add('hidden');
     document.getElementById('login-page').style.display = 'none';
     document.getElementById('portal-container').style.display = 'flex';
     initApp();
   } else {
-    document.getElementById('login-page').style.display = 'flex';
+    if (landingPage) landingPage.classList.remove('hidden');
+    document.getElementById('login-page').style.display = 'none';
     document.getElementById('portal-container').style.display = 'none';
   }
 
