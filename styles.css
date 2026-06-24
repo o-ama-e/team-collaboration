@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
+/* Class-based dark mode for Tailwind v4 (default is @media prefers-color-scheme) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-slate-850: #1e293b;
   --color-slate-955: #0f1729;
@@ -291,4 +294,15 @@ button:focus {
 button:focus-visible {
   outline: 2px solid #4f46e5;
   outline-offset: 2px;
+}
+
+/* Sidebar transition and desktop collapse */
+#sidebar {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+@media (min-width: 1024px) {
+  #sidebar.desktop-collapsed {
+    margin-left: -18rem !important; /* matches w-72 (18rem) */
+  }
 }

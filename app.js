@@ -204,6 +204,109 @@ const INVOICES_DATA = [
   { id: 'INV-2025-076', description: 'Tuition Fee — Rain Semester', date: '2025-08-20', amount: 800.00, status: 'paid' }
 ];
 
+const ACADEMIC_EVENTS_DATA = [
+  { date: '2025-09-01', title: 'Faculty Reporting & Academic Board Meeting', type: 'academic', desc: 'All faculty report for session planning.' },
+  { date: '2025-09-08', title: 'Freshmen Orientation Week', type: 'orientation', desc: 'Welcome programme for new intakes across all colleges.' },
+  { date: '2025-09-08', title: 'Late Registration with Penalty Begins', type: 'deadline', desc: 'Late registration attracts a late fee.' },
+  { date: '2025-09-15', title: 'Harmattan Semester Lectures Begin', type: 'academic', desc: 'Full academic activities commence for all levels.' },
+  { date: '2025-09-22', title: 'Registration Closes (All Levels)', type: 'deadline', desc: 'Online portal registration closes definitively.' },
+  { date: '2025-10-01', title: 'Nigeria Independence Day — No Lectures', type: 'holiday', desc: 'Public holiday observed.' },
+  { date: '2025-10-13', title: 'Continuous Assessment Week I', type: 'academic', desc: 'First round of CA tests across all courses.' },
+  { date: '2025-11-03', title: 'Course Registration Appeal Deadline', type: 'deadline', desc: 'Last day to file course registration appeals.' },
+  { date: '2025-11-17', title: 'Continuous Assessment Week II', type: 'academic', desc: 'Second round of CA tests.' },
+  { date: '2025-12-08', title: 'Lecture Ends / Revision Week', type: 'academic', desc: 'Lectures conclude. Revision week begins.' },
+  { date: '2025-12-15', title: 'Harmattan Semester Examinations Begin', type: 'exam', desc: 'Written examinations across all courses.' },
+  { date: '2025-12-22', title: 'Christmas Break — University Closed', type: 'holiday', desc: 'University closes for Christmas.' },
+  { date: '2026-01-05', title: 'University Reopens / Exams Continue', type: 'exam', desc: 'Post-Christmas examination schedule resumes.' },
+  { date: '2026-01-19', title: 'End of Semester Examinations', type: 'exam', desc: 'Last day of Harmattan semester exams.' },
+  { date: '2026-01-26', title: 'Semester Break Begins', type: 'holiday', desc: 'Inter-semester break.' },
+  { date: '2026-02-09', title: 'Rain Semester Lectures Begin', type: 'academic', desc: 'Rain semester academic activities commence.' },
+  { date: '2026-02-16', title: 'Matriculation Ceremony', type: 'orientation', desc: 'Formal matriculation for all fresh students.' },
+  { date: '2026-03-09', title: 'Rain Semester CA Week I', type: 'academic', desc: 'First CA tests for rain semester.' },
+  { date: '2026-03-20', title: 'Course Withdrawal Deadline', type: 'deadline', desc: 'Last day to withdraw from courses without academic penalty.' },
+  { date: '2026-04-06', title: 'Easter Break', type: 'holiday', desc: 'Easter holiday observed.' },
+  { date: '2026-04-20', title: 'Rain Semester CA Week II', type: 'academic', desc: 'Second CA tests for rain semester.' },
+  { date: '2026-05-11', title: 'Rain Semester Exams Begin', type: 'exam', desc: 'Rain semester written examinations.' },
+  { date: '2026-05-25', title: 'Rain Semester Exams End', type: 'exam', desc: 'Last day of rain semester exams.' },
+  { date: '2026-06-08', title: 'Session Ends / Vacation Begins', type: 'holiday', desc: 'Academic session concludes.' },
+  { date: '2026-06-22', title: 'Result Publication Deadline', type: 'deadline', desc: 'All results must be published by this date.' }
+];
+
+const CATALOG_COURSES_DATA = [
+  { code: 'CSC101', title: 'Introduction to Computing', units: 3, type: 'Core', level: 100 },
+  { code: 'CSC102', title: 'Computer Programming I', units: 3, type: 'Core', level: 100 },
+  { code: 'CSC103', title: 'Introductory Mathematics I', units: 3, type: 'Core', level: 100 },
+  { code: 'CSC104', title: 'Introductory Mathematics II', units: 3, type: 'Core', level: 100 },
+  { code: 'CSC105', title: 'Logic & Linear Algebra', units: 3, type: 'Core', level: 100 },
+  { code: 'CSC106', title: 'Discrete Structures', units: 3, type: 'Core', level: 100 },
+  { code: 'GNS101', title: 'Use of English I', units: 2, type: 'General', level: 100 },
+  { code: 'GNS102', title: 'Use of English II', units: 2, type: 'General', level: 100 },
+  { code: 'GNS103', title: 'Nigerian Peoples & Culture', units: 2, type: 'General', level: 100 },
+  { code: 'PHY101', title: 'General Physics I', units: 3, type: 'Core', level: 100 },
+  { code: 'PHY102', title: 'General Physics II', units: 3, type: 'Core', level: 100 },
+  { code: 'CHM101', title: 'General Chemistry', units: 3, type: 'Core', level: 100 },
+  { code: 'CSC201', title: 'Object Oriented Programming', units: 3, type: 'Core', level: 200 },
+  { code: 'CSC202', title: 'Computer Programming II', units: 3, type: 'Core', level: 200 },
+  { code: 'CSC203', title: 'Data Structures & Algorithms', units: 3, type: 'Core', level: 200 },
+  { code: 'CSC204', title: 'Computer Architecture', units: 3, type: 'Core', level: 200 },
+  { code: 'CSC205', title: 'Digital Logic Design', units: 3, type: 'Core', level: 200 },
+  { code: 'CSC206', title: 'Software Engineering I', units: 3, type: 'Core', level: 200 },
+  { code: 'CSC207', title: 'Web Technologies', units: 2, type: 'Core', level: 200 },
+  { code: 'CSC208', title: 'Database Management Sys.', units: 3, type: 'Core', level: 200 },
+  { code: 'GNS201', title: 'Philosophy & Logic', units: 2, type: 'General', level: 200 },
+  { code: 'GNS202', title: 'Peace & Conflict Studies', units: 2, type: 'General', level: 200 },
+  { code: 'MTS201', title: 'Probability & Statistics', units: 3, type: 'Core', level: 200 },
+  { code: 'CSC301', title: 'Operating Systems', units: 3, type: 'Core', level: 300 },
+  { code: 'CSC302', title: 'Computer Networks', units: 3, type: 'Core', level: 300 },
+  { code: 'CSC303', title: 'Design & Analysis of Algorithms', units: 3, type: 'Core', level: 300 },
+  { code: 'CSC304', title: 'Human Computer Interaction', units: 2, type: 'Core', level: 300 },
+  { code: 'CSC305', title: 'Numerical Methods', units: 3, type: 'Core', level: 300 },
+  { code: 'CSC306', title: 'Formal Languages & Automata', units: 3, type: 'Core', level: 300 },
+  { code: 'CSC307', title: 'Cybersecurity Fundamentals', units: 3, type: 'Elective', level: 300 },
+  { code: 'CSC308', title: 'Mobile Application Dev.', units: 3, type: 'Elective', level: 300 },
+  { code: 'GNS301', title: 'Entrepreneurship Studies', units: 2, type: 'General', level: 300 },
+  { code: 'GNS302', title: 'Research Methodology', units: 2, type: 'General', level: 300 },
+  { code: 'CSC401', title: 'Software Engineering', units: 3, type: 'Core', level: 400 },
+  { code: 'CSC403', title: 'Compiler Construction', units: 3, type: 'Core', level: 400 },
+  { code: 'CSC405', title: 'Artificial Intelligence', units: 3, type: 'Core', level: 400 },
+  { code: 'CSC407', title: 'Programming Lang. Paradigms', units: 3, type: 'Core', level: 400 },
+  { code: 'CSC409', title: 'Project Management', units: 3, type: 'Core', level: 400 },
+  { code: 'CSC411', title: 'Machine Learning', units: 3, type: 'Elective', level: 400 },
+  { code: 'CSC413', title: 'Distributed Systems', units: 3, type: 'Elective', level: 400 },
+  { code: 'CSC415', title: 'Cloud Computing', units: 3, type: 'Elective', level: 400 },
+  { code: 'GNS401', title: 'Ethics & Civic Responsibility', units: 2, type: 'General', level: 400 }
+];
+
+const DOWNLOAD_RESOURCES_DATA = [
+  { id: 'DL001', title: 'CSC 401 Past Questions (2022-2025)', category: 'past_questions', desc: 'Compiled past examination questions for Software Engineering.', fileType: 'PDF', fileSize: '2.4 MB', level: '400' },
+  { id: 'DL002', title: 'CSC 403 Past Questions (2022-2025)', category: 'past_questions', desc: 'Compiled past questions for Compiler Construction.', fileType: 'PDF', fileSize: '1.8 MB', level: '400' },
+  { id: 'DL003', title: 'CSC 405 Past Questions (2022-2025)', category: 'past_questions', desc: 'Compiled past questions for Artificial Intelligence.', fileType: 'PDF', fileSize: '2.1 MB', level: '400' },
+  { id: 'DL004', title: 'CSC 301 Past Questions (2021-2025)', category: 'past_questions', desc: 'Past questions for Operating Systems.', fileType: 'PDF', fileSize: '1.5 MB', level: '300' },
+  { id: 'DL005', title: 'CSC 203 Past Questions (2021-2024)', category: 'past_questions', desc: 'Past questions for Data Structures & Algorithms.', fileType: 'PDF', fileSize: '1.2 MB', level: '200' },
+  { id: 'DL006', title: 'Software Engineering Lecture Notes', category: 'course_materials', desc: 'Comprehensive lecture notes covering the full CSC401 syllabus.', fileType: 'PDF', fileSize: '4.6 MB', level: '400' },
+  { id: 'DL007', title: 'AI Study Guide & Slides', category: 'course_materials', desc: 'Lecture slides and study guide for CSC405 Artificial Intelligence.', fileType: 'ZIP', fileSize: '8.2 MB', level: '400' },
+  { id: 'DL008', title: 'Data Structures Reference Sheet', category: 'course_materials', desc: 'Quick reference for common data structures and their complexities.', fileType: 'PDF', fileSize: '0.8 MB', level: '200' },
+  { id: 'DL009', title: 'Operating Systems Lab Manual', category: 'course_materials', desc: 'Lab practical manual for CSC301 Operating Systems.', fileType: 'PDF', fileSize: '3.1 MB', level: '300' },
+  { id: 'DL010', title: 'Course Registration Form', category: 'forms', desc: 'Official course registration form for manual submission.', fileType: 'PDF', fileSize: '0.3 MB', level: 'all' },
+  { id: 'DL011', title: 'Course Withdrawal Form', category: 'forms', desc: 'Form for withdrawing from registered courses.', fileType: 'PDF', fileSize: '0.2 MB', level: 'all' },
+  { id: 'DL012', title: 'Grade Appeal Form', category: 'forms', desc: 'Form to file a formal grade appeal with the academic board.', fileType: 'PDF', fileSize: '0.3 MB', level: 'all' },
+  { id: 'DL013', title: 'Leave of Absence Form', category: 'forms', desc: 'Application for leave of absence from the programme.', fileType: 'PDF', fileSize: '0.3 MB', level: 'all' },
+  { id: 'DL014', title: 'Student Handbook 2025/2026', category: 'handbooks', desc: 'Comprehensive guide to university policies, code of conduct, and student life.', fileType: 'PDF', fileSize: '12.5 MB', level: 'all' },
+  { id: 'DL015', title: 'Academic Regulations & Guidelines', category: 'handbooks', desc: 'Official academic rules, grading policies, and degree requirements.', fileType: 'PDF', fileSize: '5.2 MB', level: 'all' },
+  { id: 'DL016', title: 'IT Services & Portal Guide', category: 'handbooks', desc: 'Guide to using the student portal, email, and university IT services.', fileType: 'PDF', fileSize: '3.8 MB', level: 'all' }
+];
+
+const FAQ_DATA = [
+  { q: 'How do I register for courses?', a: 'Navigate to Course Registration from the sidebar, select your desired courses ensuring you meet the minimum 12 units, then click Submit. You must have a zero tuition balance to complete registration.' },
+  { q: 'When are results published?', a: 'Results are typically published within 4 weeks after the end of semester examinations. Check the Result Checker tab for updates.' },
+  { q: 'How do I reset my portal password?', a: 'Go to ID & Settings → Security Settings. Enter your current password and your new password (minimum 6 characters), then confirm.' },
+  { q: 'What do I do if payment fails?', a: 'Ensure your card details are correct and you have sufficient funds. If the issue persists, contact the ICT Help Desk or visit the Bursary Department.' },
+  { q: 'How do I access my hostel allocation?', a: 'Your residence allocation appears in the Hostel Allocation tab. Roommate contact details and hall warden information are displayed there.' },
+  { q: 'Can I change my registered courses?', a: 'Course changes are permitted during the registration window. After the deadline, file a Course Registration Appeal through the Academic office.' },
+  { q: 'How is my CGPA calculated?', a: 'CGPA = Total Weighted Score (sum of units × grade points) ÷ Total Credit Units attempted. Grade points: A=5, B=4, C=3, D=2, E=1, F=0.' },
+  { q: 'Who is my faculty advisor?', a: 'Your assigned advisor is displayed on the Dashboard. You can contact them via email for academic guidance and course selection advice.' }
+];
+
 const NOTIFICATIONS_DATA = [
   { id: 1, title: 'Registration Deadline', message: 'Course registration for Harmattan semester closes on March 15th. Please complete your selection.', time: '2 hours ago', read: false },
   { id: 2, title: 'Tuition Payment Reminder', message: 'Your tuition balance of $1,400.00 is outstanding. Late payment attracts a penalty fee.', time: '1 day ago', read: false },
@@ -358,7 +461,11 @@ function switchTab(tabName) {
     attendance_timetable: 'attendance_timetable-section',
     hostel_allocation: 'hostel_allocation-section',
     payments: 'payments-section',
-    settings: 'settings-section'
+    settings: 'settings-section',
+    academic_calendar: 'academic_calendar-section',
+    course_catalog: 'course_catalog-section',
+    downloads: 'downloads-section',
+    help_desk: 'help_desk-section'
   };
   var target = document.getElementById(targetMap[tabName]);
   if (target) target.classList.remove('hidden');
@@ -382,6 +489,10 @@ function switchTab(tabName) {
   else if (tabName === 'hostel_allocation') renderHostel();
   else if (tabName === 'payments') renderPayments();
   else if (tabName === 'settings') renderSettings();
+  else if (tabName === 'academic_calendar') renderAcademicCalendar();
+  else if (tabName === 'course_catalog') renderCourseCatalog();
+  else if (tabName === 'downloads') renderDownloads();
+  else if (tabName === 'help_desk') renderHelpDesk();
 
   // Close mobile sidebar
   var sidebar = document.getElementById('sidebar');
@@ -1109,7 +1220,12 @@ function markAllRead() {
 // ─── MOBILE ──────────────────────────────────────────────────
 function toggleMobileMenu() {
   var sidebar = document.getElementById('sidebar');
-  sidebar.classList.toggle('-translate-x-full');
+  if (!sidebar) return;
+  if (window.innerWidth >= 1024) {
+    sidebar.classList.toggle('desktop-collapsed');
+  } else {
+    sidebar.classList.toggle('-translate-x-full');
+  }
 }
 
 // ─── EVENT SETUP ─────────────────────────────────────────────
@@ -1179,9 +1295,12 @@ function setupEvents() {
     });
   }
 
-  // Mobile menu
+  // Mobile/desktop menu toggle
   var mobileBtn = document.getElementById('mobile-menu-toggle');
   if (mobileBtn) mobileBtn.addEventListener('click', toggleMobileMenu);
+
+  var sidebarCollapseBtn = document.getElementById('sidebar-collapse-btn');
+  if (sidebarCollapseBtn) sidebarCollapseBtn.addEventListener('click', toggleMobileMenu);
 
   // Notifications
   var notifBtn = document.getElementById('notif-toggle-btn');
@@ -1280,12 +1399,353 @@ function setupEvents() {
   var transBtn = document.getElementById('view-transcript-btn');
   if (transBtn) transBtn.addEventListener('click', generateTranscript);
 
+  // Calendar navigation
+  var calPrev = document.getElementById('cal-prev-month');
+  if (calPrev) calPrev.addEventListener('click', calendarPrevMonth);
+  var calNext = document.getElementById('cal-next-month');
+  if (calNext) calNext.addEventListener('click', calendarNextMonth);
+
+  // Course Catalog filters
+  var catSearch = document.getElementById('catalog-search-input');
+  if (catSearch) catSearch.addEventListener('input', renderCatalogCourses);
+  var catLevel = document.getElementById('catalog-level-filter');
+  if (catLevel) catLevel.addEventListener('change', renderCatalogCourses);
+  var catType = document.getElementById('catalog-type-filter');
+  if (catType) catType.addEventListener('change', renderCatalogCourses);
+
+  // Download category tabs (delegated)
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('download-cat-tab')) {
+      switchDownloadCategory(e.target.getAttribute('data-cat'));
+    }
+  });
+  // Download file buttons (delegated)
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('download-file-btn')) {
+      handleDownloadFile(e);
+    }
+  });
+
+  // Help Desk ticket form
+  var ticketForm = document.getElementById('helpdesk-ticket-form');
+  if (ticketForm) ticketForm.addEventListener('submit', handleTicketSubmit);
+  var ticketDesc = document.getElementById('ticket-description');
+  if (ticketDesc) ticketDesc.addEventListener('input', updateTicketCharCount);
+  // FAQ toggles (delegated)
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.faq-toggle')) {
+      toggleFAQ(e);
+    }
+  });
+  // Ticket detail (delegated)
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.ticket-detail-btn')) {
+      showTicketDetail(e);
+    }
+  });
+
   // Window resize → redraw chart
   var resizeTimer;
   window.addEventListener('resize', function() {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(drawGpaChart, 200);
   });
+}
+
+// ─── ACADEMIC CALENDAR ─────────────────────────────────────────
+var CALENDAR_CURRENT_MONTH = new Date().getMonth();
+var CALENDAR_CURRENT_YEAR = new Date().getFullYear();
+
+function renderAcademicCalendar() {
+  renderCalendarGrid(CALENDAR_CURRENT_MONTH, CALENDAR_CURRENT_YEAR);
+  renderCalendarEventsSidebar(CALENDAR_CURRENT_MONTH, CALENDAR_CURRENT_YEAR);
+}
+
+function renderCalendarGrid(month, year) {
+  var tbody = document.getElementById('calendar-grid-body');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('cal-month-label').textContent = monthNames[month] + ' ' + year;
+
+  var firstDay = new Date(year, month, 1).getDay();
+  var daysInMonth = new Date(year, month + 1, 0).getDate();
+  var today = new Date();
+  var todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+
+  var cells = [];
+  for (var i = 0; i < firstDay; i++) cells.push('<td class="px-2 py-3 text-center text-[10px] text-slate-300 dark:text-slate-700"></td>');
+  for (var d = 1; d <= daysInMonth; d++) {
+    var dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+    var isToday = dateStr === todayStr;
+    var dayEvents = ACADEMIC_EVENTS_DATA.filter(function(e) { return e.date === dateStr; });
+
+    var typeColors = { academic: 'bg-indigo-500', exam: 'bg-emerald-500', deadline: 'bg-amber-500', holiday: 'bg-rose-500', orientation: 'bg-sky-500' };
+    var dots = '';
+    for (var e = 0; e < Math.min(dayEvents.length, 3); e++) {
+      var color = typeColors[dayEvents[e].type] || 'bg-slate-400';
+      dots += '<span class="inline-block w-1.5 h-1.5 rounded-full ' + color + '"></span>';
+    }
+    if (dayEvents.length > 3) dots += '<span class="text-[8px] text-slate-400">+' + (dayEvents.length - 3) + '</span>';
+
+    var tdClass = 'px-2 py-3 text-center text-xs align-top border border-slate-100 dark:border-slate-800/60 ' + (isToday ? 'bg-indigo-50 dark:bg-indigo-900/20 ring-2 ring-indigo-400/40 rounded-lg' : '');
+    cells.push('<td class="' + tdClass + '"><span class="font-bold text-slate-700 dark:text-slate-300' + (isToday ? ' text-indigo-600 dark:text-indigo-400' : '') + '">' + d + '</span><div class="flex items-center justify-center gap-0.5 mt-1 min-h-4 flex-wrap">' + dots + '</div></td>');
+    if ((firstDay + d) % 7 === 0 && d < daysInMonth) {
+      cells.push('</tr><tr>');
+    }
+  }
+  var remaining = 7 - ((firstDay + daysInMonth) % 7 || 7);
+  for (var r = 0; r < remaining; r++) cells.push('<td class="px-2 py-3 text-center text-[10px] text-slate-300 dark:text-slate-700"></td>');
+
+  tbody.innerHTML = '<tr>' + cells.join('') + '</tr>';
+}
+
+function renderCalendarEventsSidebar(month, year) {
+  var container = document.getElementById('calendar-events-sidebar');
+  if (!container) return;
+  container.innerHTML = '';
+  var prefix = year + '-' + String(month + 1).padStart(2, '0');
+  var monthEvents = ACADEMIC_EVENTS_DATA.filter(function(e) { return e.date.indexOf(prefix) === 0; });
+  monthEvents.sort(function(a, b) { return a.date.localeCompare(b.date); });
+
+  if (monthEvents.length === 0) {
+    container.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">No events this month.</p>';
+    return;
+  }
+  for (var i = 0; i < monthEvents.length; i++) {
+    var ev = monthEvents[i];
+    var d = new Date(ev.date + 'T00:00:00');
+    var dayNum = d.getDate();
+    var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    var typeColors = { academic: 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800', exam: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800', deadline: 'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800', holiday: 'bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-800', orientation: 'bg-sky-100 dark:bg-sky-900/40 text-sky-600 dark:text-sky-400 border-sky-200 dark:border-sky-800' };
+    var card = document.createElement('div');
+    card.className = 'flex gap-3 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60';
+    card.innerHTML = '<div class="flex-shrink-0 w-10 text-center"><span class="block font-black text-sm text-slate-700 dark:text-slate-300">' + dayNum + '</span><span class="block text-[8px] font-bold text-slate-400 uppercase">' + dayNames[d.getDay()] + '</span></div>' +
+      '<div class="flex-1 min-w-0"><p class="text-xs font-bold text-slate-700 dark:text-slate-300 leading-tight">' + ev.title + '</p><p class="text-[9px] text-slate-400 mt-0.5">' + (ev.desc || '') + '</p></div>' +
+      '<span class="flex-shrink-0 self-start px-2 py-0.5 rounded-full text-[8px] font-bold border ' + (typeColors[ev.type] || 'bg-slate-100 text-slate-500') + '">' + ev.type + '</span>';
+    container.appendChild(card);
+  }
+}
+
+function calendarPrevMonth() {
+  CALENDAR_CURRENT_MONTH--;
+  if (CALENDAR_CURRENT_MONTH < 0) { CALENDAR_CURRENT_MONTH = 11; CALENDAR_CURRENT_YEAR--; }
+  renderAcademicCalendar();
+}
+
+function calendarNextMonth() {
+  CALENDAR_CURRENT_MONTH++;
+  if (CALENDAR_CURRENT_MONTH > 11) { CALENDAR_CURRENT_MONTH = 0; CALENDAR_CURRENT_YEAR++; }
+  renderAcademicCalendar();
+}
+
+// ─── COURSE CATALOG ───────────────────────────────────────────
+function renderCourseCatalog() {
+  renderCatalogCourses();
+}
+
+function renderCatalogCourses() {
+  var grid = document.getElementById('catalog-courses-grid');
+  if (!grid) return;
+  var query = (document.getElementById('catalog-search-input').value || '').toLowerCase();
+  var levelFilter = document.getElementById('catalog-level-filter').value;
+  var typeFilter = document.getElementById('catalog-type-filter').value;
+
+  var filtered = CATALOG_COURSES_DATA.filter(function(c) {
+    if (levelFilter !== 'all' && c.level !== parseInt(levelFilter)) return false;
+    if (typeFilter !== 'all' && c.type !== typeFilter) return false;
+    if (query && c.code.toLowerCase().indexOf(query) === -1 && c.title.toLowerCase().indexOf(query) === -1) return false;
+    return true;
+  });
+
+  grid.innerHTML = '';
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="col-span-full text-center py-12"><p class="text-sm text-slate-400">No courses match your search criteria.</p></div>';
+    return;
+  }
+  for (var i = 0; i < filtered.length; i++) {
+    var c = filtered[i];
+    var typeColor = c.type === 'Core' ? 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400' : c.type === 'Elective' ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400';
+    var card = document.createElement('div');
+    card.className = 'bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm hover:shadow-md transition-all glass-card-hover';
+    card.innerHTML = '<div class="flex justify-between items-start mb-3"><div><span class="text-xs font-black text-indigo-600 dark:text-indigo-400">' + c.code + '</span><h4 class="font-bold text-sm text-slate-800 dark:text-slate-200 mt-0.5">' + c.title + '</h4></div><span class="px-2.5 py-1 rounded-full text-[9px] font-bold ' + typeColor + '">' + c.type + '</span></div>' +
+      '<div class="flex items-center gap-4 text-[10px] text-slate-400"><span>' + c.units + ' Units</span><span>Level ' + c.level + '</span></div>';
+    grid.appendChild(card);
+  }
+}
+
+// ─── RESOURCE LIBRARY ─────────────────────────────────────────
+var DOWNLOAD_ACTIVE_CATEGORY = 'all';
+
+function renderDownloads() {
+  renderDownloadsGrid();
+}
+
+function renderDownloadsGrid() {
+  var grid = document.getElementById('downloads-grid');
+  if (!grid) return;
+  var filtered = DOWNLOAD_ACTIVE_CATEGORY === 'all' ? DOWNLOAD_RESOURCES_DATA : DOWNLOAD_RESOURCES_DATA.filter(function(d) { return d.category === DOWNLOAD_ACTIVE_CATEGORY; });
+
+  grid.innerHTML = '';
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="col-span-full text-center py-12"><p class="text-sm text-slate-400">No resources in this category yet.</p></div>';
+    return;
+  }
+  for (var i = 0; i < filtered.length; i++) {
+    var r = filtered[i];
+    var icons = { PDF: 'M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z', ZIP: 'M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l3 3h7a2 2 0 012 2v1M5 12h14M5 12v2m14-2v2', DOC: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' };
+    var iconPath = icons[r.fileType] || icons.PDF;
+    var card = document.createElement('div');
+    card.className = 'bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm hover:shadow-md transition-all glass-card-hover flex flex-col';
+    card.innerHTML = '<div class="flex items-start gap-3 mb-3"><div class="w-10 h-10 rounded-xl bg-indigo-55 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="' + iconPath + '"/></svg></div><div class="flex-1 min-w-0"><h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 leading-tight">' + r.title + '</h4><p class="text-[9px] text-slate-400 mt-0.5">' + r.desc + '</p></div></div>' +
+      '<div class="flex items-center justify-between mt-auto pt-3 border-t border-slate-200 dark:border-slate-800"><span class="text-[9px] text-slate-400">' + r.fileType + ' · ' + r.fileSize + '</span>' +
+      '<button class="download-file-btn px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-[9px] font-bold transition-colors cursor-pointer border-0 flex items-center gap-1" data-id="' + r.id + '">' +
+      '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg> Download</button></div>';
+    grid.appendChild(card);
+  }
+}
+
+function switchDownloadCategory(cat) {
+  DOWNLOAD_ACTIVE_CATEGORY = cat;
+  var tabs = document.querySelectorAll('.download-cat-tab');
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.remove('bg-indigo-600', 'text-white');
+    tabs[i].classList.add('bg-slate-200', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-400');
+    if (tabs[i].getAttribute('data-cat') === cat) {
+      tabs[i].classList.remove('bg-slate-200', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-400');
+      tabs[i].classList.add('bg-indigo-600', 'text-white');
+    }
+  }
+  renderDownloadsGrid();
+}
+
+function handleDownloadFile(e) {
+  var id = e.target.getAttribute('data-id');
+  var resource = DOWNLOAD_RESOURCES_DATA.find(function(r) { return r.id === id; });
+  if (resource) {
+    showToast('Downloading "' + resource.title + '" (' + resource.fileSize + ')...', 'success');
+  }
+}
+
+// ─── HELP DESK ───────────────────────────────────────────────
+var SUPPORT_TICKETS_DATA = [];
+var TICKET_COUNTER = 1000;
+
+function renderHelpDesk() {
+  renderFAQs();
+  renderTicketsList();
+  updateTicketBadge();
+}
+
+function renderFAQs() {
+  var container = document.getElementById('helpdesk-faq-container');
+  if (!container) return;
+  container.innerHTML = '';
+  for (var i = 0; i < FAQ_DATA.length; i++) {
+    var faq = FAQ_DATA[i];
+    var item = document.createElement('div');
+    item.className = 'faq-item rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60 overflow-hidden';
+    item.innerHTML = '<button class="faq-toggle w-full flex items-center justify-between gap-3 px-4 py-3.5 text-left bg-transparent border-0 cursor-pointer" data-index="' + i + '">' +
+      '<span class="text-xs font-bold text-slate-700 dark:text-slate-300 flex-1">' + faq.q + '</span>' +
+      '<svg class="faq-chevron w-4 h-4 text-slate-400 transition-transform duration-200 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>' +
+      '<div class="faq-answer hidden px-4 pb-4"><p class="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">' + faq.a + '</p></div>';
+    container.appendChild(item);
+  }
+}
+
+function toggleFAQ(e) {
+  var btn = e.target.closest('.faq-toggle');
+  if (!btn) return;
+  var answer = btn.nextElementSibling;
+  var chevron = btn.querySelector('.faq-chevron');
+  if (answer.classList.contains('hidden')) {
+    answer.classList.remove('hidden');
+    chevron.classList.add('rotate-180');
+  } else {
+    answer.classList.add('hidden');
+    chevron.classList.remove('rotate-180');
+  }
+}
+
+function handleTicketSubmit(e) {
+  e.preventDefault();
+  var category = document.getElementById('ticket-category').value;
+  var priority = document.getElementById('ticket-priority').value;
+  var subject = document.getElementById('ticket-subject').value.trim();
+  var description = document.getElementById('ticket-description').value.trim();
+
+  if (!category) { showToast('Please select a ticket category.', 'error'); return; }
+  if (!subject) { showToast('Please enter a subject.', 'error'); return; }
+  if (!description) { showToast('Please describe your issue.', 'error'); return; }
+
+  TICKET_COUNTER++;
+  var ticket = {
+    id: 'TKT-' + TICKET_COUNTER,
+    category: category,
+    priority: priority,
+    subject: subject,
+    description: description,
+    status: 'Open',
+    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+    updates: [{ date: new Date().toLocaleString(), message: 'Ticket created and submitted for review.' }]
+  };
+  SUPPORT_TICKETS_DATA.unshift(ticket);
+
+  document.getElementById('helpdesk-ticket-form').reset();
+  document.getElementById('ticket-char-count').textContent = '0/2000';
+  renderTicketsList();
+  updateTicketBadge();
+  showToast('Support ticket ' + ticket.id + ' submitted successfully.', 'success');
+}
+
+function renderTicketsList() {
+  var container = document.getElementById('tickets-list-container');
+  if (!container) return;
+  container.innerHTML = '';
+  if (SUPPORT_TICKETS_DATA.length === 0) {
+    container.innerHTML = '<p class="text-xs text-slate-400 text-center py-8">No tickets submitted yet.</p>';
+    return;
+  }
+  for (var i = 0; i < SUPPORT_TICKETS_DATA.length; i++) {
+    var t = SUPPORT_TICKETS_DATA[i];
+    var priorityColors = { Low: 'bg-slate-100 dark:bg-slate-800 text-slate-500', Medium: 'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400', High: 'bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400', Urgent: 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400' };
+    var statusColors = { Open: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400', 'In Progress': 'bg-sky-100 dark:bg-sky-900/40 text-sky-600 dark:text-sky-400', Resolved: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400', Closed: 'bg-slate-100 dark:bg-slate-800 text-slate-400' };
+    var card = document.createElement('div');
+    card.className = 'p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60';
+    card.innerHTML = '<div class="flex items-start justify-between gap-3 mb-2"><div class="flex-1 min-w-0"><div class="flex items-center gap-2"><span class="text-[10px] font-black text-indigo-600 dark:text-indigo-400">' + t.id + '</span><span class="px-2 py-0.5 rounded-full text-[8px] font-bold border ' + (priorityColors[t.priority] || '') + '">' + t.priority + '</span><span class="px-2 py-0.5 rounded-full text-[8px] font-bold ' + (statusColors[t.status] || '') + '">' + t.status + '</span></div><h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 mt-1">' + t.subject + '</h4></div><span class="text-[9px] text-slate-400 flex-shrink-0">' + t.date + '</span></div>' +
+      '<div class="flex items-center gap-2 text-[9px] text-slate-400"><span>' + t.category + '</span><span>·</span><span>' + t.updates.length + ' update(s)</span></div>' +
+      '<button class="ticket-detail-btn mt-2 text-[9px] font-bold text-indigo-600 hover:text-indigo-700 bg-transparent border-0 cursor-pointer p-0" data-id="' + t.id + '">View details →</button>';
+    container.appendChild(card);
+  }
+}
+
+function updateTicketBadge() {
+  var badge = document.getElementById('ticket-count-badge');
+  if (badge) badge.textContent = SUPPORT_TICKETS_DATA.length + ' ticket' + (SUPPORT_TICKETS_DATA.length !== 1 ? 's' : '');
+}
+
+function showTicketDetail(e) {
+  var btn = e.target.closest('.ticket-detail-btn');
+  if (!btn) return;
+  var id = btn.getAttribute('data-id');
+  var ticket = SUPPORT_TICKETS_DATA.find(function(t) { return t.id === id; });
+  if (!ticket) return;
+
+  var updatesHtml = '';
+  for (var i = 0; i < ticket.updates.length; i++) {
+    updatesHtml += '<div class="flex gap-3 pb-3 border-b border-slate-100 dark:border-slate-800 last:border-0"><span class="text-[9px] text-slate-400 flex-shrink-0 w-20">' + ticket.updates[i].date + '</span><p class="text-[10px] text-slate-600 dark:text-slate-400">' + ticket.updates[i].message + '</p></div>';
+  }
+
+  showToast(
+    '<div class="text-left"><p class="font-bold text-xs">' + ticket.id + ': ' + ticket.subject + '</p><p class="text-[10px] text-slate-500 mt-1">' + ticket.category + ' · ' + ticket.priority + ' priority · Status: ' + ticket.status + '</p><div class="mt-2 space-y-1">' + updatesHtml + '</div></div>',
+    'info'
+  );
+}
+
+function updateTicketCharCount() {
+  var textarea = document.getElementById('ticket-description');
+  var count = document.getElementById('ticket-char-count');
+  if (textarea && count) count.textContent = textarea.value.length + '/2000';
 }
 
 // ─── INIT ────────────────────────────────────────────────────
