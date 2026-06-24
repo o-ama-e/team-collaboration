@@ -1,7 +1,7 @@
 // Academic Student Portal App - Core Javascript
 
 // LocalStorage Persistence Configuration
-const STORAGE_KEY = "RUN_PORTAL_STATE_V4";
+const STORAGE_KEY = "RUN_PORTAL_STATE_V4.1";
 
 // Default Database State (used as fallback)
 const DEFAULT_STATE = {
@@ -22,6 +22,9 @@ const DEFAULT_STATE = {
     paidBalance: 0.00,
     registrationSubmitted: false,
     registrationDate: null,
+    hostelStatus: "Allocated & Settled",
+    prefHostel: "Redemption Hall",
+    hostelRoom: "Block B, Room 104 (Bedspace 3)",
     isDark: false
   },
 
@@ -130,7 +133,7 @@ const DEFAULT_STATE = {
     "CSC401": { code: "CSC401", title: "Research Project", attended: 19, total: 20 },
     "CSC403": { code: "CSC403", title: "Compiler Construction", attended: 22, total: 25 },
     "CSC405": { code: "CSC405", title: "Artificial Intelligence", attended: 18, total: 24 },
-    "CSC407": { code: "CSC407", title: "Computer Graphics", attended: 13, total: 22 }, // Below 70%!
+    "CSC407": { code: "CSC407", title: "Computer Graphics", attended: 13, total: 22 }, 
     "CSC411": { code: "CSC411", title: "Distributed Systems", attended: 8, total: 10 }
   },
 
@@ -153,24 +156,49 @@ const DEFAULT_STATE = {
       { sender: "student", message: "Hi, I was billed twice for the Library and IT Levy. One invoice is INV-2025-002, and there was a double invoice INV-2025-003. Kindly cancel the double charge.", time: "08:15 AM" },
       { sender: "admin", message: "Hello Ama, we have verified this system anomaly and removed the duplicate invoice. Only INV-2025-002 is outstanding now.", time: "11:45 AM" }
     ]}
-  ]
+  ],
+
+  hostelRoommates: [
+    { name: "David Alao", matric: "RUN/CMP/22/1004", level: "400 Level", phone: "+234 815 123 4567", avatar: "DA" },
+    { name: "Samuel Peters", matric: "RUN/CMP/22/1015", level: "400 Level", phone: "+234 803 765 4321", avatar: "SP" },
+    { name: "Daniel Ibe", matric: "RUN/CMP/22/1033", level: "400 Level", phone: "+234 809 999 8888", avatar: "DI" }
+  ],
+
+  examsSchedule: [
+    { code: "CSC403", title: "Compiler Construction", date: "Dec 8, 2026", time: "09:00 AM", venue: "Convocation Hall", seat: "Row C, Seat 42" },
+    { code: "CSC405", title: "Artificial Intelligence", date: "Dec 10, 2026", time: "01:00 PM", venue: "Lecture Hall A", seat: "Row F, Seat 18" },
+    { code: "CSC407", title: "Computer Graphics", date: "Dec 12, 2026", time: "09:00 AM", venue: "Convocation Hall", seat: "Row A, Seat 104" },
+    { code: "CSC411", title: "Distributed Systems", date: "Dec 15, 2026", time: "01:00 PM", venue: "Computer Lab 3", seat: "Row D, Seat 07" }
+  ],
+
+  campusLandmarks: [
+    { name: "Science Lecture Theatre (SLT)", category: "Lecture Halls", hours: "08:00 AM - 06:00 PM", location: "Block C, Science Complex", desc: "Main auditorium hosting large science and engineering lectures. Equipped with projection and audio systems.", icon: "🏛️" },
+    { name: "University Library", category: "Study Areas", hours: "08:00 AM - 10:00 PM", location: "Central Campus Road", desc: "Multi-level library with access to printed textbooks, quiet zones, digital research computers, and e-learning resources.", icon: "📖" },
+    { name: "ICT Development Centre", category: "Technology", hours: "09:00 AM - 05:00 PM", location: "Adjacent to Senate Building", desc: "Handles portal accounts, student email setups, ID card generation, and campus Wi-Fi access configurations.", icon: "💻" },
+    { name: "Sports Complex & Arena", category: "Recreation", hours: "06:00 AM - 08:00 PM", location: "East Wing Campus", desc: "Hosts football fields, basketball courts, running tracks, and indoor gymnasiums for sports activities.", icon: "⚽" },
+    { name: "University Dining Hall", category: "Cafeteria", hours: "07:00 AM - 09:00 PM", location: "Student Union Block", desc: "Campus dining services offering standard local and continental dishes, snacks, and student groceries.", icon: "🍴" },
+    { name: "Redemption Hall", category: "Hostels", hours: "24/7 Access", location: "North Residential Sector", desc: "Male students' hall of residence offering clean rooms, common study zones, and recreational lounges.", icon: "🏢" }
+  ],
+
+  evaluations: {}
 };
 
-// Global App State
+// Global Application State Variables
 let STATE = {};
 let selectedTab = "dashboard";
 let activeTicketId = null;
 
-// Load state from localstorage or load default
+// Persistence
 function loadState() {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored) {
     try {
       STATE = JSON.parse(stored);
-      // Ensure missing keys are initialized
-      if (!STATE.attendance) STATE.attendance = DEFAULT_STATE.attendance;
-      if (!STATE.libraryFiles) STATE.libraryFiles = DEFAULT_STATE.libraryFiles;
-      if (!STATE.supportTickets) STATE.supportTickets = DEFAULT_STATE.supportTickets;
+      // Ensure new database arrays are correctly merged
+      if (!STATE.hostelRoommates) STATE.hostelRoommates = DEFAULT_STATE.hostelRoommates;
+      if (!STATE.examsSchedule) STATE.examsSchedule = DEFAULT_STATE.examsSchedule;
+      if (!STATE.campusLandmarks) STATE.campusLandmarks = DEFAULT_STATE.campusLandmarks;
+      if (!STATE.evaluations) STATE.evaluations = DEFAULT_STATE.evaluations;
     } catch (e) {
       STATE = JSON.parse(JSON.stringify(DEFAULT_STATE));
     }
@@ -183,7 +211,7 @@ function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE));
 }
 
-// Initialization on DOM load
+// App Initialization
 document.addEventListener("DOMContentLoaded", () => {
   loadState();
   initTheme();
@@ -194,17 +222,20 @@ document.addEventListener("DOMContentLoaded", () => {
   initCourseRegistration();
   initResultChecker();
   initTimetableAttendance();
+  initHostelModule();
   initLibraryModule();
   initPaymentPanel();
+  initEvaluationModule();
+  initCampusDirectory();
   initHelpdeskModule();
   initSettings();
   drawCGPAChart();
   
-  // Set tab defaults
+  // View home
   switchTab("dashboard");
 });
 
-// Helper for UI Toasts
+// Toast Notifications Helper
 function showToast(message, type = "success") {
   const toast = document.createElement("div");
   toast.className = `fixed bottom-5 right-5 flex items-center gap-3 px-5 py-4 rounded-2xl shadow-xl border animate-slide-in-right z-50 transition-all ${
@@ -246,7 +277,7 @@ function initTheme() {
     STATE.student.isDark = dark;
     saveState();
     drawCGPAChart();
-  };
+  }
 
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const isDark = storedTheme === "dark" || (!storedTheme && prefersDark);
@@ -259,7 +290,7 @@ function initTheme() {
   });
 }
 
-// Navigation & Tab Switching
+// Sidebar Navigation
 function setupSidebarNavigation() {
   const sidebarLinks = document.querySelectorAll("#sidebar nav a");
   
@@ -279,7 +310,7 @@ function setupSidebarNavigation() {
   });
 }
 
-// Mobile Toggles & Backdrop Overlay
+// Mobile sidebar drawer
 function setupMobileDrawerHandlers() {
   const burgerBtn = document.getElementById("mobile-menu-toggle");
   const sidebar = document.getElementById("sidebar");
@@ -296,7 +327,7 @@ function setupMobileDrawerHandlers() {
   });
 }
 
-// Global programmatic Tab switching with sidebar sync
+// Global Switch Tab function with sidebar sync
 function switchTab(tabId) {
   selectedTab = tabId;
   const sections = document.querySelectorAll(".tab-content-section");
@@ -308,18 +339,16 @@ function switchTab(tabId) {
     targetSection.classList.add("animate-fade-in");
   }
 
-  // Sync Sidebar Active Classes
   const sidebarLinks = document.querySelectorAll("#sidebar nav a");
   sidebarLinks.forEach(link => {
     const linkTab = link.getAttribute("data-tab");
     if (linkTab === tabId) {
-      link.className = "flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors";
+      link.className = "flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors";
     } else {
-      link.className = "flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors";
+      link.className = "flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors";
     }
   });
 
-  // Re-run context details
   if (tabId === "dashboard") {
     drawCGPAChart();
     renderDashboardClasses();
@@ -419,8 +448,8 @@ function renderDashboardClasses() {
   todaySchedule.slots.forEach(slot => {
     let colorClasses = "bg-indigo-50 border-indigo-150 text-indigo-805 dark:bg-indigo-950/20 dark:border-indigo-900/40 dark:text-indigo-300";
     if (slot.color === "emerald") colorClasses = "bg-emerald-50 border-emerald-150 text-emerald-805 dark:bg-emerald-950/20 dark:border-emerald-900/40 dark:text-emerald-300";
-    if (slot.color === "amber") colorClasses = "bg-amber-50 border-amber-150 text-amber-805 dark:bg-amber-950/20 dark:border-amber-900/40 dark:text-amber-300";
-    if (slot.color === "purple") colorClasses = "bg-purple-50 border-purple-150 text-purple-805 dark:bg-purple-950/20 dark:border-purple-900/40 dark:text-purple-300";
+    if (slot.color === "amber") colorClasses = "bg-amber-50 border-amber-150 text-amber-805 dark:bg-emerald-950/20 dark:border-amber-900/40 dark:text-emerald-300";
+    if (slot.color === "purple") colorClasses = "bg-purple-50 border-purple-150 text-purple-805 dark:bg-purple-950/20 dark:border-purple-900/40 dark:text-purple-305";
 
     const slotEl = document.createElement("div");
     slotEl.className = `p-3 rounded-2xl border flex items-center justify-between gap-3 ${colorClasses}`;
@@ -452,8 +481,6 @@ function checkInClass(courseCode) {
     attData.attended++;
     saveState();
     showToast(`Class check-in processed for ${courseCode}! Attendance registered.`);
-    
-    // Refresh both views
     initTimetableAttendance();
     renderDashboardClasses();
   } else {
@@ -490,7 +517,7 @@ function initNotificationPanel() {
       item.className = `p-3.5 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/40 cursor-pointer transition-colors ${!notif.read ? 'bg-indigo-50/30 dark:bg-indigo-950/10' : ''}`;
       item.innerHTML = `
         <div class="flex justify-between items-start gap-2">
-          <h4 class="font-semibold text-xs text-slate-805 dark:text-slate-205 ${!notif.read ? 'pr-2' : ''}">${notif.title}</h4>
+          <h4 class="font-semibold text-xs text-slate-850 dark:text-slate-205 ${!notif.read ? 'pr-2' : ''}">${notif.title}</h4>
           <span class="text-[9px] text-slate-400 whitespace-nowrap">${notif.time}</span>
         </div>
         <p class="text-xs text-slate-505 dark:text-slate-400 mt-1 leading-relaxed">${notif.message}</p>
@@ -554,7 +581,7 @@ function initCourseRegistration() {
           >
         </td>
         <td class="px-6 py-4">
-          <span onclick="openCourseDrawer('${course.code}')" class="font-extrabold text-xs text-indigo-600 hover:underline cursor-pointer">${course.code}</span>
+          <span onclick="openCourseDrawer('${course.code}')" class="font-extrabold text-xs text-indigo-605 hover:underline cursor-pointer">${course.code}</span>
         </td>
         <td class="px-6 py-4 text-xs text-slate-750 dark:text-slate-300 font-medium">${course.title}</td>
         <td class="px-6 py-4 text-center text-xs text-slate-600 dark:text-slate-400 font-semibold">${course.units}</td>
@@ -575,6 +602,7 @@ function initCourseRegistration() {
         saveState();
         recalculateUnits();
         initGPAValPlanner(); 
+        initEvaluationModule(); // Re-sync Lecturer evaluations
       });
 
       container.appendChild(row);
@@ -738,16 +766,16 @@ function initResultChecker() {
       const row = document.createElement("tr");
       row.className = "border-b border-slate-100 dark:border-slate-800/80 hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors";
       row.innerHTML = `
-        <td class="px-6 py-4 font-bold text-xs text-slate-800 dark:text-slate-200">
-          <span onclick="openCourseDrawer('${c.code}')" class="hover:underline text-indigo-605 cursor-pointer">${c.code}</span>
+        <td class="px-6 py-4 font-bold text-xs text-slate-805 dark:text-slate-200">
+          <span onclick="openCourseDrawer('${c.code}')" class="hover:underline text-indigo-600 cursor-pointer">${c.code}</span>
         </td>
-        <td class="px-6 py-4 text-xs text-slate-705 dark:text-slate-300 font-medium">${c.title}</td>
+        <td class="px-6 py-4 text-xs text-slate-700 dark:text-slate-300 font-medium">${c.title}</td>
         <td class="px-6 py-4 text-center text-xs text-slate-600 dark:text-slate-400 font-semibold">${c.units}</td>
         <td class="px-6 py-4 text-center font-bold text-xs ${
           c.grade === "A" ? "text-emerald-600 dark:text-emerald-400" :
           c.grade === "B" ? "text-indigo-600 dark:text-indigo-400" :
           c.grade === "C" ? "text-amber-600 dark:text-amber-400" :
-          "text-rose-600 dark:text-rose-400"
+          "text-rose-605 dark:text-rose-400"
         }">${c.grade}</td>
         <td class="px-6 py-4 text-center text-xs text-slate-600 dark:text-slate-400 font-medium">${c.points}</td>
         <td class="px-6 py-4 text-center text-xs text-slate-600 dark:text-slate-400 font-medium">${c.units * c.points}</td>
@@ -896,7 +924,50 @@ function initResultChecker() {
   });
 }
 
-// GPA Simulator
+// GPA Target Solver math
+function calculateRequiredSemesterGPA() {
+  const goalInput = document.getElementById("target-cgpa-goal");
+  const targetCGPA = parseFloat(goalInput.value);
+
+  if (isNaN(targetCGPA) || targetCGPA < 0.00 || targetCGPA > 5.00) {
+    showToast("Please enter a valid target CGPA between 0.00 and 5.00.", "error");
+    return;
+  }
+
+  // Calculate existing credits and points
+  let pastCredits = 0;
+  let pastPoints = 0;
+  
+  Object.keys(STATE.pastResults).forEach(key => {
+    STATE.pastResults[key].courses.forEach(c => {
+      pastCredits += c.units;
+      pastPoints += (c.units * c.points);
+    });
+  });
+
+  const selectedCurrent = STATE.availableCourses.filter(c => c.selected);
+  const currentCredits = selectedCurrent.reduce((sum, c) => sum + c.units, 0);
+
+  if (currentCredits === 0) {
+    showToast("Please register courses first to calculate required GPA.", "error");
+    return;
+  }
+
+  const totalCredits = pastCredits + currentCredits;
+  const targetTotalPoints = targetCGPA * totalCredits;
+  const requiredPointsForSemester = targetTotalPoints - pastPoints;
+  const requiredGPA = requiredPointsForSemester / currentCredits;
+
+  if (requiredGPA > 5.00) {
+    showToast(`Mathematically impossible! You would need a GPA of ${requiredGPA.toFixed(2)} this semester to hit a CGPA of ${targetCGPA.toFixed(2)}. Max GPA is 5.00.`, "error");
+  } else if (requiredGPA <= 0.00) {
+    showToast(`Goal already secured! You only need a GPA of 0.00 this semester to maintain a CGPA of ${targetCGPA.toFixed(2)}.`);
+  } else {
+    showToast(`To achieve a CGPA of ${targetCGPA.toFixed(2)}, you must score a GPA of exactly ${requiredGPA.toFixed(2)} in your current ${currentCredits} registered credits.`);
+  }
+}
+
+// GPA Simulator Setup
 function initGPAValPlanner() {
   const container = document.getElementById("planner-inputs-container");
   container.innerHTML = "";
@@ -904,7 +975,7 @@ function initGPAValPlanner() {
   const selected = STATE.availableCourses.filter(c => c.selected);
   
   if (selected.length === 0) {
-    container.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-xs text-slate-450 font-semibold">Please select courses in Course Registration first to simulate results.</td></tr>`;
+    container.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-xs text-slate-400 font-semibold">Please select courses in Course Registration first to simulate results.</td></tr>`;
     calculateSimulatedGPA();
     return;
   }
@@ -919,7 +990,7 @@ function initGPAValPlanner() {
       <td class="px-6 py-4 text-xs text-slate-700 dark:text-slate-300 font-medium">${course.title}</td>
       <td class="px-6 py-4 text-center text-xs text-slate-600 dark:text-slate-400 font-semibold">${course.units}</td>
       <td class="px-6 py-4 text-center">
-        <select data-units="${course.units}" class="sim-grade-select px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-bold text-indigo-650 dark:text-indigo-400 focus:outline-none cursor-pointer">
+        <select data-units="${course.units}" class="sim-grade-select px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-bold text-indigo-600 dark:text-indigo-400 focus:outline-none cursor-pointer">
           <option value="5">A (5.00)</option>
           <option value="4">B (4.00)</option>
           <option value="3">C (3.00)</option>
@@ -975,12 +1046,14 @@ function calculateSimulatedGPA() {
   document.getElementById("sim-cgpa-val").textContent = simulatedCGPA.toFixed(2);
   
   const deltaEl = document.getElementById("sim-cgpa-delta");
-  if (delta >= 0) {
-    deltaEl.textContent = `+${delta.toFixed(2)}`;
-    deltaEl.className = "text-sm font-black text-emerald-605 dark:text-emerald-400";
-  } else {
-    deltaEl.textContent = `${delta.toFixed(2)}`;
-    deltaEl.className = "text-sm font-black text-rose-600 dark:text-rose-450";
+  if (deltaEl) {
+    if (delta >= 0) {
+      deltaEl.textContent = `+${delta.toFixed(2)}`;
+      deltaEl.className = "text-sm font-black text-emerald-600 dark:text-emerald-400";
+    } else {
+      deltaEl.textContent = `${delta.toFixed(2)}`;
+      deltaEl.className = "text-sm font-black text-rose-600 dark:text-rose-400";
+    }
   }
 
   const ring = document.getElementById("sim-gpa-ring");
@@ -990,13 +1063,12 @@ function calculateSimulatedGPA() {
   }
 }
 
-// Draw line graph
+// Canvas CGPA curve
 function drawCGPAChart() {
   const canvas = document.getElementById("gpaChart");
   if (!canvas) return;
 
   const ctx = canvas.getContext("2d");
-  
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
   canvas.width = rect.width * dpr;
@@ -1100,11 +1172,33 @@ function drawCGPAChart() {
   });
 }
 
-// Attendance & Timetable
+// Timetable, Exams & Attendance
 function initTimetableAttendance() {
   const tableContainer = document.getElementById("schedule-cards-container");
   const attendanceContainer = document.getElementById("attendance-progress-container");
   const alertBanner = document.getElementById("attendance-alert-banner");
+  const examsTable = document.getElementById("exams-timetable-body");
+
+  // Tab subrouting
+  const tabTimetable = document.getElementById("tab-sub-timetable");
+  const tabExams = document.getElementById("tab-sub-exams");
+  const timetableSubView = document.getElementById("sub-timetable-view");
+  const examsSubView = document.getElementById("sub-exams-view");
+
+  tabTimetable.addEventListener("click", () => {
+    tabTimetable.className = "px-5 py-2.5 text-xs font-extrabold rounded-xl bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors cursor-pointer";
+    tabExams.className = "px-5 py-2.5 text-xs font-extrabold rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer";
+    timetableSubView.classList.remove("hidden");
+    examsSubView.classList.add("hidden");
+  });
+
+  tabExams.addEventListener("click", () => {
+    tabExams.className = "px-5 py-2.5 text-xs font-extrabold rounded-xl bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors cursor-pointer";
+    tabTimetable.className = "px-5 py-2.5 text-xs font-extrabold rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer";
+    examsSubView.classList.remove("hidden");
+    timetableSubView.classList.add("hidden");
+    renderExams();
+  });
 
   tableContainer.innerHTML = "";
   attendanceContainer.innerHTML = "";
@@ -1114,43 +1208,37 @@ function initTimetableAttendance() {
   Object.keys(STATE.attendance).forEach(code => {
     const data = STATE.attendance[code];
     const percent = (data.attended / data.total) * 100;
-    
-    if (percent < 70) {
-      showWarning = true;
-    }
+    if (percent < 70) showWarning = true;
 
     const item = document.createElement("div");
     item.className = "flex items-center justify-between gap-4 p-3 bg-slate-50/50 dark:bg-slate-850 rounded-2xl border border-slate-100 dark:border-slate-800/80";
     
     const circumference = 150.8;
     const offset = circumference - (percent / 100) * circumference;
-    
     const ringColor = percent >= 85 ? "stroke-emerald-500" : percent >= 70 ? "stroke-indigo-500" : "stroke-rose-500";
 
     item.innerHTML = `
       <div class="overflow-hidden">
-        <span onclick="openCourseDrawer('${data.code}')" class="font-bold text-xs hover:underline text-indigo-605 cursor-pointer">${data.code}</span>
+        <span onclick="openCourseDrawer('${data.code}')" class="font-bold text-xs hover:underline text-indigo-600 cursor-pointer">${data.code}</span>
         <h4 class="text-[10px] text-slate-500 dark:text-slate-400 font-medium truncate mt-0.5 max-w-44">${data.title}</h4>
-        <span class="text-[9px] font-bold mt-1 inline-block ${percent >= 70 ? 'text-slate-400' : 'text-rose-550 animate-pulse'}">
+        <span class="text-[9px] font-bold mt-1 inline-block ${percent >= 70 ? 'text-slate-400' : 'text-rose-500 animate-pulse'}">
           Presence: ${data.attended} / ${data.total} lectures
         </span>
       </div>
-      
       <div class="relative w-16 h-16 flex items-center justify-center flex-shrink-0">
         <svg class="w-full h-full transform -rotate-90">
           <circle cx="32" cy="32" r="24" class="stroke-slate-200 dark:stroke-slate-800 fill-none" stroke-width="4.5"/>
           <circle cx="32" cy="32" r="24" class="progress-ring__circle ${ringColor} fill-none" stroke-width="4.5" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}" stroke-linecap="round"/>
         </svg>
-        <span class="absolute text-[10px] font-black ${percent >= 70 ? 'text-slate-700 dark:text-slate-200' : 'text-rose-600 dark:text-rose-400'}">${Math.round(percent)}%</span>
+        <span class="absolute text-[10px] font-black">${Math.round(percent)}%</span>
       </div>
     `;
     attendanceContainer.appendChild(item);
   });
 
-  if (showWarning) {
-    alertBanner.classList.remove("hidden");
-  } else {
-    alertBanner.classList.add("hidden");
+  if (alertBanner) {
+    if (showWarning) alertBanner.classList.remove("hidden");
+    else alertBanner.classList.add("hidden");
   }
 
   STATE.weeklySchedule.forEach(item => {
@@ -1165,7 +1253,7 @@ function initTimetableAttendance() {
         let badgeColor = "bg-indigo-50 border-indigo-100 text-indigo-700 dark:bg-indigo-950/20 dark:border-indigo-900/40 dark:text-indigo-300";
         if (slot.color === "emerald") badgeColor = "bg-emerald-50 border-emerald-100 text-emerald-700 dark:bg-emerald-950/20 dark:border-emerald-900/40 dark:text-emerald-300";
         if (slot.color === "amber") badgeColor = "bg-amber-50 border-amber-100 text-amber-700 dark:bg-amber-950/20 dark:border-amber-900/40 dark:text-amber-300";
-        if (slot.color === "purple") badgeColor = "bg-purple-50 border-purple-100 text-purple-700 dark:bg-purple-950/20 dark:border-purple-900/40 dark:text-purple-300";
+        if (slot.color === "purple") badgeColor = "bg-purple-50 border-purple-100 text-purple-700 dark:bg-purple-950/20 dark:border-purple-900/40 dark:text-indigo-300";
 
         slotsHtml += `
           <div class="p-3.5 rounded-2xl border flex justify-between items-center gap-3 hover:translate-x-1.5 transition-transform duration-300 ${badgeColor}">
@@ -1193,6 +1281,102 @@ function initTimetableAttendance() {
     `;
     tableContainer.appendChild(dayCard);
   });
+
+  const renderExams = () => {
+    examsTable.innerHTML = "";
+    
+    // Sort exams by date order
+    const exams = STATE.examsSchedule;
+    exams.forEach(ex => {
+      const row = document.createElement("tr");
+      row.className = "border-b border-slate-100 dark:border-slate-800/80 hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors";
+      row.innerHTML = `
+        <td class="px-6 py-4">
+          <span onclick="openCourseDrawer('${ex.code}')" class="font-bold text-xs text-indigo-600 hover:underline cursor-pointer">${ex.code}</span>
+        </td>
+        <td class="px-6 py-4 text-xs text-slate-700 dark:text-slate-300 font-medium">${ex.title}</td>
+        <td class="px-6 py-4 text-xs text-slate-500 dark:text-slate-400 font-medium">${ex.date} (${ex.time})</td>
+        <td class="px-6 py-4 text-xs text-slate-700 dark:text-slate-300 font-semibold">${ex.venue}</td>
+        <td class="px-6 py-4 text-center font-black text-xs text-indigo-650">${ex.seat}</td>
+      `;
+      examsTable.appendChild(row);
+    });
+  };
+}
+
+// Hostel Residence Module
+function initHostelModule() {
+  const roommatesList = document.getElementById("roommates-container");
+  const modal = document.getElementById("hostel-request-modal");
+  const openBtn = document.getElementById("open-hostel-request-btn");
+  const closeBtn = document.getElementById("close-hostel-modal");
+  const requestForm = document.getElementById("hostel-request-form");
+
+  const renderRoommates = () => {
+    roommatesList.innerHTML = "";
+    
+    STATE.hostelRoommates.forEach(rm => {
+      const card = document.createElement("div");
+      card.className = "p-4 rounded-2xl border border-slate-100 dark:border-slate-800/85 bg-slate-50/40 dark:bg-slate-850 flex items-center justify-between gap-4";
+      card.innerHTML = `
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-indigo-600 text-white flex items-center justify-center font-bold text-xs">
+            ${rm.avatar}
+          </div>
+          <div>
+            <h4 class="font-bold text-xs text-slate-800 dark:text-slate-205">${rm.name}</h4>
+            <span class="text-[9px] text-slate-400 font-semibold">${rm.matric} | ${rm.level}</span>
+          </div>
+        </div>
+        <a href="tel:${rm.phone}" class="px-3 py-1.5 rounded-lg bg-white border dark:bg-slate-900 border-slate-200 dark:border-slate-700 font-bold text-[9px] text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">
+          Call Contact
+        </a>
+      `;
+      roommatesList.appendChild(card);
+    });
+
+    // Update status indicators
+    document.getElementById("hostel-room-status").textContent = STATE.student.hostelStatus;
+    
+    const badge = document.getElementById("hostel-room-status");
+    if (STATE.student.hostelStatus.includes("Pending")) {
+      badge.className = "font-bold text-amber-600 dark:text-amber-400 animate-pulse";
+      openBtn.disabled = true;
+      openBtn.classList.add("opacity-50", "cursor-not-allowed");
+      openBtn.textContent = "Change Request Pending Approval";
+    } else {
+      badge.className = "font-bold text-emerald-600 dark:text-emerald-400";
+      openBtn.disabled = false;
+      openBtn.classList.remove("opacity-50", "cursor-not-allowed");
+      openBtn.textContent = "Submit Change Room Request";
+    }
+  };
+
+  openBtn.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  });
+
+  closeBtn.addEventListener("click", () => {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  });
+
+  requestForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const pref = document.getElementById("pref-hostel-select").value;
+    
+    STATE.student.hostelStatus = "Change Request Pending Approval";
+    STATE.student.prefHostel = pref;
+    saveState();
+    
+    showToast(`Room change request submitted for ${pref}. Residence Board will review this.`);
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    renderRoommates();
+  });
+
+  renderRoommates();
 }
 
 // Digital Library
@@ -1203,7 +1387,6 @@ function initLibraryModule() {
 
   const renderFiles = () => {
     container.innerHTML = "";
-    
     const query = searchInput.value.toLowerCase();
     const type = typeFilter.value;
 
@@ -1267,13 +1450,13 @@ function previewLibraryFile(fileId) {
       <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50">
         <div>
           <span class="text-[10px] font-bold text-indigo-600 uppercase">${file.code} - ${file.type}</span>
-          <h3 class="font-extrabold text-sm text-slate-850 dark:text-slate-200 mt-0.5">${file.name}</h3>
+          <h3 class="font-extrabold text-sm text-slate-850 dark:text-slate-205 mt-0.5">${file.name}</h3>
         </div>
         <button onclick="this.closest('.fixed').remove()" class="p-1 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/80">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
       </div>
-      <div class="flex-1 overflow-y-auto p-6 md:p-8 font-mono text-xs text-slate-700 dark:text-slate-305 bg-slate-50/30 dark:bg-slate-950/20 whitespace-pre-wrap leading-relaxed">
+      <div class="flex-1 overflow-y-auto p-6 md:p-8 font-mono text-xs text-slate-700 dark:text-slate-300 bg-slate-50/30 dark:bg-slate-950/20 whitespace-pre-wrap leading-relaxed">
         ${file.preview}
       </div>
       <div class="p-5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex justify-end gap-3">
@@ -1306,7 +1489,7 @@ function downloadLibraryFile(button, filename) {
   }, 200);
 }
 
-// Payment & Invoice Module
+// Payment Portal with Receipts Exporter
 function initPaymentPanel() {
   const ledger = document.getElementById("invoices-ledger-body");
   const modal = document.getElementById("payment-modal");
@@ -1314,6 +1497,10 @@ function initPaymentPanel() {
   const cancelBtn = document.getElementById("close-pay-modal");
   const checkoutForm = document.getElementById("checkout-card-form");
   const billingSummary = document.getElementById("billing-summary-container");
+
+  const rModal = document.getElementById("receipt-modal");
+  const rCancelBtn = document.getElementById("close-receipt-modal");
+  const rPrintBtn = document.getElementById("print-receipt-btn");
 
   const renderLedger = () => {
     ledger.innerHTML = "";
@@ -1327,20 +1514,26 @@ function initPaymentPanel() {
     invoices.forEach(inv => {
       const row = document.createElement("tr");
       row.className = "border-b border-slate-100 dark:border-slate-800/80 hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors";
+      
+      const receiptBtn = inv.status === "Paid" 
+        ? `<button onclick="openReceiptModal('${inv.id}')" class="text-indigo-600 hover:text-indigo-800 font-extrabold text-xs cursor-pointer">View PDF</button>` 
+        : `<span class="text-slate-400 font-bold text-xs">-</span>`;
+
       row.innerHTML = `
-        <td class="px-6 py-4 font-bold text-xs text-slate-800 dark:text-slate-200">${inv.id}</td>
+        <td class="px-6 py-4 font-bold text-xs text-slate-805 dark:text-slate-202">${inv.id}</td>
         <td class="px-6 py-4 text-xs text-slate-700 dark:text-slate-300 font-medium">${inv.title}</td>
         <td class="px-6 py-4 text-xs text-slate-500 dark:text-slate-400 font-medium">${new Date(inv.date).toLocaleDateString()}</td>
-        <td class="px-6 py-4 text-center text-xs text-slate-800 dark:text-slate-200 font-black">$${inv.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+        <td class="px-6 py-4 text-center text-xs text-slate-850 dark:text-slate-205 font-black">$${inv.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
         <td class="px-6 py-4 text-center">
           <span class="px-2.5 py-1 text-[10px] font-bold rounded-full ${
             inv.status === "Paid" 
-              ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300" 
-              : "bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300"
+              ? "bg-emerald-100 text-emerald-805 dark:bg-emerald-950/80 dark:text-emerald-300" 
+              : "bg-rose-100 text-rose-805 dark:bg-rose-950/80 dark:text-rose-300"
           }">
             ${inv.status}
           </span>
         </td>
+        <td class="px-6 py-4 text-center">${receiptBtn}</td>
       `;
       ledger.appendChild(row);
     });
@@ -1348,7 +1541,7 @@ function initPaymentPanel() {
     billingSummary.innerHTML = `
       <div class="glass-panel p-5 rounded-3xl flex flex-col shadow-xs">
         <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">Total Invoiced</span>
-        <span class="text-2xl font-black text-slate-800 dark:text-slate-200 mt-1">
+        <span class="text-2xl font-black text-slate-805 dark:text-slate-200 mt-1">
           $${STATE.paymentInvoices.reduce((sum, i) => sum + i.amount, 0).toLocaleString(undefined, {minimumFractionDigits: 2})}
         </span>
       </div>
@@ -1360,17 +1553,14 @@ function initPaymentPanel() {
       </div>
       <div class="glass-panel p-5 rounded-3xl flex flex-col border border-rose-100 dark:border-rose-900/30 shadow-xs">
         <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">Outstanding Balance</span>
-        <span class="text-2xl font-black text-rose-605 dark:text-rose-400 mt-1">
+        <span class="text-2xl font-black text-rose-600 dark:text-rose-400 mt-1">
           $${STATE.student.outstandingBalance.toLocaleString(undefined, {minimumFractionDigits: 2})}
         </span>
       </div>
     `;
 
-    if (STATE.student.outstandingBalance > 0) {
-      payBtn.classList.remove("hidden");
-    } else {
-      payBtn.classList.add("hidden");
-    }
+    if (STATE.student.outstandingBalance > 0) payBtn.classList.remove("hidden");
+    else payBtn.classList.add("hidden");
   };
 
   payBtn.addEventListener("click", () => {
@@ -1384,37 +1574,50 @@ function initPaymentPanel() {
     modal.classList.remove("flex");
   });
 
+  // Receipt popup logic
+  window.openReceiptModal = (invoiceId) => {
+    const inv = STATE.paymentInvoices.find(i => i.id === invoiceId);
+    if (!inv) return;
+
+    document.getElementById("receipt-id-val").textContent = `REC-${Math.floor(100000 + Math.random() * 900000)}`;
+    document.getElementById("receipt-invoice-val").textContent = inv.id;
+    document.getElementById("receipt-desc-val").textContent = inv.title;
+    document.getElementById("receipt-date-val").textContent = new Date(inv.date).toLocaleDateString();
+    document.getElementById("receipt-amount-val").textContent = `$${inv.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+
+    rModal.classList.remove("hidden");
+    rModal.classList.add("flex");
+  };
+
+  rCancelBtn.addEventListener("click", () => {
+    rModal.classList.add("hidden");
+    rModal.classList.remove("flex");
+  });
+
+  rPrintBtn.addEventListener("click", () => {
+    window.print();
+  });
+
+  // Credit card inputs formatting
   const cardInput = document.getElementById("card-number-input");
   cardInput.addEventListener("input", (e) => {
     let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
     let matches = v.match(/\d{4,16}/g);
     let match = matches && matches[0] || '';
     let parts = [];
-
-    for (let i=0, len=match.length; i<len; i+=4) {
-      parts.push(match.substring(i, i+4));
-    }
-
-    if (parts.length > 0) {
-      e.target.value = parts.join(' ');
-    } else {
-      e.target.value = v;
-    }
+    for (let i=0, len=match.length; i<len; i+=4) parts.push(match.substring(i, i+4));
+    e.target.value = parts.length > 0 ? parts.join(' ') : v;
   });
 
   const cardExpiry = document.getElementById("card-expiry-input");
   cardExpiry.addEventListener("input", (e) => {
     let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-    if (v.length >= 2) {
-      e.target.value = v.substring(0,2) + '/' + v.substring(2,4);
-    } else {
-      e.target.value = v;
-    }
+    if (v.length >= 2) e.target.value = v.substring(0,2) + '/' + v.substring(2,4);
+    else e.target.value = v;
   });
 
   checkoutForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    
     const submitBtn = checkoutForm.querySelector("button[type='submit']");
     const originalText = submitBtn.textContent;
     submitBtn.disabled = true;
@@ -1431,7 +1634,10 @@ function initPaymentPanel() {
       STATE.student.outstandingBalance = 0;
       
       STATE.paymentInvoices.forEach(inv => {
-        if (inv.status === "Unpaid") inv.status = "Paid";
+        if (inv.status === "Unpaid") {
+          inv.status = "Paid";
+          inv.date = new Date().toISOString().split('T')[0];
+        }
       });
       
       saveState();
@@ -1443,7 +1649,6 @@ function initPaymentPanel() {
       modal.classList.remove("flex");
       
       showToast("Fees transaction approved. Outstanding tuition balance cleared!");
-      
       initDashboard();
       renderLedger();
       initCourseRegistration();
@@ -1451,6 +1656,144 @@ function initPaymentPanel() {
   });
 
   renderLedger();
+}
+
+// Lecturer Feedback Evaluation
+function initEvaluationModule() {
+  const list = document.getElementById("eval-courses-list");
+  const form = document.getElementById("evaluation-questions-form");
+  const placeholder = document.getElementById("eval-form-placeholder");
+  const formTitle = document.getElementById("eval-form-title");
+  const codeInput = document.getElementById("eval-course-code-input");
+  const commentsInput = document.getElementById("eval-comments");
+
+  // Local rating states
+  let activeRatings = { clarity: 0, punctuality: 0, feedback: 0 };
+
+  const renderCourseList = () => {
+    list.innerHTML = "";
+    
+    // Evaluate only registered courses
+    const selected = STATE.availableCourses.filter(c => c.selected);
+    
+    if (selected.length === 0) {
+      list.innerHTML = `<div class="text-xs text-slate-400 py-4 text-center font-bold">Please complete course registration first.</div>`;
+      return;
+    }
+
+    selected.forEach(course => {
+      const evaluated = STATE.evaluations[course.code] === true;
+      const btn = document.createElement("button");
+      btn.className = `w-full text-left p-3.5 rounded-xl border flex items-center justify-between transition-colors ${
+        evaluated 
+          ? "bg-slate-50 dark:bg-slate-850/50 border-slate-100 dark:border-slate-800 opacity-60 text-slate-400 cursor-default" 
+          : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer"
+      }`;
+
+      const rightIcon = evaluated ? "✅ Done" : "⭐ Rate";
+      btn.innerHTML = `
+        <div>
+          <span class="font-extrabold text-xs text-indigo-650">${course.code}</span>
+          <div class="text-[10px] truncate mt-0.5 max-w-44 text-slate-500">${course.title}</div>
+        </div>
+        <span class="text-[9px] font-bold tracking-tight">${rightIcon}</span>
+      `;
+
+      if (!evaluated) {
+        btn.addEventListener("click", () => {
+          selectCourseForEvaluation(course.code, course.title);
+        });
+      }
+
+      list.appendChild(btn);
+    });
+  };
+
+  const selectCourseForEvaluation = (code, title) => {
+    placeholder.classList.add("hidden");
+    form.classList.remove("hidden");
+    
+    formTitle.textContent = `Evaluate Lecturer: ${code}`;
+    codeInput.value = code;
+    
+    // Reset star colors
+    activeRatings = { clarity: 0, punctuality: 0, feedback: 0 };
+    resetStars();
+    commentsInput.value = "";
+  };
+
+  const resetStars = () => {
+    document.querySelectorAll(".eval-star").forEach(star => {
+      star.style.filter = "grayscale(1)";
+    });
+  };
+
+  // Handle click on stars
+  document.querySelectorAll("[data-rating]").forEach(group => {
+    const key = group.getAttribute("data-rating");
+    const stars = group.querySelectorAll(".eval-star");
+    
+    stars.forEach(star => {
+      star.addEventListener("click", (e) => {
+        const val = parseInt(e.target.getAttribute("data-val"));
+        activeRatings[key] = val;
+        
+        stars.forEach((s, idx) => {
+          if (idx < val) s.style.filter = "none";
+          else s.style.filter = "grayscale(1)";
+        });
+      });
+    });
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const code = codeInput.value;
+
+    if (activeRatings.clarity === 0 || activeRatings.punctuality === 0 || activeRatings.feedback === 0) {
+      showToast("Please rate all evaluation questions.", "error");
+      return;
+    }
+
+    STATE.evaluations[code] = true;
+    saveState();
+    
+    showToast(`Evaluation for ${code} submitted anonymously. Thank you!`);
+    
+    form.classList.add("hidden");
+    placeholder.classList.remove("hidden");
+    formTitle.textContent = "Course Evaluation Form";
+
+    renderCourseList();
+  });
+
+  renderCourseList();
+}
+
+// Campus Directory Module
+function initCampusDirectory() {
+  const container = document.getElementById("campus-directory-container");
+  container.innerHTML = "";
+
+  STATE.campusLandmarks.forEach(ld => {
+    const card = document.createElement("div");
+    card.className = "glass-panel p-5 rounded-3xl flex flex-col justify-between gap-4 border border-slate-100 dark:border-slate-800/80 shadow-xs glass-card-hover";
+    card.innerHTML = `
+      <div>
+        <div class="flex justify-between items-center">
+          <span class="text-2xl">${ld.icon}</span>
+          <span class="px-2 py-0.5 text-[8px] font-bold rounded bg-slate-100 text-slate-800 dark:bg-slate-850 dark:text-slate-300 uppercase">${ld.category}</span>
+        </div>
+        <h4 class="font-bold text-xs text-slate-800 dark:text-slate-200 mt-3 leading-snug">${ld.name}</h4>
+        <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1 font-medium leading-relaxed">${ld.desc}</p>
+      </div>
+      <div class="border-t border-slate-100 dark:border-slate-800 pt-3 flex justify-between items-center text-[9px] font-bold text-slate-400">
+        <span>📍 ${ld.location}</span>
+        <span>🕒 ${ld.hours}</span>
+      </div>
+    `;
+    container.appendChild(card);
+  });
 }
 
 // Support Helpdesk Module
@@ -1477,8 +1820,8 @@ function initHelpdeskModule() {
         <td class="px-4 py-3 text-center">
           <span class="px-2 py-0.5 text-[9px] font-bold rounded-full ${
             ticket.status === "Resolved" 
-              ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300" 
-              : "bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300"
+              ? "bg-emerald-100 text-emerald-805 dark:bg-emerald-950/80 dark:text-emerald-300" 
+              : "bg-amber-100 text-amber-805 dark:bg-amber-950/80 dark:text-amber-300"
           }">
             ${ticket.status}
           </span>
@@ -1518,7 +1861,6 @@ function initHelpdeskModule() {
     showToast(`Ticket ${id} registered. Portal support will respond in a moment.`);
     renderLedger();
 
-    // Automated contextual response simulation
     setTimeout(() => {
       let reply = "Hello Ama, we have logged this ticket and assigned it to the academic registry desk.";
       if (cat.includes("Finance")) {
@@ -1601,7 +1943,6 @@ function initHelpdeskModule() {
     chatTextInput.value = "";
     renderChatMessages();
 
-    // Simulated reply back after short delay
     setTimeout(() => {
       ticket.messages.push({
         sender: "admin",

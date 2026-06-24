@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Redeemer's University Academic Portal - Digital Course Registration, GPA Planner, Class Schedules, Attendance Tracking, Financial Checkout & Support Ticketing.">
-  <title>RUN Premium Student Portal</title>
+  <meta name="description" content="Redeemer's University Premium Academic Student Portal. Features digital registration, GPA simulators, class schedules, exam seating, hostel reservations, lecturer feedback, and library document readers.">
+  <title>RUN Enterprise Student Portal</title>
   
   <!-- Tailwind CSS v4 CDN Browser Compilation Script -->
   <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
@@ -47,71 +47,58 @@
     </div>
 
     <!-- Main Navigation Menu Link Buttons -->
-    <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
-      <a href="#" data-tab="dashboard" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"></path>
-        </svg>
-        Dashboard
+    <nav class="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto">
+      <a href="#" data-tab="dashboard" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors">
+        <span>🏠</span> Dashboard
       </a>
       
-      <a href="#" data-tab="course_registration" class="flex items-center justify-between px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+      <a href="#" data-tab="course_registration" class="flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
         <span class="flex items-center gap-3">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
-          </svg>
-          Course Registration
+          <span>📝</span> Course Registration
         </span>
-        <span id="course-reg-nav-indicator" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+        <span id="course-reg-nav-indicator" class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
       </a>
       
-      <a href="#" data-tab="result_checker" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-        </svg>
-        Grades & GPA Planner
+      <a href="#" data-tab="result_checker" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+        <span>📊</span> Grades & GPA Planner
       </a>
       
-      <a href="#" data-tab="attendance_timetable" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        Timetable & Attendance
+      <a href="#" data-tab="attendance_timetable" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+        <span>📅</span> Timetable & Exams
       </a>
 
-      <a href="#" data-tab="library" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
-        </svg>
-        Digital Library Notes
+      <a href="#" data-tab="hostel_allocation" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+        <span>🏢</span> Hostel Allocation
+      </a>
+
+      <a href="#" data-tab="library" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+        <span>📖</span> Courseware Library
       </a>
       
-      <a href="#" data-tab="payments" class="flex items-center justify-between px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+      <a href="#" data-tab="payments" class="flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
         <span class="flex items-center gap-3">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-          </svg>
-          Tuition & Payments
+          <span>💳</span> Tuition & Payments
         </span>
         <span id="payments-outstanding-dot" class="w-2 h-2 rounded-full bg-rose-500 hidden"></span>
       </a>
 
-      <a href="#" data-tab="helpdesk" class="flex items-center justify-between px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+      <a href="#" data-tab="lecturer_evaluation" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+        <span>⭐</span> Lecturer Feedback
+      </a>
+
+      <a href="#" data-tab="campus_map" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+        <span>📍</span> Campus Directory
+      </a>
+
+      <a href="#" data-tab="helpdesk" class="flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
         <span class="flex items-center gap-3">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
-          </svg>
-          Support Helpdesk
+          <span>🛠️</span> Support Helpdesk
         </span>
         <span id="helpdesk-alert-badge" class="px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-indigo-600 text-white hidden">1</span>
       </a>
       
-      <a href="#" data-tab="settings" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-        </svg>
-        ID & Settings
+      <a href="#" data-tab="settings" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+        <span>⚙️</span> ID & Portal Settings
       </a>
     </nav>
 
@@ -119,13 +106,10 @@
     <div class="p-6 border-t border-slate-100 dark:border-slate-800/80 text-xs no-print">
       <div class="text-[10px] font-semibold text-slate-400 dark:text-slate-500 mb-1 flex items-center justify-between">
         <span>Academic Year 2025/2026</span>
-        <span>v4.0.0</span>
+        <span>v4.1.0</span>
       </div>
       <a href="#" class="text-rose-500 hover:text-rose-700 font-bold flex items-center gap-2">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-        </svg>
-        Sign Out Session
+        <span>🚪</span> Sign Out Session
       </a>
     </div>
   </aside>
@@ -136,7 +120,6 @@
     <!-- ================= TOPBAR HEADER ================= -->
     <header id="topbar" class="h-20 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800/80 flex items-center justify-between px-6 lg:px-8 z-10 no-print">
       
-      <!-- Left side: Navigation Toggle & Session indicators -->
       <div class="flex items-center gap-4">
         <button id="mobile-menu-toggle" class="p-2 -ml-2 rounded-lg text-slate-500 lg:hidden hover:bg-slate-50 dark:hover:bg-slate-800/50" aria-label="Toggle Navigation">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,15 +135,12 @@
         </div>
       </div>
 
-      <!-- Right side: Actions -->
       <div class="flex items-center gap-4">
-        
-        <!-- Theme Switcher -->
         <button id="theme-toggle" class="p-2.5 rounded-xl border border-slate-100 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 cursor-pointer" aria-label="Toggle Dark Mode">
-          <!-- Populated by script -->
+          <!-- Populated dynamically -->
         </button>
 
-        <!-- Notification Bell Dropdown -->
+        <!-- Announcements bell -->
         <div class="relative">
           <button id="notif-toggle-btn" class="p-2.5 rounded-xl border border-slate-100 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 relative cursor-pointer" aria-label="View notifications">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -188,9 +168,8 @@
       <!-- ================= SECTION: DASHBOARD ================= -->
       <section id="dashboard-section" class="tab-content-section hidden space-y-6">
         
-        <!-- Welcoming banner backdropped with generated image -->
-        <div class="relative overflow-hidden rounded-3xl bg-slate-900 p-6 lg:p-8 text-white shadow-xl shadow-slate-100/50 dark:shadow-none min-h-60 flex items-center border border-white/5">
-          <!-- Background Banner Image -->
+        <!-- Welcome Hero Banner -->
+        <div class="relative overflow-hidden rounded-3xl bg-slate-900 p-6 lg:p-8 text-white shadow-xl shadow-slate-100/50 dark:shadow-none min-h-60 flex items-center border border-white/5 animate-fade-in">
           <img class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity filter blur-xs" src="university_banner.jpg" alt="University Banner Background">
           <div class="absolute inset-0 bg-gradient-to-r from-indigo-950 via-slate-900/80 to-transparent"></div>
           
@@ -220,14 +199,10 @@
           </div>
         </div>
 
-        <!-- Metric Grid metrics -->
+        <!-- Metric Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           <div class="glass-panel p-5 rounded-2xl flex items-center gap-4 shadow-xs glass-card-hover">
-            <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-              </svg>
-            </div>
+            <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">🏫</div>
             <div>
               <span class="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Department</span>
               <p class="student-dept font-bold text-xs text-slate-800 dark:text-slate-200 mt-0.5 truncate max-w-44">Computer Science & Engineering</p>
@@ -235,11 +210,7 @@
           </div>
           
           <div class="glass-panel p-5 rounded-2xl flex items-center gap-4 shadow-xs glass-card-hover">
-            <div class="w-12 h-12 rounded-xl bg-violet-50 dark:bg-slate-800 text-violet-600 dark:text-violet-400 flex items-center justify-center">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-            </div>
+            <div class="w-12 h-12 rounded-xl bg-violet-50 dark:bg-slate-800 text-violet-600 dark:text-violet-400 flex items-center justify-center">📝</div>
             <div>
               <span class="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Registration Form</span>
               <div class="mt-0.5">
@@ -249,11 +220,7 @@
           </div>
 
           <div class="glass-panel p-5 rounded-2xl flex items-center gap-4 shadow-xs glass-card-hover">
-            <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-slate-800 text-amber-600 dark:text-amber-400 flex items-center justify-center">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-            </div>
+            <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-slate-800 text-amber-600 dark:text-amber-400 flex items-center justify-center">🏆</div>
             <div>
               <span class="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Academic Standing</span>
               <p class="student-standing font-bold text-xs text-slate-800 dark:text-slate-200 mt-0.5">Excellent</p>
@@ -261,11 +228,7 @@
           </div>
 
           <div class="glass-panel p-5 rounded-2xl flex items-center gap-4 shadow-xs glass-card-hover">
-            <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-              </svg>
-            </div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">🎓</div>
             <div>
               <span class="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Credits Completed</span>
               <p class="font-bold text-xs text-slate-800 dark:text-slate-200 mt-0.5">104 Units Passed</p>
@@ -273,9 +236,8 @@
           </div>
         </div>
 
-        <!-- Progress Chart, Schedule Preview & Quick updates -->
+        <!-- CGPA curve and schedule preview -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <!-- GPA Graph -->
           <div class="glass-panel p-6 rounded-3xl lg:col-span-2 shadow-xs flex flex-col">
             <div class="flex justify-between items-center mb-6">
               <div>
@@ -291,7 +253,6 @@
             </div>
           </div>
 
-          <!-- Quick Timetable Preview Today's classes -->
           <div class="glass-panel p-6 rounded-3xl shadow-xs flex flex-col justify-between">
             <div>
               <div class="flex justify-between items-center mb-5">
@@ -303,19 +264,18 @@
               </div>
               
               <div id="today-classes-container" class="space-y-3">
-                <!-- Rendered dynamically by script -->
+                <!-- Rendered dynamically -->
               </div>
             </div>
 
-            <button onclick="document.querySelector('[data-tab=attendance_timetable]').click()" class="mt-6 w-full py-3 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-600 dark:bg-indigo-950/40 dark:hover:bg-indigo-900/60 dark:text-indigo-400 font-extrabold text-xs text-center transition-colors">
+            <button onclick="switchTab('attendance_timetable')" class="mt-6 w-full py-3 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-600 dark:bg-indigo-950/40 dark:hover:bg-indigo-900/60 dark:text-indigo-400 font-extrabold text-xs text-center transition-colors cursor-pointer">
               Open Full Timetable
             </button>
           </div>
         </div>
 
-        <!-- Academic counselor & honors details -->
+        <!-- Academic Advisor & Honor Lists -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Advisor Card -->
           <div class="glass-panel p-6 rounded-3xl shadow-xs flex items-center justify-between border border-slate-100 dark:border-slate-800/80">
             <div class="flex items-center gap-4">
               <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center font-bold text-lg shadow-inner">
@@ -332,7 +292,6 @@
             </a>
           </div>
 
-          <!-- Academic Warning/Honors Banner -->
           <div class="glass-panel p-6 rounded-3xl shadow-xs flex items-center justify-between border border-emerald-100 dark:border-emerald-950/50 bg-emerald-50/10">
             <div class="flex items-center gap-4">
               <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold text-lg shadow-inner">
@@ -355,8 +314,7 @@
       <!-- ================= SECTION: COURSE REGISTRATION ================= -->
       <section id="course_registration-section" class="tab-content-section hidden space-y-6">
         
-        <!-- Registration info summary -->
-        <div class="glass-panel p-6 rounded-3xl shadow-xs border border-slate-100 dark:border-slate-800/80">
+        <div class="glass-panel p-6 rounded-3xl shadow-xs border border-slate-100 dark:border-slate-800/80 animate-fade-in">
           <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
             <div>
               <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Course Allocation Selector</h3>
@@ -375,7 +333,6 @@
           </div>
         </div>
 
-        <!-- Table -->
         <div class="glass-panel rounded-3xl shadow-xs overflow-hidden border border-slate-100 dark:border-slate-800/80">
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
@@ -395,7 +352,6 @@
           </div>
         </div>
 
-        <!-- Action details -->
         <div class="flex justify-end gap-4">
           <button id="submit-registration-btn" class="px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-extrabold shadow-md shadow-indigo-200 dark:shadow-none transition-colors cursor-pointer">
             Submit Registration
@@ -413,9 +369,7 @@
               </button>
             </div>
 
-            <!-- Slip contents -->
             <div id="printable-slip-content" class="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 printable-document">
-              
               <div class="text-center pb-4 border-b border-slate-200">
                 <h4 class="font-black text-slate-800 text-lg uppercase">REDEEMER'S UNIVERSITY</h4>
                 <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Ede, Osun State, Nigeria</p>
@@ -489,9 +443,9 @@
                 </div>
               </div>
 
-              <div class="flex flex-col items-center justify-center pt-8 border-t border-slate-100">
+              <div class="flex flex-col items-center justify-center pt-8 border-t border-slate-105">
                 <div class="bg-slate-200 h-8 w-60 border-y border-slate-400 flex items-center justify-around overflow-hidden py-1">
-                  <!-- Simulated Barcode Bars -->
+                  <!-- Simulated Barcode -->
                   <div class="h-full bg-slate-950 w-0.5"></div><div class="h-full bg-slate-950 w-2"></div><div class="h-full bg-slate-950 w-0.5"></div><div class="h-full bg-slate-950 w-1"></div><div class="h-full bg-slate-950 w-3"></div><div class="h-full bg-slate-950 w-0.5"></div><div class="h-full bg-slate-950 w-1.5"></div><div class="h-full bg-slate-950 w-1"></div><div class="h-full bg-slate-950 w-2"></div><div class="h-full bg-slate-950 w-0.5"></div><div class="h-full bg-slate-950 w-3"></div><div class="h-full bg-slate-950 w-0.5"></div><div class="h-full bg-slate-950 w-1"></div><div class="h-full bg-slate-950 w-1.5"></div><div class="h-full bg-slate-950 w-0.5"></div><div class="h-full bg-slate-950 w-2"></div><div class="h-full bg-slate-950 w-0.5"></div>
                 </div>
                 <span class="text-[9px] font-bold text-slate-400 mt-1 tracking-widest">RUN-REG-HASH-827C9D2E1</span>
@@ -500,8 +454,7 @@
 
             <div class="p-6 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 bg-slate-50/50 dark:bg-slate-900/50 no-print">
               <button id="print-slip-btn" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                Print Registration Slip
+                <span>🖨️</span> Print Registration Slip
               </button>
             </div>
           </div>
@@ -512,8 +465,7 @@
       <!-- ================= SECTION: GRADES & GPA PLANNER ================= -->
       <section id="result_checker-section" class="tab-content-section hidden space-y-6">
         
-        <!-- Tab selector headers -->
-        <div class="glass-panel p-4 rounded-2xl flex gap-2 border border-slate-100 dark:border-slate-800/80">
+        <div class="glass-panel p-4 rounded-2xl flex gap-2 border border-slate-100 dark:border-slate-800/80 animate-fade-in animate-fade-in">
           <button id="tab-sub-results" class="px-5 py-2.5 text-xs font-extrabold rounded-xl bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors cursor-pointer">
             View Semesters Grades
           </button>
@@ -522,7 +474,7 @@
           </button>
         </div>
 
-        <!-- SUBSECTION: RESULTS VIEW -->
+        <!-- SUBSECTION: RESULTS -->
         <div id="sub-results-view" class="space-y-6">
           <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80">
             <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
@@ -535,8 +487,7 @@
                   <!-- Options rendered dynamically -->
                 </select>
                 <button id="view-transcript-btn" class="py-3 px-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 dark:bg-indigo-950/40 dark:hover:bg-indigo-900/60 dark:text-indigo-400 rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                  Generate Academic Transcript
+                  📁 Generate Academic Transcript
                 </button>
               </div>
             </div>
@@ -567,16 +518,29 @@
           </div>
         </div>
 
-        <!-- SUBSECTION: GPA PLANNER VIEW -->
+        <!-- SUBSECTION: PLANNER -->
         <div id="sub-planner-view" class="hidden space-y-6">
           <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80">
             <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">GPA Target Estimator</h3>
             <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Simulate hypothetical grades for registered courses to forecast your future CGPA standing.</p>
           </div>
 
+          <!-- Goal planner CGPA Target input -->
+          <div class="glass-panel p-5 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4 border border-indigo-150 dark:border-indigo-950 bg-indigo-50/5">
+            <div>
+              <h4 class="font-bold text-xs text-indigo-700 dark:text-indigo-400">Target CGPA Calculator</h4>
+              <p class="text-[10px] text-slate-400 mt-0.5">Input your target CGPA goal to compute required semester GPA score.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <input type="number" id="target-cgpa-goal" step="0.01" min="0.00" max="5.00" value="3.90" class="w-24 px-3 py-2 border rounded-xl bg-white dark:bg-slate-900 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+              <button onclick="calculateRequiredSemesterGPA()" class="px-4 py-2 bg-indigo-650 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer">
+                Calculate Required GPA
+              </button>
+            </div>
+          </div>
+
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <!-- Table inputs -->
             <div class="lg:col-span-2 glass-panel rounded-3xl shadow-xs overflow-hidden border border-slate-100 dark:border-slate-800/80">
               <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
@@ -595,13 +559,11 @@
               </div>
             </div>
 
-            <!-- Output Dashboard Gauge -->
             <div class="glass-panel p-6 rounded-3xl shadow-sm flex flex-col justify-between items-center text-center border border-indigo-100 dark:border-indigo-950 bg-indigo-50/10">
               <div class="w-full">
                 <h4 class="font-extrabold text-xs text-slate-400 dark:text-slate-500 uppercase tracking-widest">Simulated Outcomes</h4>
                 
                 <div class="relative w-40 h-40 mx-auto mt-8 flex items-center justify-center">
-                  <!-- Circular meter using SVG -->
                   <svg class="w-full h-full transform -rotate-90">
                     <circle cx="80" cy="80" r="70" class="stroke-slate-200 dark:stroke-slate-800 fill-none" stroke-width="12"/>
                     <circle cx="80" cy="80" r="70" id="sim-gpa-ring" class="stroke-indigo-600 dark:stroke-indigo-400 fill-none" stroke-width="12" stroke-dasharray="440" stroke-dashoffset="110" stroke-linecap="round"/>
@@ -614,11 +576,11 @@
               </div>
 
               <div class="w-full mt-6 space-y-4">
-                <div class="p-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-850 rounded-2xl flex justify-between items-center">
+                <div class="p-3 bg-white dark:bg-slate-900 border border-slate-105 rounded-2xl flex justify-between items-center">
                   <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">New Cumulative CGPA</span>
                   <span id="sim-cgpa-val" class="text-sm font-black text-emerald-600 dark:text-emerald-400">3.88</span>
                 </div>
-                <div class="p-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-850 rounded-2xl flex justify-between items-center">
+                <div class="p-3 bg-white dark:bg-slate-900 border border-slate-105 rounded-2xl flex justify-between items-center">
                   <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Change in CGPA</span>
                   <span id="sim-cgpa-delta" class="text-sm font-black text-indigo-600 dark:text-indigo-400">+0.06</span>
                 </div>
@@ -630,52 +592,172 @@
 
       </section>
 
-      <!-- ================= SECTION: TIMETABLE & ATTENDANCE ================= -->
+      <!-- ================= SECTION: TIMETABLE & EXAMS ================= -->
       <section id="attendance_timetable-section" class="tab-content-section hidden space-y-6">
         
-        <!-- Attendance Warning indicator banner -->
-        <div id="attendance-alert-banner" class="glass-panel p-5 rounded-3xl border border-rose-100 dark:border-rose-950/50 bg-rose-50/10 flex items-center justify-between gap-4 hidden animate-fade-in no-print">
-          <div class="flex items-center gap-3">
-            <span class="text-2xl">⚠️</span>
-            <div>
-              <h4 class="font-extrabold text-xs text-rose-800 dark:text-rose-300">Attendance Warning Alert</h4>
-              <p class="text-[10px] text-rose-600 dark:text-rose-400/80 mt-0.5">You have courses below the mandatory 70% attendance requirement. Settle class presence to qualify for exams.</p>
-            </div>
-          </div>
-          <span class="px-2.5 py-1 text-[9px] font-extrabold rounded-full bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 uppercase">Attention</span>
+        <div class="glass-panel p-4 rounded-2xl flex gap-2 border border-slate-100 dark:border-slate-800/80 animate-fade-in">
+          <button id="tab-sub-timetable" class="px-5 py-2.5 text-xs font-extrabold rounded-xl bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400 transition-colors cursor-pointer">
+            Lecture Timetable & Attendance
+          </button>
+          <button id="tab-sub-exams" class="px-5 py-2.5 text-xs font-extrabold rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer">
+            Exam Seating & Schedule
+          </button>
         </div>
 
-        <!-- Grid layout separating class details -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          <!-- Column: Live Circular Attendance Meters -->
-          <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80 flex flex-col justify-between">
-            <div>
-              <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Attendance Indicators</h3>
-              <p class="text-[10px] text-slate-400 dark:text-slate-500 font-medium mb-6">Interactive registry tracking class presence</p>
-              
-              <div id="attendance-progress-container" class="space-y-6">
-                <!-- Rendered dynamically -->
+        <!-- SUBSECTION: TIMETABLE -->
+        <div id="sub-timetable-view" class="space-y-6">
+          <div id="attendance-alert-banner" class="glass-panel p-5 rounded-3xl border border-rose-100 dark:border-rose-950/50 bg-rose-50/10 flex items-center justify-between gap-4 hidden animate-fade-in">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">⚠️</span>
+              <div>
+                <h4 class="font-extrabold text-xs text-rose-800 dark:text-rose-300">Attendance Warning Alert</h4>
+                <p class="text-[10px] text-rose-600 dark:text-rose-400/80 mt-0.5">You have courses below the mandatory 70% attendance requirement. Settle class presence to qualify for exams.</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-[9px] font-extrabold rounded-full bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 uppercase">Attention</span>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80 flex flex-col justify-between">
+              <div>
+                <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Attendance Registry</h3>
+                <p class="text-[10px] text-slate-400 dark:text-slate-500 font-medium mb-6">Interactive tracking of lecture attendance</p>
+                <div id="attendance-progress-container" class="space-y-6">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+              <div class="mt-6 p-4 bg-slate-50 dark:bg-slate-850 rounded-2xl text-[10px] text-slate-500 leading-relaxed">
+                * Classroom check-ins are logged automatically via campus Wi-Fi connections. If check-in fails, tap "Check-in Present" in today's class block.
               </div>
             </div>
 
-            <div class="mt-6 p-4 bg-slate-50 dark:bg-slate-850 rounded-2xl text-[10px] text-slate-500 leading-relaxed">
-              * Classroom check-ins are recorded automatically via Wi-Fi router pings in lecture halls. Click "Check-in Present" during live slots to check in manually.
+            <div class="lg:col-span-2 space-y-6">
+              <div id="schedule-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBSECTION: EXAMS -->
+        <div id="sub-exams-view" class="hidden space-y-6">
+          <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80">
+            <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Exam Slip & Seat Planner</h3>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">View examination dates, venues, instructions, and desk assignments.</p>
+          </div>
+
+          <div class="glass-panel rounded-3xl overflow-hidden border border-slate-100 dark:border-slate-800/80">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 dark:bg-slate-800/40 text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase tracking-wider border-b border-slate-100 dark:border-slate-800/80">
+                    <th class="px-6 py-4" style="width: 15%">Exam Code</th>
+                    <th class="px-6 py-4" style="width: 35%">Course Title</th>
+                    <th class="px-6 py-4" style="width: 20%">Date & Time</th>
+                    <th class="px-6 py-4" style="width: 18%">Venue Hall</th>
+                    <th class="px-6 py-4 text-center" style="width: 12%">Seat Number</th>
+                  </tr>
+                </thead>
+                <tbody id="exams-timetable-body">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
             </div>
           </div>
 
-          <!-- Column: Timetable Grid schedule -->
-          <div class="lg:col-span-2 space-y-6">
-            <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80">
-              <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Timetable Matrix</h3>
-              <p class="text-[10px] text-slate-400 dark:text-slate-500 font-medium">Semester schedule for registered courses</p>
+          <!-- General exam rules checklist card -->
+          <div class="glass-panel p-6 rounded-3xl border border-indigo-100 dark:border-indigo-950/40 bg-indigo-50/5">
+            <h4 class="font-bold text-xs text-indigo-700 dark:text-indigo-400 mb-3">Important Examination Guidelines</h4>
+            <ul class="text-xs text-slate-505 dark:text-slate-400 space-y-2 list-disc list-inside">
+              <li>Students must present their valid **Student ID Card** at the entrance of each exam hall.</li>
+              <li>A printed copy of the **Harmattan Semester Course Slip** must be brought to every paper.</li>
+              <li>Mobile phones, smartwatches, and unauthorized electronics are strictly prohibited inside the hall.</li>
+              <li>Ensure you arrive at least 30 minutes before the scheduled start time of each exam.</li>
+            </ul>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= SECTION: HOSTEL ALLOCATION ================= -->
+      <section id="hostel_allocation-section" class="tab-content-section hidden space-y-6">
+        
+        <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80 animate-fade-in">
+          <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Residence & Hostel Allocator</h3>
+          <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Manage room reservations, view roommates, and submit room change requests.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Room Status Card -->
+          <div class="glass-panel p-6 rounded-3xl border border-slate-100 dark:border-slate-800/80 shadow-xs flex flex-col justify-between">
+            <div>
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Allocated Residence</span>
+              <h4 id="hostel-assigned-name" class="font-black text-xl text-slate-800 dark:text-slate-200 mt-3">Redemption Hall</h4>
+              <p class="text-xs text-slate-500 mt-1">Block B, Room 104 (Bedspace 3)</p>
+              
+              <div class="mt-6 border-t border-slate-100 dark:border-slate-800 pt-6 space-y-3.5 text-xs">
+                <div class="flex justify-between">
+                  <span class="text-slate-450">Room Status</span>
+                  <span id="hostel-room-status" class="font-bold text-emerald-600 dark:text-emerald-400">Allocated & Settled</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-455">Hall Warden</span>
+                  <span class="font-bold text-slate-700 dark:text-slate-300">Mr. E. O. Samuel</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-455">Room Category</span>
+                  <span class="font-bold text-slate-705">4-Bedspace Standard</span>
+                </div>
+              </div>
             </div>
 
-            <div id="schedule-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Change Room button triggers Request modal -->
+            <button id="open-hostel-request-btn" class="mt-8 w-full py-3 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-600 dark:bg-indigo-950/40 dark:text-indigo-400 font-extrabold text-xs text-center transition-colors cursor-pointer">
+              Submit Change Room Request
+            </button>
+          </div>
+
+          <!-- Roommates list -->
+          <div class="lg:col-span-2 glass-panel p-6 rounded-3xl border border-slate-100 dark:border-slate-800/80 flex flex-col">
+            <h4 class="font-bold text-xs text-slate-850 dark:text-slate-200 mb-4">Your Roommates Contact Directory</h4>
+            
+            <div id="roommates-container" class="space-y-4 flex-1">
               <!-- Rendered dynamically -->
             </div>
           </div>
+        </div>
 
+        <!-- ================= MODAL: HOSTEL CHANGE REQUEST ================= -->
+        <div id="hostel-request-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 items-center justify-center hidden p-4 no-print">
+          <div class="bg-white dark:bg-slate-900 border border-slate-101 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-fade-in">
+            <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50">
+              <h3 class="font-extrabold text-sm text-slate-850">Room Change Request</h3>
+              <button id="close-hostel-modal" class="p-1 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-805">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+              </button>
+            </div>
+            
+            <form id="hostel-request-form" class="p-6 space-y-4">
+              <div>
+                <label class="block text-[10px] font-extrabold uppercase text-slate-400 dark:text-slate-500 mb-1" for="pref-hostel-select">Preferred Hall</label>
+                <select id="pref-hostel-select" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs">
+                  <option value="Redemption Hall">Redemption Hall (Standard)</option>
+                  <option value="Paul Hall">Paul Hall (Premium)</option>
+                  <option value="Deborah Hall">Deborah Hall (Standard)</option>
+                  <option value="Grace Hall">Grace Hall (Premium)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[10px] font-extrabold uppercase text-slate-400 dark:text-slate-500 mb-1" for="change-reason-textarea">Reason for Request</label>
+                <textarea id="change-reason-textarea" rows="4" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs focus:outline-none" placeholder="Explain your reasons in full..."></textarea>
+              </div>
+
+              <button type="submit" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-extrabold transition-colors cursor-pointer flex items-center justify-center">
+                Submit Hostel Request
+              </button>
+            </form>
+          </div>
         </div>
 
       </section>
@@ -683,8 +765,7 @@
       <!-- ================= SECTION: DIGITAL LIBRARY ================= -->
       <section id="library-section" class="tab-content-section hidden space-y-6">
         
-        <!-- Search filter bar -->
-        <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80">
+        <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80 animate-fade-in">
           <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
             <div>
               <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Courseware & Textbook Finder</h3>
@@ -702,7 +783,6 @@
           </div>
         </div>
 
-        <!-- Files list -->
         <div id="library-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <!-- Rendered dynamically -->
         </div>
@@ -712,12 +792,11 @@
       <!-- ================= SECTION: PAYMENTS ================= -->
       <section id="payments-section" class="tab-content-section hidden space-y-6">
         
-        <!-- Billing ledger descriptions -->
-        <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80">
+        <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80 animate-fade-in">
           <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
             <div>
-              <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Accounts & Semester Billings</h3>
-              <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Settle all outstanding academic fee invoices dynamically.</p>
+              <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Financial Portal & Tuition Ledger</h3>
+              <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Settle all semester dues and print official payment receipts.</p>
             </div>
             <button id="pay-fees-btn" class="px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-extrabold shadow-md shadow-indigo-200 dark:shadow-none transition-colors cursor-pointer hidden">
               Pay Outstanding Balance
@@ -725,22 +804,21 @@
           </div>
         </div>
 
-        <!-- Billing totals cards -->
         <div id="billing-summary-container" class="grid grid-cols-1 md:grid-cols-3 gap-5">
           <!-- Rendered dynamically -->
         </div>
 
-        <!-- Invoices List table -->
         <div class="glass-panel rounded-3xl shadow-xs overflow-hidden border border-slate-100 dark:border-slate-800/80">
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="bg-slate-50 dark:bg-slate-800/40 text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase tracking-wider border-b border-slate-100 dark:border-slate-800/80">
                   <th class="px-6 py-4" style="width: 15%">Invoice ID</th>
-                  <th class="px-6 py-4" style="width: 45%">Description</th>
+                  <th class="px-6 py-4" style="width: 40%">Description</th>
                   <th class="px-6 py-4" style="width: 15%">Invoiced Date</th>
                   <th class="px-6 py-4 text-center" style="width: 13%">Amount</th>
                   <th class="px-6 py-4 text-center" style="width: 12%">Status</th>
+                  <th class="px-6 py-4 text-center" style="width: 5%">Receipt</th>
                 </tr>
               </thead>
               <tbody id="invoices-ledger-body">
@@ -753,7 +831,6 @@
         <!-- ================= MODAL: SECURE PAYMENT GATEWAY SIMULATOR ================= -->
         <div id="payment-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 items-center justify-center hidden p-4 no-print">
           <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-fade-in">
-            
             <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50">
               <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Gateway Secure Checkout</h3>
               <button id="close-pay-modal" class="p-1 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/80">
@@ -781,21 +858,13 @@
                 <div class="grid grid-cols-2 gap-3">
                   <div>
                     <label class="block text-[10px] font-extrabold uppercase text-slate-400 dark:text-slate-500 mb-1" for="card-expiry-input">Expiry Date</label>
-                    <input type="text" id="card-expiry-input" required maxlength="5" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs text-slate-800 dark:text-slate-200 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20" placeholder="MM/YY">
+                    <input type="text" id="card-expiry-input" required maxlength="5" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs text-slate-808 focus:outline-none focus:ring-2 focus:ring-indigo-500/20" placeholder="MM/YY">
                   </div>
                   <div>
                     <label class="block text-[10px] font-extrabold uppercase text-slate-400 dark:text-slate-500 mb-1" for="card-cvv-input">Security CVV</label>
-                    <input type="password" id="card-cvv-input" required maxlength="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs text-slate-800 dark:text-slate-200 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20" placeholder="123">
+                    <input type="password" id="card-cvv-input" required maxlength="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs text-slate-808 focus:outline-none focus:ring-2 focus:ring-indigo-500/20" placeholder="123">
                   </div>
                 </div>
-              </div>
-
-              <div class="pt-4 flex items-center justify-between text-[9px] text-slate-400 dark:text-slate-500 font-medium">
-                <span class="flex items-center gap-1">
-                  <svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                  PCI-DSS Encrypted Secured
-                </span>
-                <span>Demo Purposes Only</span>
               </div>
 
               <button type="submit" class="mt-4 w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-extrabold shadow-md shadow-emerald-100 dark:shadow-none transition-colors cursor-pointer flex items-center justify-center">
@@ -807,24 +876,115 @@
 
       </section>
 
+      <!-- ================= SECTION: LECTURER EVALUATION ================= -->
+      <section id="lecturer_evaluation-section" class="tab-content-section hidden space-y-6">
+        
+        <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80 animate-fade-in">
+          <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Lecturer Evaluation Desk</h3>
+          <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Rate lecturer performance for registered courses. Submissions are kept strictly anonymous.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Courses feedback select list -->
+          <div class="glass-panel p-6 rounded-3xl border border-slate-100 dark:border-slate-800/80 shadow-xs flex flex-col">
+            <h4 class="font-bold text-xs text-slate-850 dark:text-slate-200 mb-4">Evaluate Registered Courses</h4>
+            <div id="eval-courses-list" class="space-y-2.5 flex-1">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Evaluation Feedback Form -->
+          <div class="lg:col-span-2 glass-panel p-6 rounded-3xl border border-slate-100 dark:border-slate-800/80 flex flex-col">
+            <h4 class="font-bold text-xs text-slate-850 dark:text-slate-200 mb-4" id="eval-form-title">Course Evaluation Form</h4>
+            
+            <div id="eval-form-placeholder" class="text-center py-20 text-xs text-slate-400 font-semibold">
+              Select a course from the left panel to begin your lecturer evaluation.
+            </div>
+
+            <form id="evaluation-questions-form" class="space-y-6 hidden">
+              <input type="hidden" id="eval-course-code-input">
+              
+              <div class="space-y-4">
+                <!-- Evaluation Ratings -->
+                <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                  <span class="text-xs text-slate-700 dark:text-slate-350 font-medium">1. Clarity and effectiveness in lecture presentations?</span>
+                  <div class="flex gap-1.5" data-rating="clarity">
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="1">⭐</button>
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="2">⭐</button>
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="3">⭐</button>
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="4">⭐</button>
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="5">⭐</button>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                  <span class="text-xs text-slate-700 dark:text-slate-350 font-medium">2. Punctuality and syllabus content coverage?</span>
+                  <div class="flex gap-1.5" data-rating="punctuality">
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="1">⭐</button>
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="2">⭐</button>
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="3">⭐</button>
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="4">⭐</button>
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="5">⭐</button>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800">
+                  <span class="text-xs text-slate-700 dark:text-slate-350 font-medium">3. Responsiveness to student questions and feedback?</span>
+                  <div class="flex gap-1.5" data-rating="feedback">
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="1">⭐</button>
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="2">⭐</button>
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="3">⭐</button>
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="4">⭐</button>
+                    <button type="button" class="eval-star text-lg cursor-pointer" data-val="5">⭐</button>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[10px] font-extrabold uppercase text-slate-400 dark:text-slate-500 mb-1" for="eval-comments">Written Feedback</label>
+                <textarea id="eval-comments" rows="3" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs focus:outline-none" placeholder="Provide anonymous feedback details..."></textarea>
+              </div>
+
+              <button type="submit" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer">
+                Submit Feedback
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= SECTION: CAMPUS DIRECTORY ================= -->
+      <section id="campus_map-section" class="tab-content-section hidden space-y-6">
+        
+        <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80 animate-fade-in">
+          <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Campus Facilities Directory</h3>
+          <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Find buildings, departments, libraries, halls, and other major landmarks on campus.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="campus-directory-container">
+          <!-- Rendered dynamically -->
+        </div>
+
+      </section>
+
       <!-- ================= SECTION: SUPPORT HELPDESK ================= -->
       <section id="helpdesk-section" class="tab-content-section hidden space-y-6">
         
-        <!-- Header -->
-        <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80">
+        <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80 animate-fade-in">
           <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Student Resolution desk</h3>
           <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Submit complaint tickets regarding ICT, grades, or finances and chat with portal administrators.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          <!-- Ticket Form -->
           <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80">
             <h4 class="font-bold text-xs text-slate-800 dark:text-slate-200 mb-4">Open New Support Ticket</h4>
             <form id="helpdesk-ticket-form" class="space-y-4">
               <div>
                 <label class="block text-[10px] font-extrabold uppercase text-slate-400 dark:text-slate-500 mb-1" for="ticket-category">Query Category</label>
-                <select id="ticket-category" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs text-slate-850 cursor-pointer">
+                <select id="ticket-category" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs text-slate-805 cursor-pointer">
                   <option value="ICT / Portal Issues">ICT / Portal Issues</option>
                   <option value="Finance & Payments">Finance & Payments</option>
                   <option value="Academic Course conflict">Academic Course conflict</option>
@@ -834,12 +994,12 @@
 
               <div>
                 <label class="block text-[10px] font-extrabold uppercase text-slate-400 dark:text-slate-500 mb-1" for="ticket-subject">Subject Title</label>
-                <input type="text" id="ticket-subject" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs text-slate-800 dark:text-slate-200 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20" placeholder="e.g. Course CSC411 conflict">
+                <input type="text" id="ticket-subject" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs text-slate-800 dark:text-slate-205 font-medium focus:outline-none" placeholder="e.g. Course CSC411 conflict">
               </div>
 
               <div>
                 <label class="block text-[10px] font-extrabold uppercase text-slate-400 dark:text-slate-500 mb-1" for="ticket-message">Description Message</label>
-                <textarea id="ticket-message" rows="4" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs text-slate-800 dark:text-slate-200 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20" placeholder="State your request in full detail..."></textarea>
+                <textarea id="ticket-message" rows="4" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs focus:outline-none" placeholder="State your request in full detail..."></textarea>
               </div>
 
               <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-extrabold transition-colors cursor-pointer flex items-center justify-center">
@@ -848,9 +1008,8 @@
             </form>
           </div>
 
-          <!-- Tickets Ledger -->
           <div class="lg:col-span-2 glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80 flex flex-col">
-            <h4 class="font-bold text-xs text-slate-800 dark:text-slate-200 mb-4">Your Open & Past Tickets</h4>
+            <h4 class="font-bold text-xs text-slate-850 dark:text-slate-200 mb-4">Your Open & Past Tickets</h4>
             
             <div class="flex-1 overflow-x-auto">
               <table class="w-full text-left border-collapse">
@@ -869,13 +1028,11 @@
               </table>
             </div>
           </div>
-
         </div>
 
         <!-- ================= MODAL: TICKET CHAT WINDOW ================= -->
         <div id="ticket-chat-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 items-center justify-center hidden p-4 no-print">
           <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 w-full max-w-lg rounded-3xl shadow-2xl flex flex-col overflow-hidden h-[600px] animate-fade-in">
-            
             <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50">
               <div>
                 <span id="chat-ticket-id" class="text-[10px] font-bold text-indigo-600 uppercase">TKT-8271</span>
@@ -886,12 +1043,10 @@
               </button>
             </div>
 
-            <!-- Chat message body -->
             <div id="chat-messages-container" class="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50/40 dark:bg-slate-950/20">
               <!-- Rendered dynamically -->
             </div>
 
-            <!-- Chat input form -->
             <form id="chat-input-form" class="p-4 border-t border-slate-100 dark:border-slate-800 flex gap-2">
               <input type="text" id="chat-text-input" required class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs focus:outline-none" placeholder="Type a message to support...">
               <button type="submit" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center justify-center">
@@ -906,27 +1061,25 @@
       <!-- ================= SECTION: SETTINGS & ID CARD ================= -->
       <section id="settings-section" class="tab-content-section hidden space-y-6">
         
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in">
           
-          <!-- Left fields forms -->
           <div class="lg:col-span-2 space-y-6">
-            
             <div class="glass-panel p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800/80">
               <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200 mb-4">Contact Profile Preferences</h3>
               <form id="profile-settings-form" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label class="block text-[10px] font-extrabold uppercase text-slate-400 dark:text-slate-500 mb-1" for="settings-email">Portal Email Address</label>
-                    <input type="email" id="settings-email" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                    <input type="email" id="settings-email" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
                   </div>
                   <div>
                     <label class="block text-[10px] font-extrabold uppercase text-slate-400 dark:text-slate-500 mb-1" for="settings-phone">Mobile Contact Number</label>
-                    <input type="text" id="settings-phone" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                    <input type="text" id="settings-phone" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
                   </div>
                 </div>
                 <div>
                   <label class="block text-[10px] font-extrabold uppercase text-slate-400 dark:text-slate-500 mb-1" for="settings-address">Home Physical Address</label>
-                  <textarea id="settings-address" rows="3" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"></textarea>
+                  <textarea id="settings-address" rows="3" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20"></textarea>
                 </div>
                 <button type="submit" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer">
                   Save Changes
@@ -939,16 +1092,16 @@
               <form id="security-settings-form" class="space-y-4">
                 <div>
                   <label class="block text-[10px] font-extrabold uppercase text-slate-400 dark:text-slate-500 mb-1" for="settings-cur-pass">Current Password</label>
-                  <input type="password" id="settings-cur-pass" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs text-slate-805 focus:outline-none">
+                  <input type="password" id="settings-cur-pass" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs focus:outline-none">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label class="block text-[10px] font-extrabold uppercase text-slate-400 dark:text-slate-500 mb-1" for="settings-new-pass">New Password</label>
-                    <input type="password" id="settings-new-pass" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs text-slate-805 focus:outline-none">
+                    <input type="password" id="settings-new-pass" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs focus:outline-none">
                   </div>
                   <div>
                     <label class="block text-[10px] font-extrabold uppercase text-slate-400 dark:text-slate-500 mb-1" for="settings-confirm-pass">Confirm Password</label>
-                    <input type="password" id="settings-confirm-pass" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs text-slate-805 focus:outline-none">
+                    <input type="password" id="settings-confirm-pass" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-xs focus:outline-none">
                   </div>
                 </div>
                 <button type="submit" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer">
@@ -956,21 +1109,18 @@
                 </button>
               </form>
             </div>
-
           </div>
 
-          <!-- ID Card & Photo Selector -->
           <div class="space-y-6 flex flex-col items-center">
             
-            <!-- Flipping Digital Student ID Card -->
+            <!-- Student ID Card -->
             <div class="id-card-view w-80 h-52 cursor-pointer relative z-10 select-none">
               <div class="id-card-inner w-full h-full relative rounded-2xl shadow-xl duration-500 border border-slate-200 dark:border-slate-800">
                 
-                <!-- ID Card Front -->
+                <!-- Front -->
                 <div class="id-card-front absolute inset-0 bg-gradient-to-tr from-slate-900 to-indigo-950 p-4 flex flex-col justify-between rounded-2xl text-white overflow-hidden">
                   <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-500/10 to-transparent"></div>
                   
-                  <!-- ID Header -->
                   <div class="flex justify-between items-start relative z-10 border-b border-white/10 pb-2">
                     <div class="flex items-center gap-1.5">
                       <div class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center">🏫</div>
@@ -979,7 +1129,6 @@
                     <span class="px-2 py-0.5 rounded bg-emerald-500/25 border border-emerald-500/40 text-emerald-400 text-[8px] font-bold uppercase">STUDENT ID</span>
                   </div>
 
-                  <!-- ID Info body -->
                   <div class="flex gap-3.5 my-2 relative z-10">
                     <img class="student-photo w-16 h-20 rounded-lg object-cover ring-2 ring-white/10" src="student_profile.jpg" alt="Student ID Photo">
                     <div class="flex-1 flex flex-col justify-between py-0.5">
@@ -994,7 +1143,6 @@
                     </div>
                   </div>
 
-                  <!-- ID Footer -->
                   <div class="flex justify-between items-center relative z-10 text-[7px] border-t border-white/10 pt-1 text-slate-400 font-medium">
                     <span>Blood Group: O+</span>
                     <span>Class standing: 1st</span>
@@ -1002,7 +1150,7 @@
                   </div>
                 </div>
 
-                <!-- ID Card Back -->
+                <!-- Back -->
                 <div class="id-card-back absolute inset-0 bg-slate-950 p-4 flex flex-col justify-between rounded-2xl text-white border-2 border-slate-900">
                   <div class="w-full h-4 bg-slate-800 rounded-sm mt-2"></div>
                   
@@ -1010,10 +1158,9 @@
                     This card remains the property of Redeemer's University. If found, please return to the office of the Registrar, Ede, Osun State.
                   </div>
 
-                  <!-- Barcode & QR details -->
                   <div class="flex justify-between items-end border-t border-slate-800 pt-3">
                     <div class="bg-slate-200 h-6 w-36 px-1 py-0.5 flex items-center justify-around overflow-hidden rounded">
-                      <div class="h-full bg-slate-950 w-0.5"></div><div class="h-full bg-slate-950 w-1.5"></div><div class="h-full bg-slate-950 w-0.5"></div><div class="h-full bg-slate-950 w-1"></div><div class="h-full bg-slate-950 w-2"></div><div class="h-full bg-slate-950 w-0.5"></div><div class="h-full bg-slate-950 w-1"></div><div class="h-full bg-slate-950 w-0.5"></div><div class="h-full bg-slate-950 w-1"></div>
+                      <div class="h-full bg-slate-950 w-0.5"></div><div class="h-full bg-slate-950 w-1.5"></div><div class="h-full bg-slate-950 w-0.5"></div><div class="h-full bg-slate-950 w-1"></div><div class="h-full bg-slate-950 w-2"></div>
                     </div>
                     <span class="text-[8px] font-mono text-slate-500 tracking-wider">CMP2026</span>
                   </div>
@@ -1022,10 +1169,8 @@
               </div>
             </div>
 
-            <!-- Print Card Badge Actions -->
             <button id="print-id-card-btn" class="w-80 py-3 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/45 dark:hover:bg-indigo-900/60 text-indigo-600 dark:text-indigo-400 rounded-xl text-xs font-extrabold transition-colors cursor-pointer flex items-center justify-center gap-1.5">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-              Print ID Badge (3.375" x 2.125")
+              <span>🖨️</span> Print ID Badge (3.375" x 2.125")
             </button>
 
             <!-- Mock Profile Photo Upload -->
@@ -1064,12 +1209,11 @@
       </button>
     </div>
 
-    <!-- Drawer details -->
     <div class="flex-1 overflow-y-auto p-6 space-y-6 text-xs">
       <div>
         <h4 class="font-bold text-slate-800 dark:text-slate-200 mb-2.5 uppercase tracking-wide text-[10px]">Lecturers & Team</h4>
         <div class="p-3 bg-slate-50 dark:bg-slate-850 rounded-xl flex items-center justify-between">
-          <span class="font-semibold text-slate-705 dark:text-slate-300" id="drawer-course-lecturer">Dr. J. O. Ogundele</span>
+          <span class="font-semibold text-slate-700 dark:text-slate-300" id="drawer-course-lecturer">Dr. J. O. Ogundele</span>
           <span class="text-[9px] font-bold text-slate-400 uppercase">Course Convener</span>
         </div>
       </div>
@@ -1077,7 +1221,7 @@
       <div class="grid grid-cols-2 gap-4">
         <div class="p-3 bg-slate-50 dark:bg-slate-850 rounded-xl">
           <h4 class="text-[9px] text-slate-400 font-bold uppercase mb-1">Credit Allocation</h4>
-          <span class="font-extrabold text-slate-705 dark:text-slate-300 text-sm" id="drawer-course-units">3 Credits</span>
+          <span class="font-extrabold text-slate-700 dark:text-slate-300 text-sm" id="drawer-course-units">3 Credits</span>
         </div>
         <div class="p-3 bg-slate-50 dark:bg-slate-850 rounded-xl">
           <h4 class="text-[9px] text-slate-400 font-bold uppercase mb-1">Syllabus Status</h4>
@@ -1124,7 +1268,74 @@
     </div>
   </div>
 
-  <!-- Main script -->
+  <!-- ================= MODAL: PRINTABLE TRANSACTION RECEIPT ================= -->
+  <div id="receipt-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 items-center justify-center hidden p-4 no-print">
+    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 w-full max-w-lg rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fade-in">
+      <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50">
+        <h3 class="font-extrabold text-sm text-slate-850 dark:text-slate-200">Official Payment Receipt</h3>
+        <button id="close-receipt-modal" class="p-1 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/80">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Printable area -->
+      <div id="printable-receipt-content" class="p-8 space-y-6 printable-document text-xs">
+        <div class="text-center pb-4 border-b">
+          <h4 class="font-black text-slate-800 text-sm">REDEEMER'S UNIVERSITY</h4>
+          <p class="text-[8px] font-bold text-slate-400 tracking-wider">OFFICE OF THE BURSAR - ACCOUNTS SECTION</p>
+          <span class="mt-2 inline-block px-2.5 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-250 text-[9px] font-bold rounded-full uppercase">TRANSACTION RECEIPT</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <span class="text-slate-400 block font-medium">Receipt Ref ID:</span>
+            <span id="receipt-id-val" class="font-bold text-slate-800"></span>
+          </div>
+          <div>
+            <span class="text-slate-400 block font-medium">Invoice reference:</span>
+            <span id="receipt-invoice-val" class="font-bold text-slate-800"></span>
+          </div>
+          <div>
+            <span class="text-slate-400 block font-medium">Student Name:</span>
+            <span class="student-name font-bold text-slate-800">Ama O. Emmanuel</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block font-medium">Matric Number:</span>
+            <span class="student-matric font-bold text-slate-800">RUN/CMP/22/1042</span>
+          </div>
+        </div>
+
+        <div class="border rounded-xl p-4 bg-slate-50 mt-4">
+          <div class="flex justify-between items-center py-2 border-b">
+            <span class="text-slate-500 font-medium">Payment Description:</span>
+            <span id="receipt-desc-val" class="font-bold text-slate-850"></span>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b">
+            <span class="text-slate-500 font-medium">Settle Date:</span>
+            <span id="receipt-date-val" class="font-bold text-slate-800"></span>
+          </div>
+          <div class="flex justify-between items-center pt-2 font-black text-slate-900 text-sm">
+            <span>Total Sum Paid:</span>
+            <span id="receipt-amount-val">$0.00</span>
+          </div>
+        </div>
+
+        <div class="text-center pt-8 border-t flex flex-col items-center">
+          <span class="px-3 py-1 bg-emerald-100 text-emerald-800 border border-emerald-300 font-black text-[9px] uppercase tracking-wide rounded-md">
+            PAID ONLINE & SECURED
+          </span>
+          <p class="text-[8px] text-slate-400 mt-2">Redeemer's University, Bursary Electronic Ledger Account System.</p>
+        </div>
+      </div>
+
+      <div class="p-6 border-t border-slate-100 dark:border-slate-800 flex justify-end bg-slate-50/50 dark:bg-slate-900/50 no-print">
+        <button id="print-receipt-btn" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5">
+          <span>🖨️</span> Print Receipt Document
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>
