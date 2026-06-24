@@ -1,10 +1,10 @@
 /* ============================================================
-   REDEEMER'S UNIVERSITY STUDENT PORTAL — app.js
+   AMA'S UNIVERSITY STUDENT PORTAL — app.js
    Single-file vanilla JS SPA
    ============================================================ */
 
 // ─── STATE MANAGEMENT ─────────────────────────────────────────
-const STORAGE_KEY = 'RUN_PORTAL_STATE_V4.1';
+const STORAGE_KEY = 'AMAS_PORTAL_STATE_V4.2';
 
 const DEFAULT_STATE = {
   loggedIn: false,
@@ -45,7 +45,7 @@ function saveState() {
 // ─── DATA ─────────────────────────────────────────────────────
 const STUDENT_DATA = {
   name: 'Ama O. Emmanuel',
-  matric: 'RUN/CMP/22/1042',
+  matric: 'AMA/CMP/22/1042',
   dept: 'Computer Science',
   faculty: 'College of Natural Sciences',
   level: '400 Level',
@@ -59,12 +59,12 @@ const STUDENT_DATA = {
     { semester: '300L-2', gpa: 3.82 }
   ],
   tuitionBalance: 1400.00,
-  email: 'emmanuel.ama@run.edu.ng',
+  email: 'emmanuel.ama@ama.edu.ng',
   phone: '+234 803 456 7890',
   address: '12, Peace Estate, Ede, Osun State',
   advisor: {
     name: 'Prof. K. O. Adeyemi',
-    email: 'adeyemiko@run.edu.ng'
+    email: 'adeyemiko@ama.edu.ng'
   }
 };
 
@@ -188,9 +188,9 @@ const HOSTEL_DATA = {
   warden: 'Mr. A. C. Obi',
   category: '4-Bedspace Standard',
   roommates: [
-    { name: 'Okonkwo C. Chinedu', matric: 'RUN/CMP/22/1038', phone: '+234 803 123 4567', email: 'okonkwoc@run.edu.ng' },
-    { name: 'Okafor M. Nnamdi', matric: 'RUN/CMP/22/1051', phone: '+234 806 234 5678', email: 'okaform@run.edu.ng' },
-    { name: 'Adebayo K. Oluwaseun', matric: 'RUN/CMP/22/1067', phone: '+234 802 345 6789', email: 'adebayok@run.edu.ng' }
+    { name: 'Okonkwo C. Chinedu', matric: 'AMA/CMP/22/1038', phone: '+234 803 123 4567', email: 'okonkwoc@ama.edu.ng' },
+    { name: 'Okafor M. Nnamdi', matric: 'AMA/CMP/22/1051', phone: '+234 806 234 5678', email: 'okaform@ama.edu.ng' },
+    { name: 'Adebayo K. Oluwaseun', matric: 'AMA/CMP/22/1067', phone: '+234 802 345 6789', email: 'adebayok@ama.edu.ng' }
   ]
 };
 
@@ -225,10 +225,14 @@ function showToast(message, type) {
   const c = document.getElementById('toast-container');
   const toast = document.createElement('div');
   toast.className = 'toast toast-' + type + ' animate-toast-in';
-  const icons = { success: '✓', error: '✕', info: 'ℹ' };
-  toast.innerHTML = '<span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black ' +
+  const icons = {
+    success: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>',
+    error: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>',
+    info: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+  };
+  toast.innerHTML = '<span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center ' +
     (type === 'success' ? 'bg-emerald-100 text-emerald-700' : type === 'error' ? 'bg-rose-100 text-rose-700' : 'bg-indigo-100 text-indigo-700') +
-    '">' + (icons[type] || 'ℹ') + '</span>' +
+    '">' + (icons[type] || icons.info) + '</span>' +
     '<span class="text-xs font-semibold text-slate-700 dark:text-slate-300 flex-1">' + message + '</span>';
   c.appendChild(toast);
   setTimeout(function() {
@@ -281,12 +285,12 @@ function handleLogin(e) {
     } else {
       // If it's a name (e.g. "John Doe"), split and capitalize
       name = matric.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
-      matricNo = "RUN/CMP/22/" + Math.floor(1000 + Math.random() * 9000);
+      matricNo = "AMA/CMP/22/" + Math.floor(1000 + Math.random() * 9000);
     }
 
     STUDENT_DATA.name = name;
     STUDENT_DATA.matric = matricNo;
-    STUDENT_DATA.email = name.toLowerCase().replace(/\s+/g, '.') + "@run.edu.ng";
+    STUDENT_DATA.email = name.toLowerCase().replace(/\s+/g, '.') + "@ama.edu.ng";
 
     window.STATE.user = {
       name: STUDENT_DATA.name,
@@ -319,8 +323,8 @@ function handleLogout() {
 
   // Reset STUDENT_DATA back to default properties on logout
   STUDENT_DATA.name = 'Ama O. Emmanuel';
-  STUDENT_DATA.matric = 'RUN/CMP/22/1042';
-  STUDENT_DATA.email = 'emmanuel.ama@run.edu.ng';
+  STUDENT_DATA.matric = 'AMA/CMP/22/1042';
+  STUDENT_DATA.email = 'emmanuel.ama@ama.edu.ng';
   
   var landingPage = document.getElementById('landing-page');
   if (landingPage) {
@@ -792,7 +796,7 @@ function generateTranscript() {
     'td{padding:6px 12px;font-size:11px;} .cgpa{text-align:right;font-size:14pt;font-weight:800;margin-top:20px;}' +
     '.footer{text-align:center;font-size:9pt;color:#888;margin-top:40px;border-top:1px solid #ccc;padding-top:15px;}' +
     '@media print{body{padding:20px;}}</style></head><body>' +
-    '<h1>REDEEMER\'S UNIVERSITY</h1><h2>Ede, Osun State, Nigeria — Official Academic Transcript</h2>' +
+    '<h1>AMA\'S UNIVERSITY</h1><h2>Ede, Osun State, Nigeria — Official Academic Transcript</h2>' +
     '<div class="info"><span><strong>' + s.name + '</strong> — ' + s.matric + '</span><span><strong>Programme:</strong> B.Sc. ' + s.dept + '</span></div>' +
     '<table><tr><th>Code</th><th>Course Title</th><th>Units</th><th>Grade</th><th>GP</th><th>W.P.</th></tr>' + rows + '</table>' +
     '<div class="cgpa">Cumulative GPA: ' + finalCgpa + '</div>' +
@@ -1294,6 +1298,7 @@ function initApp() {
 // ─── DOM READY ───────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   loadState();
+  applyTheme(window.STATE.theme);
 
   var landingPage = document.getElementById('landing-page');
 
